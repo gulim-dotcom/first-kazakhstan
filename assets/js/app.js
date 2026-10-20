@@ -302,7 +302,7 @@ function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}
 /* --- старт --- */
 let start="kk";
 try{localStorage.removeItem("fk-lang")}catch(e){}
-try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStorage.getItem("fk-lang");start=(u&&T[u])?u:(s&&T[s])?s:"kk"}catch(e){}
+try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStorage.getItem("fk-lang");start=(u&&T[u])?u:(s&&T[s])?s:"kk";if(u&&T[u])sessionStorage.setItem("fk-lang",u)}catch(e){}
 L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));

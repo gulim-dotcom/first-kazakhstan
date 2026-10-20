@@ -510,3 +510,8 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
 .pt .cta{margin:40px 0 0;text-align:center;color:var(--mu);font-size:16px;line-height:1.6}
 .pt .cta a{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .pt .cta a:hover{color:var(--tx)}
+/* страница «не найдено» (404.html) */
+.nft .logo{margin-left:0!important}
+.nf{min-height:calc(100vh - 62px)}
+.nf .sub{max-width:760px}
+.nf .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
