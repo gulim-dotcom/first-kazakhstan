@@ -377,3 +377,29 @@ Object.assign(T.en,{reg:"Partners",dPres:"Scrimmage presentation: AI in STEM edu
 /* FIRST Global Challenge 2025: в новости gov.kz – фото команды из самой публикации; в «Достижениях» – официальное фото церемонии закрытия
  * FGC 2025 в Панаме с first.global (пресс-релиз об итогах и наградах), чтобы фото на сайте не повторялись */
 WI["2025"]="assets/img/w-fgc-2025.jpg";
+
+/* ---- Сверка с Положением / Ережесі FIRST CANOPY 2026–2027 (ред. 19–20.10.2026), 20.10.2026 ----
+ * приказ № 514 – МОН РК от 7 декабря 2011 года (п. 2.2); этапы – как в п. 5.2 (Тренировочный этап (Scrimmage),
+ * Региональный (Regional), Отборочный этап по областям (Qualifiers), Национальный / Центральная Азия);
+ * квоты: в каждой категории – в начале 2027 года (п. 5.8), для FTC – в декабре 2026 года (прил. 6, п. 6.8);
+ * FIRST Championship 28.04–01.05.2027 (п. 5.1.4, firstinspires.org); FRC – 2 совершеннолетних Lead Coach (п. 4.1.3.7);
+ * казахские названия ценностей FIRST – как в Ережесі (п. 4.2, 4.3). BIOBUZZ и BIOCORE – firstinspires.org/first-canopy. */
+(function(){
+  const rep=(l,k,a,b)=>{if(T[l]&&typeof T[l][k]==="string"&&T[l][k].includes(a))T[l][k]=T[l][k].replace(a,b)};
+  rep("kk","proofp","(ҚР Оқу-ағарту министрлігінің № 514 бұйрығы)","(ҚР БҒМ 2011 жылғы 7 желтоқсандағы № 514 бұйрығы)");
+  rep("ru","proofp","(приказ Министерства просвещения РК № 514)","(приказ МОН РК № 514 от 7 декабря 2011 года)");
+  rep("en","proofp"," approved by the Ministry of Education of Kazakhstan (Order No. 514)"," (Order No. 514 of the Ministry of Education and Science of Kazakhstan, 7 December 2011)");
+  T.kk.dStages="Кезеңдер: жаттығу кезеңі (Scrimmage), аймақтық (Regional), өңірлік (Qualifier) және ұлттық (Орталық Азия). Ұлттық кезең жеңімпаздары Хьюстондағы әлемдік финалға квота алады: әр санаттағы квота саны 2027 жылдың басында жарияланады (FTC бойынша – 2026 жылғы желтоқсанда). FIRST Robotics Competition: Алматыдағы кик-офф – Хьюстондағы финал (28.04–01.05.2027).";
+  T.ru.dStages="Этапы: тренировочный (Scrimmage), региональный (Regional), отборочный по областям (Qualifier) и национальный (Центральная Азия). Победители национального этапа получают квоты на мировой финал в Хьюстоне: число квот в каждой категории опубликуют в начале 2027 года (для FTC – в декабре 2026 года). FIRST Robotics Competition: кик-офф в Алматы – финал в Хьюстоне (28.04–01.05.2027).";
+  T.en.dStages="Stages: scrimmage, regional, qualifier and the national stage (Central Asia). National-stage winners earn places at the world final in Houston; the number per category will be announced in early 2027 (for FTC, in December 2026). FIRST Robotics Competition: kick-off in Almaty, final in Houston (28 April – 1 May 2027).";
+  T.kk.dIntro="Маусымның ресми ережесі: санаттар, жас шектеулері, команда құрамы және тіркелу тәртібі.";
+  T.ru.dIntro="Официальное положение сезона: категории, возраст и состав команд, порядок регистрации.";
+  T.ru.s_qual="Отборочный этап (Qualifier)";
+  T.kk.valp="Біздің негізгі құндылықтарымыз игі кәсіпқойлық пен ынтымақтастық қағидаттарына негізделген.";
+  const VK={"Ашылым":"Жаңалық ашу","Ықпал":"Әсер ету","Қуаныш":"Көңіл көтеру","Инклюзивтілік":"Инклюзия"};
+  V.forEach(v=>{if(VK[v[1]])v[1]=VK[v[1]]});
+  const frc=PROG.find(p=>/Robotics Competition/.test(p.name));
+  if(frc)frc.team=["состав без ограничений, 2 совершеннолетних тренера (Lead Coach)","құрам шектеусіз, 2 кәмелетке толған жаттықтырушы (Lead Coach)","no team-size limit, 2 adult Lead Coaches"];
+})();
+/* официальное английское название Оқу-ағарту министрлігі – Ministry of Education (gov.kz, primeminister.kz), как и в новостях */
+PNAMES_L.en.edu="Ministry of Education of Kazakhstan";
