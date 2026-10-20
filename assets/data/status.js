@@ -1,2 +1,2 @@
 /* Время последней успешной проверки данных (tools/update_data.py). */
-window.FK_STATUS={"checked":"2026-10-20T17:43:43Z","sheet":"ok","telegram":"ok","site":"ok"};
+window.FK_STATUS={"checked":"2026-10-20T18:54:44Z","sheet":"ok","telegram":"ok","site":"ok"};
