@@ -89,7 +89,7 @@ const PROG=[
  intro:["Старшая программа FIRST®: робот промышленного масштаба, созданный командой с наставниками.","FIRST®-тің жоғары бағдарламасы: команда тәлімгерлермен бірге өнеркәсіптік деңгейдегі робот жасайды.","FIRST®'s senior program: an industrial-scale robot built by the team with mentors."],
  team:["Состав без ограничений, 2 взрослых Lead Coach","Құрам шектеусіз, 2 ересек Lead Coach","No team-size limit, 2 adult Lead Coaches"],
  stages:["Kick-off (Алматы) → Мировой финал (Хьюстон, 28.04–01.05.2027)", "Kick-off (Алматы) → Әлемдік финал (Хьюстон, 28.04–01.05.2027)", "Kick-off (Almaty) → World final (Houston, 28.04–01.05.2027)"]},
-{name:"Global Challenge",cat:"FGC · сборная Казахстана",age:"14–18",color:"#f0620a",logo:IMG.lg4,photo:IMG["nw-fgc-2026-team"],teaser:"https://www.youtube.com/watch?v=YQ9aC-Uhblc",site:"https://first.global/fgc/",wide:true,
+{name:"Global Challenge",cat:"FGC · сборная Казахстана",age:"14–18",color:"#f0620a",logo:IMG.lg4,photo:IMG["nw-fgc-2026-team"],teaser:"https://www.youtube.com/watch?v=Sl9oSw5MRpk",site:"https://first.global/fgc/",wide:true,
  intro:["Международная олимпиада по робототехнике среди национальных сборных.","Ұлттық құрамалар арасындағы халықаралық робототехника олимпиадасы.","The international robotics olympiad for national teams."],
  team:["Сборная Казахстана по итогам национального отбора","Ұлттық іріктеу қорытындысы бойынша Қазақстан құрамасы","Team Kazakhstan, selected at the national selection event"],
  stages:["Национальный отбор → FIRST Global Challenge", "Ұлттық іріктеу → FIRST Global Challenge", "National selection → FIRST Global Challenge"]}
