@@ -374,3 +374,6 @@ Object.assign(PNAMES_L.en,{edu:"Ministry of Enlightenment of Kazakhstan",digital
 Object.assign(T.ru,{reg:"Партнёры",dPres:"Презентация скримиджа «STEM-білімге AI енгізу» (на казахском)"});
 Object.assign(T.kk,{reg:"Серіктестер",dPres:"Скримидж презентациясы: «STEM-білімге AI енгізу»"});
 Object.assign(T.en,{reg:"Partners",dPres:"Scrimmage presentation: AI in STEM education (in Kazakh)"});
+/* FIRST Global Challenge 2025: в новости gov.kz – фото команды из самой публикации; в «Достижениях» – официальное фото церемонии закрытия
+ * FGC 2025 в Панаме с first.global (пресс-релиз об итогах и наградах), чтобы фото на сайте не повторялись */
+WI["2025"]="assets/img/w-fgc-2025.jpg";
