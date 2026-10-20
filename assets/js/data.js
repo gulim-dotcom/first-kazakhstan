@@ -329,3 +329,48 @@ Object.assign(T.en,{ptCta:"Want to support FIRST programs in Kazakhstan? Write t
 Object.assign(T.ru,{rep:"Официальные данные FIRST о пользе программ (англ.)"});
 Object.assign(T.kk,{rep:"FIRST бағдарламаларының пайдасы туралы ресми деректер (ағылш.)"});
 Object.assign(T.en,{rep:"Official FIRST impact data"});
+/* ===== 20.10.2026: правки по сообщению заказчика (фото, достижения, партнёры, программы, цифры) =====
+ * Источники: регламент «Положение FIRST CANOPY 2026–2027 Казахстан» (FLL Discover в сезоне BIOGLOW не проводится, п. 1.2 прил. 1;
+ * 20 регионов по 2 квоты, п. 5.6); firstinspires.org/first-canopy (BIOGLOW, BIOBUZZ, BIOCORE); Kazinform и gov.kz 04.05.2026 (Хьюстон 2026);
+ * 24.kz 21.04.2025 (Хьюстон 2025); ustem.kz/kz/partners (партнёры); Forbes Kazakhstan 18.12.2025 (Samruk-Kazyna Trust и ExxonMobil – проект STEM Hanym). */
+/* цифры: 85+ событий сезона; вместо «17 команд в Хьюстоне» – 20 регионов */
+KS[2][0]=85;
+KS[3]=[20,"","",["Регионов Казахстана, где мы проводим соревнования FIRST","Өңірде FIRST жарыстарын өткіземіз","Regions of Kazakhstan where we hold FIRST competitions"]];
+/* программы: FLL Discover – без BIOGLOW и без тизера (в сезоне BIOGLOW не проводится, используются материалы прошлых сезонов);
+ * Future Edition – BIOGLOW; FTC – официальный ролик BIOBUZZ; фото FTC и FGC – с FIRST Championship 2026 и FIRST Global Challenge 2026 */
+PROG[0].cat="FLL-D";PROG[0].teaser=null;
+PROG[3].cat="FLL Future Edition · BIOGLOW";
+PROG[4].photo="assets/img/p-ftc-2026.jpg";PROG[4].ppos="50% 45%";PROG[4].teaser="https://www.youtube.com/watch?v=sUH3z5a5S9I";
+PROG[6].photo="assets/img/p-fgc-2026.jpg";PROG[6].ppos="50% 50%";
+/* достижения: только FIRST Global Challenge и FIRST Championship; Хьюстон 2026 – по итогам (Kazinform, gov.kz), фото команд с чемпионата */
+WI["2026"]="assets/img/w-fgc-2026.jpg";
+(function(){
+  const H="2026-05-02",P=["Хьюстон, США","Хьюстон, АҚШ","Houston, USA"],c=s=>[s,s,s];
+  const hou=(r,comp,img)=>[r[0],r[1],r[2],"2026",P[0],P[1],P[2],"","","",...c(comp),img,H];
+  for(let k=W.length-1;k>=0;k--){const w=W[k];
+    if(/Asia Open|Open International/.test(w[10]||"")||(w[10]==="FIRST® Championship"&&w[3]==="2026"))W.splice(k,1);
+    else if(w[10]==="FIRST® Championship"&&w[3]==="2025")w[13]="assets/img/w-hou25.jpg";}
+  W.push(
+    hou(["Финалист Champions Award, топ-5 мира","Champions Award финалисі, әлемдік топ-5","Champions Award finalist, world top 5"],"Tolebi Daryn · FIRST® LEGO® League Challenge","assets/img/w-hou26-tolebi.jpg"),
+    hou(["Победители Sustain Award и Reach Award","Sustain Award және Reach Award жеңімпаздары","Sustain Award and Reach Award winners"],"JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","assets/img/w-hou26-ftc-gold.jpg"),
+    hou(["3-е место: Think Award и Reach Award","Think Award және Reach Award, 3-орын","3rd place: Think Award and Reach Award"],"XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","assets/img/w-hou26-ftc-3rd.jpg"),
+    hou(["Впервые в топ-8: капитаны альянсов","Алғаш рет топ-8: альянс капитандары","First time in the top 8: alliance captains"],"Panheya, Celestial · FIRST® Tech Challenge","assets/img/w-hou26-alliance.jpg"),
+    hou(["Gracious Professionalism Award и топ-6 игры роботов","Gracious Professionalism Award және робот-ойында ТОП-6","Gracious Professionalism Award and top 6 in the robot game"],"Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","assets/img/w-hou26-fllc.jpg"),
+    hou(["Core Values Award и Team Model Award","Core Values Award және Team Model Award","Core Values Award and Team Model Award"],"Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","assets/img/w-hou26-flle.jpg"));
+  W.sort((a,b)=>String(b[14]).localeCompare(String(a[14])));
+})();
+/* новости: у каждой карточки – фото из той же публикации */
+[["zhaikpress.kz","assets/img/n-fgc26.jpg","50% 50%"],["23-awards-first-lego-league-asia-open","assets/img/n-asia26.jpg","50% 40%"],["prizerami-chempionata-po-robototehnike-v-gretsii","assets/img/n-gr26.jpg","50% 45%"],
+ ["12-nagrad","assets/img/n-hou26.jpg","50% 50%"],["astanatimes.com","assets/img/n-alem26.jpg","50% 55%"],["/details/1097414","assets/img/n-fgc25.jpg","50% 40%"]]
+ .forEach(([u,img,pos])=>N.forEach(n=>{if(n.url.indexOf(u)>=0){n.img=img;n.pos=pos}}));
+/* партнёры: один блок «Серіктестер»; из международных остаётся только LEGO Education; 3DGO, Microsoft, EPAM и партнёры, которых нет
+ * в официальном списке ustem.kz, убраны. Логотипы министерств – актуальные, с ustem.kz (тёмная версия). Логотип «star» – Qazaq Army (как на ustem.kz). */
+RP.length=0;RP.push(["edu"],["digital"],["daryn"],["astana"],["star"],["adaryny"],["kerneu"],["p_samruk-kazyna-trust"],["p_exxonmobil"],["p_stemshop"],["lego"]);
+IP.length=0;
+LG.edu="assets/img/lg-min-enlightenment.webp";LG.digital="assets/img/lg-min-ai-digital.webp";
+Object.assign(PNAMES,{digital:"Министерство искусственного интеллекта и цифрового развития РК",star:"Qazaq Army"});
+Object.assign(PNAMES_L.kk,{digital:"ҚР Жасанды интеллект және цифрлық даму министрлігі"});
+Object.assign(PNAMES_L.en,{edu:"Ministry of Enlightenment of Kazakhstan",digital:"Ministry of Artificial Intelligence and Digital Development of Kazakhstan"});
+Object.assign(T.ru,{reg:"Партнёры",dPres:"Презентация скримиджа «STEM-білімге AI енгізу» (на казахском)"});
+Object.assign(T.kk,{reg:"Серіктестер",dPres:"Скримидж презентациясы: «STEM-білімге AI енгізу»"});
+Object.assign(T.en,{reg:"Partners",dPres:"Scrimmage presentation: AI in STEM education (in Kazakh)"});

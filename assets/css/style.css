@@ -49,7 +49,7 @@ button,select,input{font:inherit;color:inherit}
 .btn.o:hover{background:#fff;border-color:#9aa3b2}
 
 /* ---------- первый экран ---------- */
-.hero{position:relative;min-height:calc(100vh - 172px);min-height:calc(100svh - 172px);display:flex;align-items:center;color:#fff;background:#0c1e36 url(../img/im2-hero.jpg) 55% 40%/cover no-repeat}
+.hero{position:relative;min-height:calc(100vh - 172px);min-height:calc(100svh - 172px);display:flex;align-items:center;color:#fff;background:#0c1e36 url(../img/hero-2026.jpg) 50% 68%/cover no-repeat}
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.45),rgba(10,28,56,.58))}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
@@ -379,7 +379,7 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .nl .lm{display:flex;gap:10px;padding:14px 0 4px}
   .nl .lm button{border:1px solid #d9dee5;border-radius:8px;background:#fff;padding:11px 16px;font-weight:600;font-size:15px;cursor:pointer}
   .nl .lm button.on{border-color:#111;color:#111}
-  .hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px);align-items:flex-end;background-position:62% 50%}
+  .hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px);align-items:flex-end;background-position:58% 50%}
   .two,footer .fw{grid-template-columns:1fr;gap:36px}
   .ab .col{height:380px}
 }

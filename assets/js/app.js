@@ -188,7 +188,7 @@ function renderPrograms(){const i=I[L];
 function renderPartners(){
   const lg=(x,h)=>`<div class="lg"${h?' aria-hidden="true"':""}><img src="${LG[x[0]]}" alt="${h?"":esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
   const mq=a=>`<div class="lgs">${a.map(x=>lg(x,0)).join("")}${a.map(x=>lg(x,1)).join("")}</div>`;
-  $("#mr").innerHTML=mq(RP);$("#mi").innerHTML=mq(IP);
+  $("#mr").innerHTML=mq(RP);const mi=$("#mi");if(mi)mi.innerHTML=mq(IP);
 }
 
 /* --- новости: главные результаты (data.js) + посты Telegram с хэштегом #сайт (assets/data/news.js) --- */
@@ -286,7 +286,7 @@ function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
   if(S.logo&&/^assets\/img\/[\w.-]+$/.test(S.logo)){const im=$(".sl img");if(im)im.src=S.logo}
   if(okUrl(S.letter)){const a=$("#letterLink");if(a)a.href=S.letter}
   if(okUrl(S.schedule)){const a=$("#schedLink");if(a)a.href=S.schedule}
-  const ev=((window.FK_SITE||{}).stats||{}).events;if(ev>=10&&KS[2])KS[2][0]=Math.floor(ev/10)*10;
+  const ev=((window.FK_SITE||{}).stats||{}).events;if(ev>=10&&KS[2]&&Math.floor(ev/10)*10>KS[2][0])KS[2][0]=Math.floor(ev/10)*10;
 }
 applySite();
 /* --- язык --- */
