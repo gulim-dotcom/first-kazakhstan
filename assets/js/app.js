@@ -139,7 +139,7 @@ function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab)=>`<div class="st rv"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i])).join("");
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b><span class="num" data-n="${g[0]}">${fmt(g[0])}</span>${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
-  countUp();
+  /* цифры показываются сразу, без анимации счёта (по просьбе заказчика, 20.10.2026) */
 }
 function countUp(){
   const boxes=[...document.querySelectorAll(".stats,.wl")];
