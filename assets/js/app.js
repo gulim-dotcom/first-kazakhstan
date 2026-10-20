@@ -189,11 +189,11 @@ function renderPrograms(){const i=I[L];
   const rb=$("#rulesBtn");rb.href=rulesUrl();
   if(L!="kk"&&!RULES.ru)rb.querySelector("span").textContent=tt("docKk");
 }
-/* партнёры: все логотипы видны сразу, без бегущей строки */
+/* партнёры: бегущая строка — список повторён дважды, чтобы лента шла без разрыва (копия скрыта от экранных дикторов) */
 function renderPartners(){
-  const lg=x=>`<div class="lg"><img src="${LG[x[0]]}" alt="${esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
-  const row=a=>`<div class="lgs">${a.map(lg).join("")}</div>`;
-  $("#mr").innerHTML=row(RP);const mi=$("#mi");if(mi)mi.innerHTML=row(IP);
+  const lg=(x,h)=>`<div class="lg"${h?' aria-hidden="true"':""}><img src="${LG[x[0]]}" alt="${h?"":esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
+  const mq=a=>`<div class="lgs">${a.map(x=>lg(x,0)).join("")}${a.map(x=>lg(x,1)).join("")}</div>`;
+  $("#mr").innerHTML=mq(RP);const mi=$("#mi");if(mi)mi.innerHTML=mq(IP);
 }
 
 /* --- новости: главные результаты (data.js) + посты Telegram с хэштегом #сайт (assets/data/news.js) --- */

@@ -281,10 +281,12 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .dh:before{content:"";width:80px;height:2px;background:#a6cdfb;margin-right:18px;flex:none}
 .dh h2{font-size:24px;color:#696969;font-weight:600;line-height:1.2;white-space:nowrap}
 .dh:after{content:"";flex:1;height:2px;background:#a6cdfb;margin-left:18px}
-.mq{margin-bottom:34px}
-.lgs{display:flex;flex-wrap:wrap;justify-content:center;row-gap:12px}
-.lg{display:flex;align-items:center;justify-content:center;width:200px;height:100px;flex:none}
+.mq{overflow:hidden;margin-bottom:34px}
+.lgs{display:flex;width:max-content;animation:mq 42s linear infinite}
+.mq:hover .lgs{animation-play-state:paused}
+.lg{display:flex;align-items:center;justify-content:center;width:256px;height:100px;flex:none}
 .lg img{max-height:100px;max-width:160px;width:auto;height:auto}
+@keyframes mq{to{transform:translateX(-50%)}}
 .pt .src{margin-top:0}
 
 /* подвал */
@@ -481,9 +483,8 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .dh:after{margin-left:16px}
   .dh h2{font-size:19px}
   .mq{margin-bottom:36px}
-  .lgs{row-gap:6px}
-  .lg{width:33.333%;height:66px;padding:0 6px}
-  .lg img{max-height:50px;max-width:100%}
+  .lg{width:124px;height:66px}
+  .lg img{max-height:50px;max-width:106px}
   footer{padding:44px 0 26px}
   footer .flogo{height:36px}
   footer p{font-size:18px;margin-top:20px}
@@ -491,6 +492,8 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   footer .fc svg{width:20px;height:20px}
   footer .cp{margin-top:30px;font-size:14px}
 }
+/* если в системе отключена анимация — логотипы стоят рядами, все видны */
+@media(prefers-reduced-motion:reduce){.lgs{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.lg[aria-hidden]{display:none}}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 
 .nb{white-space:nowrap}
