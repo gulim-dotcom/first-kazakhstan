@@ -27,8 +27,10 @@ function render(){const i=I[L];
   $("#nlist").innerHTML=newsAll().map(x=>{const body=`<div class="im" style="background-image:${cu(x.img)};background-position:${esc(x.pos||"50% 50%")}"></div><div class="cb"><small>${esc(x.src)}${x.date?" · "+ndate(x.date):""}</small><b>${esc(x.t[i])}</b><p>${esc(x.p[i])}</p>${x.url?`<span class="rd">${esc(tt("read"))}</span>`:""}</div>`;
     return x.url?`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<div class="card">${body}</div>`}).join("");
 }
-function setLang(l){if(!T[l])return;L=l;try{localStorage.setItem("fk-lang",l)}catch(e){}render()}
-try{const u=new URLSearchParams(location.search).get("lang");const s=localStorage.getItem("fk-lang");L=(u&&T[u])?u:(s&&T[s])?s:"kk"}catch(e){}
+/* язык держится в пределах визита (как на главной); новый заход — на казахском */
+function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
+try{localStorage.removeItem("fk-lang")}catch(e){}
+try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStorage.getItem("fk-lang");L=(u&&T[u])?u:(s&&T[s])?s:"kk"}catch(e){}
 render();
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
 const burger=$("#burger");

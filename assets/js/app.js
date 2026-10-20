@@ -134,30 +134,35 @@ const firstH=(word)=>L=="ru"?`${esc(word)} <span class="fi">FIRST</span>®`:`<sp
 const fmt=n=>Math.round(n).toLocaleString(L=="en"?"en-US":"ru-RU");
 const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 
-/* статистика: числа растут с нуля, когда блок появляется на экране */
+/* статистика: цифры Казахстана растут с нуля, когда блок появляется на экране; цифры FIRST в мире стоят сразу */
 function renderStats(){const i=I[L];
-  const st=(pre,n,suf,lab)=>`<div class="st rv"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
+  const st=(pre,n,suf,lab)=>`<div class="st"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i])).join("");
-  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b><span class="num" data-n="${g[0]}">${fmt(g[0])}</span>${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
-  /* цифры показываются сразу, без анимации счёта (по просьбе заказчика, 20.10.2026) */
+  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b>${fmt(g[0])}${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
+  countUp();
 }
 function countUp(){
-  const boxes=[...document.querySelectorAll(".stats,.wl")];
-  const fin=b=>b.querySelectorAll(".num").forEach(e=>{e.textContent=fmt(+e.dataset.n)});
-  if(RM||!("IntersectionObserver" in window)){boxes.forEach(fin);return}
-  const run=b=>{b.dataset.done="1";const els=[...b.querySelectorAll(".num")],t0=performance.now(),D=1700;
-    const step=now=>{const p=Math.min(1,(now-t0)/D),e=1-Math.pow(1-p,3);els.forEach(x=>{x.textContent=fmt(+x.dataset.n*e)});if(p<1)requestAnimationFrame(step)};
-    requestAnimationFrame(step)};
+  const box=$("#stats");if(!box)return;
+  const els=[...box.querySelectorAll(".num")];
   if(countUp.io)countUp.io.disconnect();
-  const io=countUp.io=new IntersectionObserver(ens=>{ens.forEach(en=>{if(en.isIntersecting){io.unobserve(en.target);run(en.target)}})},{threshold:.3});
-  boxes.forEach(b=>{if(b.dataset.done)fin(b);else io.observe(b)});
+  /* уже показали один раз, reduced-motion или старый браузер — сразу итоговые цифры */
+  if(box.dataset.done||RM||!("IntersectionObserver" in window))return;
+  /* ширина числа фиксируется заранее, чтобы подпись рядом не сдвигалась во время счёта */
+  els.forEach(e=>{const b=e.parentElement;b.style.minWidth=b.getBoundingClientRect().width+"px";e.textContent=fmt(0)});
+  const run=()=>{box.dataset.done="1";const t0=performance.now(),D=1600;
+    const step=now=>{const p=Math.min(1,(now-t0)/D),k=1-Math.pow(1-p,3);
+      els.forEach(x=>{x.textContent=fmt(+x.dataset.n*k)});
+      if(p<1)requestAnimationFrame(step);else els.forEach(x=>{x.parentElement.style.minWidth=""})};
+    requestAnimationFrame(step)};
+  const io=countUp.io=new IntersectionObserver(ens=>{if(ens.some(en=>en.isIntersecting)){io.disconnect();run()}},{threshold:.3});
+  io.observe(box);
 }
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
 function renderValues(){const i=I[L];
   $("#valh").innerHTML=firstH(tt("valh"));
-  $("#vals").innerHTML=V.map((v,k)=>`<div class="vl rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]||""}</svg></span><div><h4>${esc(v[i])}</h4><p>${esc(v[3+i])}</p></div></div>`).join("");
+  $("#vals").innerHTML=V.map((v,k)=>`<div class="vl"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]||""}</svg></span><div><h4>${esc(v[i])}</h4><p>${esc(v[3+i])}</p></div></div>`).join("");
 }
 /* цитата: первая фраза — синим, как на firstrobotics.kz */
 function renderQuote(){const q=tt("quote"),m=q.match(/^(.*?[.!?])\s+([\s\S]*)$/);
@@ -173,7 +178,7 @@ function renderPrograms(){const i=I[L];
     const cat=Array.isArray(p.cat)?p.cat[i]:p.cat;
     const head=p.logo?`<img src="${esc(p.logo)}" alt="FIRST ${esc(p.name)}">`:`<span class="wm"><i>FIRST<sup>®</sup></i><b>${esc(p.wordmark[0])}</b><b>${esc(p.wordmark[1])}</b></span>`;
     const meta=[cat,p.ageTxt?p.ageTxt[i]:"",p.team[i]].filter(Boolean).join(" · ");
-    return `<article class="card pc rv${p.wide?" wide":""}" id="program-${k}" style="--c:${esc(p.color)}">
+    return `<article class="card pc${p.wide?" wide":""}" id="program-${k}" style="--c:${esc(p.color)}">
       <div class="pi" style="background-image:${cu(p.photo)};background-position:${esc(p.ppos||"center")}">${head}</div>
       <div class="cb">
         <span class="cat">${esc(p.age+" "+tt("yrs"))}</span>
@@ -184,11 +189,11 @@ function renderPrograms(){const i=I[L];
   const rb=$("#rulesBtn");rb.href=rulesUrl();
   if(L!="kk"&&!RULES.ru)rb.querySelector("span").textContent=tt("docKk");
 }
-/* партнёры: бегущая строка — список повторён дважды, чтобы лента шла без разрыва */
+/* партнёры: все логотипы видны сразу, без бегущей строки */
 function renderPartners(){
-  const lg=(x,h)=>`<div class="lg"${h?' aria-hidden="true"':""}><img src="${LG[x[0]]}" alt="${h?"":esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
-  const mq=a=>`<div class="lgs">${a.map(x=>lg(x,0)).join("")}${a.map(x=>lg(x,1)).join("")}</div>`;
-  $("#mr").innerHTML=mq(RP);const mi=$("#mi");if(mi)mi.innerHTML=mq(IP);
+  const lg=x=>`<div class="lg"><img src="${LG[x[0]]}" alt="${esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
+  const row=a=>`<div class="lgs">${a.map(lg).join("")}</div>`;
+  $("#mr").innerHTML=row(RP);const mi=$("#mi");if(mi)mi.innerHTML=row(IP);
 }
 
 /* --- новости: главные результаты (data.js) + посты Telegram с хэштегом #сайт (assets/data/news.js) --- */
@@ -232,7 +237,7 @@ function evCard(e,t){const i=I[L],online=e.city.key==="online";
       ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed?' class="closed"':""}>${esc(catLabel(c))}${c.closed?` · ${esc(tt("regclosed"))}`:""}</span>`).join("")}</div>`:""}
       ${btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:""}
     </div>`};
-  return `<div class="cell rv"><div class="ec"><div>
+  return `<div class="cell"><div class="ec"><div>
     <h4>${esc(e.name)}</h4>
     <p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>
     ${e.allowed?`<p class="rgl">${ICO.pin}<span title="${esc(e.allowed[i])}"><b>${esc(tt("regs"))}:</b> ${esc(e.allowed[i])}</span></p>`:""}
@@ -250,20 +255,10 @@ function renderEvents(){
   /* все события в одной прокручиваемой сетке, как на firstrobotics.kz; стрелка внизу листает её */
   const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
   $("#evs").innerHTML=u.length?`<div class="eg">${u.map(e=>evCard(e,t)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`;
-  /* анимация появления только при первом показе; при смене фильтра карточки видны сразу */
-  if(renderEvents.ran)$("#evs").querySelectorAll(".rv").forEach(x=>x.classList.add("in"));renderEvents.ran=1;
   const eg=$("#evs .eg"),mw=$("#evs .morew");
   if(eg){const upd=()=>mw.classList.toggle("end",eg.scrollHeight-eg.clientHeight-eg.scrollTop<8);eg.addEventListener("scroll",upd,{passive:true});upd();setTimeout(upd,400)}
   const up=(window.FK_STATUS&&window.FK_STATUS.checked)||SHEET.updated,s=up?stamp(up):"";
   $("#evsrc").textContent=s?`${tt("evupd")} ${s}`:"";
-  reveal();
-}
-/* плавное появление карточек при прокрутке (как на firstrobotics.kz); при reduced-motion — без анимации */
-function reveal(){
-  const els=[...document.querySelectorAll(".rv:not(.in)")];
-  if(RM||!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return}
-  if(!reveal.io)reveal.io=new IntersectionObserver(ens=>{ens.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");reveal.io.unobserve(en.target)}})},{threshold:.12,rootMargin:"0px 0px -5% 0px"});
-  els.forEach(e=>reveal.io.observe(e));
 }
 function fillFilters(){const i=I[L];
   const sel=(id,h,arr)=>{const e=$(id),v=e.value;e.innerHTML=`<option value="">${esc(h)}</option>`+arr.map(a=>`<option value="${esc(a[0])}">${esc(a[1])}</option>`).join("");e.value=arr.some(a=>a[0]===v)?v:""};
@@ -301,11 +296,13 @@ function render(){
   renderStats();renderWinners();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
   fillFilters();renderEvents();
 }
-function setLang(l){if(!T[l])return;L=l;try{localStorage.setItem("fk-lang",l)}catch(e){}render()}
+/* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
+function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
 
 /* --- старт --- */
 let start="kk";
-try{const u=new URLSearchParams(location.search).get("lang");const s=localStorage.getItem("fk-lang");start=(u&&T[u])?u:(s&&T[s])?s:"kk"}catch(e){}
+try{localStorage.removeItem("fk-lang")}catch(e){}
+try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStorage.getItem("fk-lang");start=(u&&T[u])?u:(s&&T[s])?s:"kk"}catch(e){}
 L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));

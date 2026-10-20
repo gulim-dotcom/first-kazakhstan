@@ -3,7 +3,7 @@
   --tx:#111827;--bd:#3b4350;--mu:#4b5563;--lt:#6b7280;--line:#e5e7eb;
   --blue:#2f6fed;--blue2:#bfd6f6;--gold:#d9733f;--gold2:#cf6634;--red:#e0514a;
   --cream:#f7e3d4;--cream2:#ecc9b2;--brown:#7a3f27;--brown2:#6a3320;--sky:#e9f1fc;--foot:#1c1c1c;
-  --sh:0 4px 16px rgba(20,40,80,.08);--sh2:0 10px 28px rgba(20,40,80,.14);--r:16px;--rc:8px;
+  --sh:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.06);--sh2:0 2px 10px rgba(16,24,40,.1);--r:16px;--rc:8px;
   --chev:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%23374151' stroke-width='1.8' stroke-linecap='round'/></svg>");
   --chev3:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%237f7f7f' stroke-width='1.5' stroke-linecap='round'/></svg>");
   --chev2:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round'/></svg>");
@@ -42,14 +42,14 @@ button,select,input{font:inherit;color:inherit}
 .open .burger span:after{top:0;transform:rotate(-45deg)}
 
 /* ---------- кнопки ---------- */
-.btn{display:inline-flex;gap:9px;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:var(--rc);background:linear-gradient(90deg,#e48a55,#cf6634);color:#fff;font-weight:700;font-size:18px;border:0;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(207,102,52,.28)}
-.btn:hover{background:linear-gradient(90deg,#da7444,#c45c2c)}
+.btn{display:inline-flex;gap:9px;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:var(--rc);background:#cf6634;color:#fff;font-weight:700;font-size:18px;border:0;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#b8572b}
 .btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .btn.o{background:#fff;color:var(--tx);border:1px solid #d9dee5;box-shadow:none;font-weight:600;font-size:16px}
 .btn.o:hover{background:#fff;border-color:#9aa3b2}
 
 /* ---------- первый экран ---------- */
-.hero{position:relative;min-height:calc(100vh - 172px);min-height:calc(100svh - 172px);display:flex;align-items:center;color:#fff;background:#0c1e36 url(../img/hero-2026.jpg) 50% 68%/cover no-repeat}
+.hero{position:relative;min-height:calc(100vh - 172px);min-height:calc(100svh - 172px);display:flex;align-items:center;color:#fff;background:#0c1e36 url(../img/hero-2026.jpg) 50% 76%/cover no-repeat}
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.45),rgba(10,28,56,.58))}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
@@ -58,7 +58,6 @@ button,select,input{font:inherit;color:inherit}
 /* ---------- новый сезон ---------- */
 .season{padding:56px 0 0}
 .sp{position:relative;display:grid;grid-template-columns:40% 1fr;gap:40px;align-items:center;padding:64px 60px 64px 80px;border-radius:20px;background:var(--cream);color:var(--brown2);overflow:visible}
-.sp:before{content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;overflow:hidden;opacity:.5;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 400' preserveAspectRatio='none'><g fill='none' stroke='%23ecc9b2' stroke-linecap='butt'><path d='M-60 90c150-70 260 30 430 40s250-90 470-40 260 70 420 0 180-50 200-30' stroke-width='18' opacity='.9'/><path d='M-40 300c210-30 300-120 520-70s230 110 450 40 230-110 330-60 160 60 240 30' stroke-width='22' opacity='.8'/><path d='M120 200c130-20 220 40 380 20s210-70 340-30' stroke-width='7' opacity='.7'/></g></svg>") center/100% 100% no-repeat}
 .sp>*{position:relative}
 .tag{position:absolute;top:-24px;left:20px;z-index:2;display:inline-block;padding:11px 15px;border-radius:var(--rc);background:var(--red);color:#fff;font-weight:700;font-size:18px;line-height:1.2}
 .sl{display:flex;justify-content:flex-start}
@@ -81,7 +80,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 #about{padding:110px 0 20px}
 .ab .col{position:relative;height:410px}
 .ab figure{position:absolute;margin:0}
-.ab figure img{border-radius:16px;object-fit:cover;box-shadow:0 12px 34px rgba(20,40,80,.16);background:#e5e9f0}
+.ab figure img{border-radius:16px;object-fit:cover;box-shadow:0 2px 10px rgba(16,24,40,.12);background:#e5e9f0}
 .ab .p1{left:3%;top:30px;width:67%}
 .ab .p1 img{width:100%;height:auto;aspect-ratio:7/5}
 .ab .p2{right:7%;top:115px;width:36%}
@@ -103,8 +102,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .proof p{color:var(--mu);font-size:18px;line-height:1.7;margin:20px 0 10px}
 .proof .rep{display:inline-block;padding:6px 0;font-size:14px;color:var(--lt);text-decoration:underline;text-underline-offset:3px}
 .proof .rep:hover{color:var(--tx)}
-.proof .btn{padding:0 26px;gap:9px;font-size:18px;background:linear-gradient(90deg,#e48a55,#cf6634)}
-.proof .btn:hover{background:linear-gradient(90deg,#da7444,#c45c2c)}
+.proof .btn{padding:0 26px;gap:9px;font-size:18px}
 .proof .btn:after{content:"";width:21px;height:21px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>") center/contain no-repeat}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:26px}
 .st{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:32px 32px 30px;min-height:200px}
@@ -138,7 +136,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .wim{position:absolute;inset:0;background-size:cover;background-position:center 25%}
 .wim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.72) 100%)}
 .wt{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff}
-.wc .yr{position:absolute;right:20px;top:20px;z-index:2;padding:8px 18px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:20px;line-height:1.2;box-shadow:var(--sh)}
+.wc .yr{position:absolute;right:20px;top:20px;z-index:2;padding:8px 18px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:20px;line-height:1.2}
 .wt b{display:block;font-size:24px;line-height:1.2;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.3)}
 .wt small{display:block;margin-top:8px;font-size:18px;font-weight:400;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)}
 .wt em{display:block;font-style:normal;font-size:15px;line-height:1.4;color:rgba(255,255,255,.88);margin-top:6px}
@@ -149,12 +147,8 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 
 /* ценности */
 #values{position:relative;padding-top:40px}
-#values:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:
-  radial-gradient(40% 32% at 20% 45%,rgba(226,236,252,.7),transparent 70%),
-  radial-gradient(40% 32% at 75% 60%,rgba(226,236,252,.7),transparent 70%)}
 .val{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:66px}
-.vl{display:grid;grid-template-columns:64px 1fr;gap:25px;align-items:start;background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(20,40,80,.08),0 1px 10px rgba(20,40,80,.04);padding:32px;transition:box-shadow .25s}
-.vl:hover{box-shadow:0 10px 30px rgba(20,40,80,.14)}
+.vl{display:grid;grid-template-columns:64px 1fr;gap:25px;align-items:start;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:32px}
 .vl .ic{width:64px;height:64px;border-radius:12px;background:var(--gold);display:grid;place-items:center}
 .vl svg{width:40px;height:40px;fill:#fff;stroke:none}
 .vl h4{font-size:24px;font-weight:700;color:var(--gold);line-height:1.2;margin:2px 0 9px}
@@ -249,7 +243,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 #media{padding-top:30px}
 .mg{display:grid;grid-template-columns:520px 1fr;gap:48px;align-items:start}
 .mg>*{min-width:0}
-.mp{position:relative;border-radius:16px;padding:26px 26px 26px 24px;border-left:4px solid var(--blue);background:linear-gradient(135deg,#eaf2fd 0%,#f7faff 55%,#fff 100%);box-shadow:var(--sh2)}
+.mp{position:relative;border-radius:16px;padding:26px 26px 26px 24px;border-left:4px solid var(--blue);background:#f1f6fd}
 .mh{font-size:clamp(26px,2.3vw,32px);font-weight:700;text-transform:uppercase;color:var(--tx);line-height:1.1;letter-spacing:-.01em}
 .msub{color:var(--blue);font-weight:600;margin:12px 0 18px;font-size:17px}
 .q{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(20,40,80,.05)}
@@ -287,12 +281,10 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .dh:before{content:"";width:80px;height:2px;background:#a6cdfb;margin-right:18px;flex:none}
 .dh h2{font-size:24px;color:#696969;font-weight:600;line-height:1.2;white-space:nowrap}
 .dh:after{content:"";flex:1;height:2px;background:#a6cdfb;margin-left:18px}
-.mq{overflow:hidden;margin-bottom:34px}
-.lgs{display:flex;width:max-content;animation:mq 42s linear infinite}
-.mq:hover .lgs{animation-play-state:paused}
-.lg{display:flex;align-items:center;justify-content:center;width:256px;height:100px;flex:none}
+.mq{margin-bottom:34px}
+.lgs{display:flex;flex-wrap:wrap;justify-content:center;row-gap:12px}
+.lg{display:flex;align-items:center;justify-content:center;width:200px;height:100px;flex:none}
 .lg img{max-height:100px;max-width:160px;width:auto;height:auto}
-@keyframes mq{to{transform:translateX(-50%)}}
 .pt .src{margin-top:0}
 
 /* подвал */
@@ -305,10 +297,6 @@ footer .fc a{display:flex;align-items:center;gap:10px;padding:12px 0;min-height:
 footer .fc a:hover{color:#fff}
 footer .fc svg{width:24px;height:24px;flex:none;color:#8a8a8a}
 footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;font-size:14px;color:#8b8f97}
-
-/* появление блоков при прокрутке */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
-.rv.in{opacity:1;transform:none}
 
 /* ---------- адаптив ---------- */
 @media(max-width:1280px){
@@ -378,7 +366,7 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .nl .lm{display:flex;gap:10px;padding:14px 0 4px}
   .nl .lm button{border:1px solid #d9dee5;border-radius:8px;background:#fff;padding:11px 16px;font-weight:600;font-size:15px;cursor:pointer}
   .nl .lm button.on{border-color:#111;color:#111}
-  .hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px);align-items:flex-end;background-position:58% 50%}
+  .hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px);align-items:flex-end;background-position:66% 50%}
   .two,footer .fw{grid-template-columns:1fr;gap:36px}
   .ab .col{height:380px}
 }
@@ -391,7 +379,6 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .hero p{font-size:17px;line-height:1.5;margin-top:18px}
   .season{padding-top:76px}
   .sp{padding:52px 22px 32px;gap:22px;border-radius:18px}
-  .sp:before{display:none}
   .sl{justify-content:center}
   .tag{top:-20px;left:22px;font-size:16px;padding:10px 13px}
   .sl img{max-width:240px}
@@ -494,8 +481,9 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .dh:after{margin-left:16px}
   .dh h2{font-size:19px}
   .mq{margin-bottom:36px}
-  .lg{width:124px;height:66px}
-  .lg img{max-height:50px;max-width:106px}
+  .lgs{row-gap:6px}
+  .lg{width:33.333%;height:66px;padding:0 6px}
+  .lg img{max-height:50px;max-width:100%}
   footer{padding:44px 0 26px}
   footer .flogo{height:36px}
   footer p{font-size:18px;margin-top:20px}
@@ -503,7 +491,6 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   footer .fc svg{width:20px;height:20px}
   footer .cp{margin-top:30px;font-size:14px}
 }
-@media(prefers-reduced-motion:reduce){.lgs{animation:none}.rv{opacity:1;transform:none;transition:none}}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 
 .nb{white-space:nowrap}
