@@ -586,5 +586,9 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 /* hero (по просьбе USTEM 21.10.2026, 15:16): текст на 10% мельче, межстрочный интервал чуть больше, блок чуть левее */
 .hero h1{font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero .in{padding:100px 48px 160px 32px} /* 15:19: текст ещё чуть выше (было 110/130) */
+.hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px)} /* 15:32: hero чуть короче, чтобы тег «Жаңа маусым» не обрезался на первом экране */
+.hero p{margin-top:36px} /* 15:32: больше воздуха между заголовком, текстом и кнопкой (было 24/36) */
+.hero .btn{margin-top:52px}
 @media(max-width:1060px){.hero .in{padding-right:32px}}
-@media(max-width:760px){.hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}.hero .in{padding:160px 20px 100px}}
+@media(min-width:761px) and (max-height:700px){.hero .in{padding-top:80px;padding-bottom:100px}} /* невысокие экраны ноутбуков: тег «Жаңа маусым» остаётся на первом экране */
+@media(max-width:760px){.hero{min-height:0}.hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}.hero .in{padding:160px 20px 100px}.hero p{margin-top:18px}.hero .btn{margin-top:36px}}
