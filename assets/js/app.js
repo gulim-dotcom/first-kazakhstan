@@ -310,6 +310,10 @@ applySite();
 function render(){
   document.documentElement.lang=L=="kk"?"kk":L;
   document.querySelectorAll("[data-t]").forEach(e=>{e.textContent=tt(e.dataset.t)});
+  /* приказ № 514 в тексте «Доказанная польза» – ссылка на официальный текст на adilet.zan.kz (просьба USTEM 21.10.2026) */
+  const pp=document.querySelector('[data-t="proofp"]');
+  if(pp){const u=`https://adilet.zan.kz/${L=="kk"?"kaz":"rus"}/docs/V1100007355`;
+    pp.innerHTML=esc(pp.textContent).replace(/\(([^()]*514[^()]*)\)/,(m,t)=>`(<a class="law" href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>)`)}
   document.querySelectorAll("[data-ta]").forEach(e=>e.setAttribute("aria-label",tt(e.dataset.ta)));
   document.querySelectorAll("[data-talt]").forEach(e=>{e.alt=tt(e.dataset.talt)});
   const md=document.querySelector("meta[name=description]");if(md&&tt("metaDesc"))md.content=tt("metaDesc");
