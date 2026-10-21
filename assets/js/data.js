@@ -416,8 +416,10 @@ const CV=[["teamwork","#ed1c24"],["inclusion","#5c2490"],["impact","#00a05a"],["
 
 /* ---- 21.10.2026 ---- */
 /* FIRST4ALL – карточка в «Событиях» без ссылки, пока нет формы регистрации.
- * Когда появится форма: впишите её адрес в url (Google Форма: https://forms.gle/… или docs.google.com/forms/…), дату – в date (например "15.03.2027" или "15.03.2027 – 16.03.2027"). */
-const F4A={name:"FIRST4ALL",url:"",date:"",img:"assets/img/x-nw-first-table.jpg"};
+ * Когда появится форма: впишите её адрес в url (Google Форма: https://forms.gle/… или docs.google.com/forms/…).
+ * По регламенту FIRST4ALL 2026–2027 (п. 3.1–3.2) это инициатива без площадки: команды-наставники подают список новых команд
+ * до 25.12.2026 23:59 по времени Астаны, поэтому строки «место проведения» в карточке нет, а дата – срок подачи списка (dateTxt: ru, kk, en). */
+const F4A={name:"FIRST4ALL",url:"",date:"25.12.2026",dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026 дейін","Team lists due by 25.12.2026"],noLoc:true,img:"assets/img/x-nw-first-table.jpg"};
 Object.assign(T.ru,{regsoon:"регистрация скоро"});
 Object.assign(T.kk,{regsoon:"тіркелу жақында ашылады"});
 Object.assign(T.en,{regsoon:"registration opens soon"});
