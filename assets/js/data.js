@@ -451,3 +451,26 @@ Object.assign(T.en,{allProg:"Show all programs"});
 KS.length=1; /* остаётся только № 514 со ссылкой на «Әділет» */
 KS.push([20000,"+","",["участников FIRST® в Центральной Азии – Казахстан, Узбекистан, Кыргызстан","Орталық Азиядағы FIRST® қатысушысы – Қазақстан, Өзбекстан, Қырғызстан","FIRST® participants across Central Asia – Kazakhstan, Uzbekistan, Kyrgyzstan"]]);
 KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]]);
+KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане (2026)","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында (2026)","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan (2026)"]]);
+
+/* 21.10.2026, 18:00 (мысал USTEM-ге, сараптаманың 3, 5, 6, 7, 8-тармақтары): «Қалай бастау керек» блогы, маусым жолы,
+ * «FIRST Қазақстанда» тақырыбы, футер ұранының аудармасы. Хьюстондағы FIRST Championship 2027 күндері – USTEM презентациясы, 29-бет. */
+const SMAP={city:["Хьюстон","Хьюстон","Houston"],date:"28.04 – 01.05.2027"};
+Object.assign(T.ru,{abh:"FIRST® в Казахстане",slogan:"Мы не используем детей, чтобы строить роботов. Мы используем роботов, чтобы воспитывать детей.",
+ sth:"С чего начать",stp:"Новой команде достаточно трёх шагов.",
+ st1:"Выберите программу",st1p:"По возрасту ученика: FIRST® LEGO® League – 4–16 лет, FIRST® Tech Challenge – 12–18, FIRST® Robotics Competition – 14–18.",st1a:"Смотреть программы",
+ st2:"Соберите команду и зарегистрируйтесь",st2p:"В зависимости от программы 2–15 учеников и до двух тренеров – учитель или родитель. Регистрация на скримидж или региональный этап в вашем городе – через расписание событий.",st2a:"Расписание событий",
+ st3:"Подготовьтесь",st3p:"Правила сезона, презентация и письмо «Дарын» – в одном месте. Семинары для тренеров и учителей отмечены в расписании событий.",st3a:"Правила и документы",
+ smh:"Путь сезона 2026–2027",sm1:"Скримидж",sm2:"Региональный этап (Regional)",sm3:"Отборочный этап (Qualifier)",sm4:"Чемпионат Центральной Азии",sm4s:"национальный этап",sm5:"Мировой финал",sm5s:"FIRST Championship"});
+Object.assign(T.kk,{abh:"FIRST® Қазақстанда",slogan:"Біз роботтар жасау үшін балаларды емес, балаларды тәрбиелеу үшін роботтарды пайдаланамыз.",
+ sth:"Қалай бастау керек",stp:"Жаңа команда үшін үш қадам жеткілікті.",
+ st1:"Бағдарламаны таңдаңыз",st1p:"Оқушының жасына қарай: FIRST® LEGO® League – 4–16 жас, FIRST® Tech Challenge – 12–18 жас, FIRST® Robotics Competition – 14–18 жас.",st1a:"Бағдарламаларды қарау",
+ st2:"Команда құрып, тіркеліңіз",st2p:"Бағдарламаға қарай 2–15 оқушы және 2 тренерге дейін – мұғалім немесе ата-ана. Өз қалаңыздағы скримиджге немесе аймақтық кезеңге іс-шаралар кестесі арқылы тіркеліңіз.",st2a:"Іс-шаралар кестесі",
+ st3:"Дайындалыңыз",st3p:"Маусым ережесі, презентациясы және «Дарын» хаты – бір жерде. Тренерлер мен мұғалімдерге арналған семинарлар іс-шаралар кестесінде белгіленген.",st3a:"Ереже мен құжаттар",
+ smh:"2026–2027 маусымының жолы",sm1:"Скримидж",sm2:"Аймақтық кезең (Regional)",sm3:"Өңірлік кезең (Qualifier)",sm4:"Орталық Азия чемпионаты",sm4s:"ұлттық кезең",sm5:"Әлемдік финал",sm5s:"FIRST Championship"});
+Object.assign(T.en,{abh:"FIRST® in Kazakhstan",slogan:"We don't use children to build robots. We use robots to build children.",
+ sth:"How to start",stp:"A new team needs just three steps.",
+ st1:"Choose a program",st1p:"By the student's age: FIRST® LEGO® League – ages 4–16, FIRST® Tech Challenge – 12–18, FIRST® Robotics Competition – 14–18.",st1a:"See the programs",
+ st2:"Form a team and register",st2p:"Depending on the program, 2–15 students and up to two coaches – a teacher or a parent. Register for the scrimmage or regional in your city through the event schedule.",st2a:"Event schedule",
+ st3:"Get ready",st3p:"The season rules, presentation and the Daryn letter are in one place. Seminars for coaches and teachers are marked in the event schedule.",st3a:"Rules and documents",
+ smh:"The 2026–2027 season path",sm1:"Scrimmage",sm2:"Regional",sm3:"Qualifier",sm4:"Central Asia Championship",sm4s:"national stage",sm5:"World final",sm5s:"FIRST Championship"});
