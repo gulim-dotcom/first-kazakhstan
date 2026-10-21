@@ -50,7 +50,8 @@ button,select,input{font:inherit;color:inherit}
 
 /* ---------- первый экран ---------- */
 .hero{position:relative;min-height:calc(100vh - 172px);min-height:calc(100svh - 172px);display:flex;align-items:center;color:#fff;background:#0c1e36 url(../img/hero-2026.jpg) 50% 76%/cover no-repeat}
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.45),rgba(10,28,56,.58))}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,26,50,.5) 0%,rgba(10,26,50,.32) 55%,rgba(10,26,50,.14) 100%)}
+.hero h1,.hero p{text-shadow:0 1px 14px rgba(8,20,40,.35)}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
 .hero p{font-size:clamp(20px,2vw,30px);line-height:1.25;font-weight:400;margin-top:24px;max-width:900px;color:#fff}
@@ -148,11 +149,11 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 /* ценности */
 #values{position:relative;padding-top:40px}
 .val{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:66px}
-.vl{display:grid;grid-template-columns:64px 1fr;gap:25px;align-items:start;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:32px}
-.vl .ic{width:64px;height:64px;border-radius:12px;background:var(--gold);display:grid;place-items:center}
-.vl svg{width:40px;height:40px;fill:#fff;stroke:none}
-.vl h4{font-size:24px;font-weight:700;color:var(--gold);line-height:1.2;margin:2px 0 9px}
-.vl p{color:var(--mu);font-size:18px;line-height:1.55}
+.vl{display:grid;grid-template-columns:132px 1fr;gap:24px;align-items:center;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:24px}
+.vl .ic{width:132px;height:132px;border-radius:14px;background:var(--c);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 6px;text-align:center}
+.vl .ic img{width:84px;height:62px;object-fit:contain}
+.vl h4{font-size:15px;font-weight:700;line-height:1.15;margin:0;color:#fff;overflow-wrap:anywhere}
+.vl p{color:var(--bd);font-size:18px;line-height:1.5}
 
 /* программы */
 #programs{padding-top:60px}
@@ -369,6 +370,7 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .nl .lm button{border:1px solid #d9dee5;border-radius:8px;background:#fff;padding:11px 16px;font-weight:600;font-size:15px;cursor:pointer}
   .nl .lm button.on{border-color:#111;color:#111}
   .hero{min-height:calc(100vh - 170px);min-height:calc(100svh - 170px);align-items:flex-end;background-position:66% 50%}
+  .hero:before{background:linear-gradient(180deg,rgba(10,26,50,.12) 0%,rgba(10,26,50,.3) 45%,rgba(10,26,50,.58) 100%)}
   .two,footer .fw{grid-template-columns:1fr;gap:36px}
   .ab .col{height:380px}
 }
@@ -427,10 +429,10 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .ar{display:none}
   .val,.grid,.eg{grid-template-columns:1fr}
   .val{gap:18px;margin-top:40px}
-  .vl{grid-template-columns:56px 1fr;gap:18px;padding:22px 20px}
-  .vl .ic{width:56px;height:56px;border-radius:12px}
-  .vl svg{width:34px;height:34px}
-  .vl h4{font-size:21px;margin:2px 0 8px}
+  .vl{grid-template-columns:108px 1fr;gap:18px;padding:18px}
+  .vl .ic{width:108px;height:108px;border-radius:12px;gap:6px;padding:10px 6px}
+  .vl .ic img{width:70px;height:52px}
+  .vl h4{font-size:13px}
   .vl p{font-size:16px}
   .grid{gap:24px;margin-top:40px}
   .pc .pi{height:140px;padding:0 20px}
