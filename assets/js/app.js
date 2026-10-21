@@ -144,8 +144,9 @@ const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 
 /* статистика: цифры Казахстана растут с нуля, когда блок появляется на экране; цифры FIRST в мире стоят сразу */
 function renderStats(){const i=I[L];
-  const st=(pre,n,suf,lab)=>`<div class="st"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
-  $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i])).join("");
+  const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
+    return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
+  $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[4] – ссылка на официальный документ (приказ № 514) */
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b>${fmt(g[0])}${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
   countUp(); /* цифры Казахстана снова растут с нуля (вернули по просьбе USTEM 21.10.2026); цифры FIRST в мире статичные */
 }
@@ -310,10 +311,6 @@ applySite();
 function render(){
   document.documentElement.lang=L=="kk"?"kk":L;
   document.querySelectorAll("[data-t]").forEach(e=>{e.textContent=tt(e.dataset.t)});
-  /* приказ № 514 в тексте «Доказанная польза» – ссылка на официальный текст на adilet.zan.kz (просьба USTEM 21.10.2026) */
-  const pp=document.querySelector('[data-t="proofp"]');
-  if(pp){const u=`https://adilet.zan.kz/${L=="kk"?"kaz":"rus"}/docs/V1100007355`;
-    pp.innerHTML=esc(pp.textContent).replace(/\(([^()]*514[^()]*)\)/,(m,t)=>`(<a class="law" href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>)`)}
   document.querySelectorAll("[data-ta]").forEach(e=>e.setAttribute("aria-label",tt(e.dataset.ta)));
   document.querySelectorAll("[data-talt]").forEach(e=>{e.alt=tt(e.dataset.talt)});
   const md=document.querySelector("meta[name=description]");if(md&&tt("metaDesc"))md.content=tt("metaDesc");
