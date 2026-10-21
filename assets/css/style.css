@@ -627,3 +627,13 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 .sl{justify-content:flex-start}
 .season{padding:64px 0 8px}
 @media(max-width:900px){.sp{gap:22px 0;padding:0}.season{padding:56px 0 0}.sl{justify-content:flex-start}.sl img{max-width:260px}}
+/* Телефон: первые три программы, остальные – по кнопке (21.10.2026, просьба USTEM: раздел был длиной ~10 экранов).
+ * На десктопе ничего не меняется: кнопка скрыта, класс .cut ни на что не влияет. */
+.pmorew{display:none}
+@media(max-width:760px){
+  #progs.cut>.pc:nth-child(n+4){display:none}
+  .pmorew{display:block;margin-top:20px}
+  .pmore{display:inline-flex;align-items:center;justify-content:center;min-height:48px;width:100%;padding:0 20px;
+    border:1px solid var(--line);border-radius:var(--rc);background:#fff;color:var(--tx);font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+  .pmore:hover{border-color:#aab3c0}
+}
