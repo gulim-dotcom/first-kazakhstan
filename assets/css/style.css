@@ -54,8 +54,7 @@ button,select,input{font:inherit;color:inherit}
 .hero h1,.hero p{text-shadow:0 1px 14px rgba(8,20,40,.35)}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
-.hero .btn{margin-top:36px;text-shadow:none;background:var(--red);color:#fff}
-.hero .btn:hover{background:#c9433d}
+.hero .btn{margin-top:36px;text-shadow:none}
 .hero p{font-size:clamp(20px,2vw,30px);line-height:1.25;font-weight:400;margin-top:24px;max-width:900px;color:#fff}
 
 /* ---------- новый сезон ---------- */
@@ -210,7 +209,8 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .pl .lnk.o:after{width:13px;height:13px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>") center/contain no-repeat}
 .pl .lnk.o:hover{border-color:#9aa3b2}
 .pl .lnk.tz:after{width:13px;height:13px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>") center/contain no-repeat}
-.pl .lnk:not(.o):hover{filter:brightness(.94)}
+.pl .lnk:not(.o){background:#cf6634}
+.pl .lnk:not(.o):hover{background:#b8572b;filter:none}
 
 /* правила сезона */
 .docs{margin-top:70px;display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:start;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:40px 44px}
