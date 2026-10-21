@@ -112,9 +112,9 @@ Object.assign(T.en,{pAge:"Age",pTeam:"Team",pCat:"Category",pStages:"Stages",pRu
  dTitle:"FIRST® CANOPY™ 2026–2027 season rules",dIntro:"The official regulations: categories, age and team size, stages and registration.",dBtn:"Open the rules",dSched:"Official schedule (sheet)",
  bTheme:"The season theme is biodiversity. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",bVideo:"Explore the season theme",bRules:"Season rules",
  cap1:"Team Kazakhstan",s_big:"Major event",fe:"Future Edition 3–8",rg:"Robot Game"});
-Object.assign(T.ru,{dLetter:"Письмо РНПЦ «Дарын»",dReg:"Регистрация на события"});
-Object.assign(T.kk,{dLetter:"«Дарын» РҒПО хаты",dReg:"Іс-шараларға тіркелу"});
-Object.assign(T.en,{dLetter:"Letter from the Daryn National Center",dReg:"Event registration"});
+Object.assign(T.ru,{dLetter:"Письмо РНПЦ «Дарын» и материалы сезона",dReg:"Регистрация на события"});
+Object.assign(T.kk,{dLetter:"«Дарын» РҒПО хаты және маусым материалдары",dReg:"Іс-шараларға тіркелу"});
+Object.assign(T.en,{dLetter:"Daryn National Center letter and season materials",dReg:"Event registration"});
 
 /* Строки для расписания из официальной таблицы и автоновостей */
 Object.assign(T.ru,{evsrc:"По официальному расписанию сезона",evupd:"обновлено",vtba:"Площадка уточняется",ctba:"Место уточняется",chg:"Изменения",stt:"Статус",none:"По выбранным фильтрам событий нет",fe0:"Future Edition",tgsrc:"Telegram"});
