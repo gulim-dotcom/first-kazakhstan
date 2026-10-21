@@ -368,7 +368,7 @@ WI["2026"]="assets/img/w-fgc-2026.jpg";
  * Цветные логотипы «Дарын» (x-daryn.png) и Samruk-Kazyna (x-p_samruk-kazyna.png) – официальные файлы от USTEM Foundation, 21.10.2026. */
 RP.length=0;RP.push(["edu"],["digital"],["daryn"],["astana"],["star"],["adaryny"],["kerneu"],["p_samruk-kazyna"],["p_exxonmobil"],["p_stemshop"],["lego"]);
 IP.length=0;
-LG.edu="assets/img/lg-min-enlightenment.webp";LG.digital="assets/img/lg-min-ai-digital.webp";
+LG.edu="assets/img/lg-min-enlightenment.webp";LG.digital="assets/img/x-ai-digital.png"; /* цветной логотип AI & Digital Ministry – файл от USTEM 21.10.2026 (с сайта trustexam.ai) */
 Object.assign(PNAMES,{digital:"Министерство искусственного интеллекта и цифрового развития РК",star:"Qazaq Army"});
 Object.assign(PNAMES_L.kk,{digital:"ҚР Жасанды интеллект және цифрлық даму министрлігі"});
 Object.assign(PNAMES_L.en,{edu:"Ministry of Enlightenment of Kazakhstan",digital:"Ministry of Artificial Intelligence and Digital Development of Kazakhstan"});
