@@ -6,8 +6,8 @@
  *  url   — Instagram посты. */
 const ALUMNI=[
  {photo:"assets/img/alumni/stanford.jpg",name:["Амира Махмеджан","Амира Махмеджан","Amira Makhmedzhan"],path:["FIRST → Stanford University","",""],text:["","",""],url:"https://www.instagram.com/p/DDKMTVxt2oR/"},
- {photo:"assets/img/alumni/alibaev.jpg",name:["Дамир Алибаев","Дамир Алибаев","Damir Alibayev"],path:["FIRST → University of Toronto","",""],text:["","",""],url:"https://www.instagram.com/p/DHQ53FPtkUF/?img_index=8"},
- {photo:"assets/img/alumni/kareneev.jpg",name:["Таир Каренеев","Таир Каренеев","Tair Kareneyev"],path:["FIRST → Worcester Polytechnic Institute","",""],text:["","",""],url:"https://www.instagram.com/p/DEWtDdLM5T5/"}
+ {photo:"assets/img/alumni/kareneev.jpg",name:["Таир Каренеев","Таир Каренеев","Tair Kareneyev"],path:["FIRST → Worcester Polytechnic Institute","",""],text:["","",""],url:"https://www.instagram.com/p/DEWtDdLM5T5/"},
+ {photo:"assets/img/alumni/alibaev.jpg",name:["Дамир Алибаев","Дамир Алибаев","Damir Alibayev"],path:["FIRST → University of Toronto","",""],text:["","",""],url:"https://www.instagram.com/p/DHQ53FPtkUF/?img_index=8"}
 ];
 Object.assign(T.ru,{alh:"Выпускники FIRST® и их путь",alp:"Наши выпускники продолжают путь в науке, технологиях и инженерии. Их истории – тоже наше достижение.",alig:"Читать полностью",alsoon:"История выпускника скоро появится здесь"});
 Object.assign(T.kk,{alh:"FIRST® түлектері және олардың жолы",alp:"Түлектеріміз ғылым, технология және инженерия саласындағы жолын жалғастыруда. Олардың тарихы – біздің де жетістігіміз.",alig:"Толық оқу",alsoon:"Түлектің тарихы жақында осында болады"});
