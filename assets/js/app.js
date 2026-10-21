@@ -167,6 +167,18 @@ function countUp(){
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
+/* FIRST түлектері: карточкалар — assets/js/alumni.js; бос мәтін басқа тілден алынады (қаз → рус → eng) */
+function renderAlumni(){const box=$("#alums");if(!box)return;
+  const A=typeof ALUMNI!=="undefined"?ALUMNI:[];
+  $("#alumni").hidden=!A.length;box.parentElement.classList.toggle("few",A.length<=3);
+  $("#alh").innerHTML=esc(tt("alh")).replace("FIRST®",'<span class="fi">FIRST</span>®');
+  const pick=a=>{a=a||[];return a[I[L]]||a[1]||a[0]||a[2]||""};
+  const ig=/^https:\/\/(www\.)?instagram\.com\//;
+  box.innerHTML=A.map(a=>{const n=pick(a.name),pa=pick(a.path),tx=pick(a.text),u=ig.test(a.url||"")?a.url:"";
+    const ph=a.photo?`<div class="alim" style="background-image:${cu(a.photo)};background-position:${esc(a.pos||"center 25%")}"></div>`
+      :`<div class="alim ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/></svg></div>`;
+    return `<article class="alc">${ph}<div class="alb">${n?`<b>${esc(n)}</b>`:""}${pa?`<span class="alpa">${esc(pa)}</span>`:""}<p>${esc(tx||(n?"":tt("alsoon")))}</p>${u?`<a class="alig" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(tt("alig"))} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`:""}</div></article>`}).join("");
+}
 function renderValues(){const i=I[L];
   $("#valh").innerHTML=firstH(tt("valh"));
   $("#vals").innerHTML=V.map((v,k)=>{const c=CV[k];
@@ -301,7 +313,7 @@ function render(){
   const md=document.querySelector("meta[name=description]");if(md&&tt("metaDesc"))md.content=tt("metaDesc");
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
-  renderStats();renderWinners();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
+  renderStats();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
   fillFilters();renderEvents();
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */

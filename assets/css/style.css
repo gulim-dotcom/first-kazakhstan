@@ -146,6 +146,27 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .ar.l{left:4px}.ar.r{right:4px}
 .ar:hover{border-color:#9aa3b2;background:#fff}
 
+/* FIRST түлектері */
+#alumni{padding-top:20px}
+#alumni[hidden]{display:none}
+#alumni .wh{margin-bottom:12px}
+.alsub{margin:0 0 36px}
+.alc{flex:0 0 calc((100% - 48px)/3);scroll-snap-align:start;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--sh)}
+.alim{aspect-ratio:4/3;background-size:cover;background-position:center 25%;background-color:#eef3fc}
+.alim.ph{display:grid;place-items:center}
+.alim.ph svg{width:64px;height:64px;fill:none;stroke:var(--blue2);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.alb{display:flex;flex-direction:column;gap:8px;padding:22px 24px 24px;flex:1}
+.alb b{font-size:21px;line-height:1.25;font-weight:800;color:var(--tx)}
+.alpa{align-self:flex-start;padding:4px 12px;border-radius:999px;background:#eef3fc;color:var(--blue);font-weight:600;font-size:14px;line-height:1.4}
+.alb p{color:var(--mu);font-size:16px;line-height:1.55}
+.alig{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:15px;color:var(--blue)}
+.alig svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.alig:hover{text-decoration:underline;text-underline-offset:3px}
+.alig:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(min-width:901px){#alumni .cw.few .ar{display:none}}
+@media(max-width:900px){.alc{flex-basis:calc((100% - 24px)/2)}}
+@media(max-width:760px){.alc{flex-basis:86%}.alsub{margin-bottom:24px}.alb{padding:18px 20px 20px}}
+
 /* ценности */
 #values{position:relative;padding-top:40px}
 .val{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:66px}
