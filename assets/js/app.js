@@ -369,4 +369,7 @@ addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.cont
 const links=[...document.querySelectorAll("#nav a")].filter(a=>/^#./.test(a.getAttribute("href")));
 const spy=()=>{let cur="";links.forEach(a=>{const el=document.querySelector(a.getAttribute("href"));if(el&&el.getBoundingClientRect().top<innerHeight*.35)cur=a.getAttribute("href")});links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==cur))};
 addEventListener("scroll",spy,{passive:true});spy();
+/* переход по меню или кнопке к разделу прокручивает страницу, но не оставляет «#раздел» в адресе,
+   поэтому перезагрузка не возвращает к разделу (просьба USTEM, 21.10.2026; сама перезагрузка – assets/js/top.js) */
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute("href").slice(1),el=id&&document.getElementById(id);if(!el)return;e.preventDefault();el.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
 })();
