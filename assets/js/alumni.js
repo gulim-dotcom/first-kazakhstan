@@ -5,7 +5,7 @@
  *  ["русский","қазақша","English"] ретімен. Қазақша/ағылшынша бос болса, басқа тілдегі мәтін көрсетіледі;
  *  url   — Instagram посты. */
 const ALUMNI=[
- {photo:"assets/img/alumni/stanford.jpg",name:["Амира","Амира","Amira"],path:["FIRST → Stanford University","",""],text:["","",""],url:"https://www.instagram.com/p/DDKMTVxt2oR/"},
+ {photo:"assets/img/alumni/stanford.jpg",name:["Амира Махмеджан","Амира Махмеджан","Amira Makhmedzhan"],path:["FIRST → Stanford University","",""],text:["","",""],url:"https://www.instagram.com/p/DDKMTVxt2oR/"},
  {photo:"assets/img/alumni/alibaev.jpg",name:["Дамир Алибаев","Дамир Алибаев","Damir Alibayev"],path:["FIRST → University of Toronto","",""],text:["","",""],url:"https://www.instagram.com/p/DHQ53FPtkUF/?img_index=8"},
  {photo:"assets/img/alumni/kareneev.jpg",name:["Таир Каренеев","Таир Каренеев","Tair Kareneyev"],path:["FIRST → Worcester Polytechnic Institute","",""],text:["","",""],url:"https://www.instagram.com/p/DEWtDdLM5T5/"}
 ];
