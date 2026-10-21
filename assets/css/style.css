@@ -55,7 +55,8 @@ button,select,input{font:inherit;color:inherit}
 .hero h1,.hero p{text-shadow:0 1px 14px rgba(8,20,40,.35)}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:110px 48px 130px}
 .hero h1{font-size:clamp(30px,3vw,45px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
-.hero .btn{margin-top:36px;text-shadow:none}
+.hero .btn{margin-top:36px;text-shadow:none;background:rgba(255,255,255,.06);color:#fff;border:2px solid rgba(255,255,255,.85)} /* вариант 2 – прозрачная кнопка, выбор пользователя 21.10 */
+.hero .btn:hover{background:rgba(255,255,255,.16);border-color:#fff}
 .hero p{font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;margin-top:24px;max-width:900px;color:#fff}
 
 /* ---------- новый сезон ---------- */
