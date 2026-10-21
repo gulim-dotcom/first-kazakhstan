@@ -147,7 +147,7 @@ function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab)=>`<div class="st"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i])).join("");
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b>${fmt(g[0])}${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
-  countUp();
+  /* анимация «цифры растут с нуля» убрана 21.10.2026 – цифры статичные */
 }
 function countUp(){
   const box=$("#stats");if(!box)return;
@@ -184,7 +184,7 @@ function renderAlumni(){const box=$("#alums");if(!box)return;
 function renderValues(){const i=I[L];
   $("#valh").innerHTML=firstH(tt("valh"));
   $("#vals").innerHTML=V.map((v,k)=>{const c=CV[k];
-    return `<div class="vl"><div class="ic" style="--c:${c[1]}"><img src="assets/img/cv-${c[0]}.svg" alt="" width="64" height="48"><h4>${esc(v[i])}</h4></div><p>${esc(v[3+i])}</p></div>`}).join("");
+    return `<div class="vl"><div class="ic" style="--c:${c[1]}"><img src="assets/img/cv-${c[0]}.svg" alt="" width="64" height="48"></div><div><h4>${esc(v[i])}</h4><p>${esc(v[3+i])}</p></div></div>`}).join("");
 }
 /* цитата: первая фраза — синим, как на firstrobotics.kz */
 function renderQuote(){const q=tt("quote"),m=q.match(/^(.*?[.!?])\s+([\s\S]*)$/);
