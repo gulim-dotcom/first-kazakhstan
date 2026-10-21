@@ -425,9 +425,10 @@ Object.assign(T.ru,{regsoon:"регистрация скоро"});
 Object.assign(T.kk,{regsoon:"тіркелу жақында ашылады"});
 Object.assign(T.en,{regsoon:"registration opens soon"});
 
+/* 21.10.2026, 19:05 (просьба USTEM): подпись к приказу № 514 одинакова на трёх языках – издатель МОН РК (2011), перечень сейчас ведёт Минпросвещения РК.
 /* 21.10.2026, 16:40 (просьба USTEM): «4× чемпионы мира» ушло в заголовок hero, поэтому в статистике вместо него снова приказ № 514
  * (ссылка на официальный текст в «Әділет»), а предложение про приказ убрано из текста «Доказанная польза», чтобы не повторяться. */
-KS[0]=[514,"","№ ",["Приказ Минпросвещения РК: FIRST – в перечне республиканских олимпиад и конкурсов","Білім министрлігінің бұйрығы: FIRST жарыстары ресми олимпиадалар тізбесінде","Ministry of Education order: FIRST is on the national list of olympiads and contests"],
+KS[0]=[514,"","№ ",["Приказ МОН РК (2011): FIRST – в перечне республиканских олимпиад и конкурсов. Перечень сейчас ведёт Министерство просвещения РК.","ҚР БҒМ бұйрығы (2011): FIRST республикалық олимпиадалар мен конкурстар тізбесінде. Тізбені қазір ҚР Оқу-ағарту министрлігі жүргізеді.","Order of the Ministry of Education and Science (2011): FIRST is on the national list of olympiads and contests. The list is now maintained by the Ministry of Enlightenment."],
   ["https://adilet.zan.kz/rus/docs/V1100007355","https://adilet.zan.kz/kaz/docs/V1100007355","https://adilet.zan.kz/rus/docs/V1100007355"]];
 for(const l in T)if(typeof T[l].proofp==="string")T[l].proofp=T[l].proofp.replace(/\s*(FIRST жарыстары республикалық|Соревнования FIRST включены|FIRST competitions are included)[\s\S]*$/,"");
 
