@@ -132,7 +132,7 @@ if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e
  * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
 if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
   const d=F4A.date?parseDate(F4A.date):{start:null,end:null,tba:true,txt:["","",""]};
-  if(!d.end||d.end>=TODAY){const url=/^https:\/\/[^\s"'<>]+$/.test(String(F4A.url||""))?F4A.url:"";
+  if(!d.end||d.end>=TODAY){const url=formUrl(String(F4A.url||""));
     UPC.unshift({tab:"F4A",name:F4A.name,city:{key:"",n:null},region:null,allowed:null,stage:"big",codes:["F4A"],start:d.start,cn:null,cc:"",im:F4A.img||GEN_IMG,
       vis:[{d:d,v:null,cats:[{code:"F4A",label:"FIRST4ALL",url:url,closed:false,soon:!url}],st:"",chg:""}]})}}
 
