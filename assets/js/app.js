@@ -297,6 +297,22 @@ function fillFilters(){const i=I[L];
   $("#fs").placeholder=tt("fs");
 }
 
+/* --- путь сезона над расписанием (21.10.2026, пример): месяцы скримиджей, региональных и Qualifier считаются по таблице,
+ * чемпионат Центральной Азии – строка «Central Asia … Championship» вкладки Big Events, мировой финал – SMAP в data.js --- */
+function mrange(a,b,l){const n=MN[l],cap=x=>x.charAt(0).toUpperCase()+x.slice(1),m1=a.getMonth(),m2=b.getMonth(),y1=a.getFullYear(),y2=b.getFullYear();
+  if(y1===y2)return cap(m1===m2?n[m1]:n[m1]+"–"+n[m2])+" "+y1;
+  return cap(n[m1])+" "+y1+" – "+n[m2]+" "+y2}
+const evWord=(n,l)=>l==="kk"?"іс-шара":l==="en"?(n===1?"event":"events"):(n%10===1&&n%100!==11?"событие":n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?"события":"событий");
+function renderMap(){const box=$("#smap");if(!box)return;const i=I[L];
+  const rng=re=>{const ev=EVENTS.filter(e=>re.test(e.name));let a=null,b=null;
+    ev.forEach(e=>e.sessions.forEach(s=>{if(!s.d.start)return;if(!a||s.d.start<a)a=s.d.start;const z=s.d.end||s.d.start;if(!b||z>b)b=z}));
+    return{n:ev.length,txt:a?mrange(a,b,L):""}};
+  const ch=EVENTS.find(e=>/central asia/i.test(e.name)&&/championship/i.test(e.name));
+  const rows=[["sm1",rng(/scrimmage/i)],["sm2",rng(/regional/i)],["sm3",rng(/qualifier/i)],
+    ["sm4",{txt:ch?[ch.cn?ch.cn[i]:"",dTxt(ch.sessions[0].d,i)].filter(Boolean).join(", "):"",sub:tt("sm4s")}],
+    ["sm5",{txt:typeof SMAP!="undefined"?`${SMAP.city[i]}, ${SMAP.date}`:"",sub:tt("sm5s")}]];
+  box.innerHTML=rows.map(([k,r])=>`<div class="sm"><b>${esc(tt(k))}</b>${r.txt?`<span class="d">${esc(r.txt)}</span>`:""}${r.n?`<small>${r.n} ${esc(evWord(r.n,L))}</small>`:r.sub?`<small>${esc(r.sub)}</small>`:""}</div>`).join("");
+}
 /* --- вкладка «Сайт» таблицы (assets/data/site.js): сезон, тема, ссылки, названия тем программ --- */
 const okUrl=u=>/^https:\/\/[^\s"'<>]+$/.test(String(u||""));
 function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
@@ -322,7 +338,10 @@ function render(){
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
-  fillFilters();renderEvents();
+  fillFilters();renderEvents();renderMap();
+  /* «FIRST Қазақстанда» и подпись в подвале: английский оригинал девиза остаётся второй строкой, кроме английской версии */
+  const ab=$("#abh");if(ab)ab.innerHTML=esc(tt("abh")).replace("FIRST®",'<span class="fi">FIRST</span>®');
+  const og=$("#orig");if(og)og.hidden=(L==="en");
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
