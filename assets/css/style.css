@@ -550,21 +550,13 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
 .nf .sub{max-width:760px}
 .nf .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
 
-/* === Оформление без «шаблонных» признаков (21.10.2026): заголовки в дисплейном шрифте (--fh), ценности и цифры без карточек,
- * кнопки без стрелок, логотипы партнёров статичной сеткой, меньше скруглений. Правила ниже перекрывают более ранние. === */
-:root{--fh:"Unbounded","Inter",system-ui,sans-serif;--rc:6px}
-.hero h1{font-family:var(--fh);text-transform:none;font-weight:700;font-size:clamp(27px,2.55vw,38px);line-height:1.18;letter-spacing:0;max-width:980px}
-h2.t,h1.t,.proof h3{font-family:var(--fh);font-weight:700;letter-spacing:0;font-size:clamp(28px,2.8vw,40px);line-height:1.18}
-.mh{font-family:var(--fh);font-weight:700;letter-spacing:0;font-size:clamp(22px,2vw,28px)}
-.bk{font-family:var(--fh);font-weight:700;font-size:clamp(22px,2.2vw,32px)}
-.docs h3{font-family:var(--fh);font-weight:700;font-size:21px}
-.dh h2,.wh h3,.dv{font-family:var(--fh);font-weight:500;font-size:19px;letter-spacing:0}
-.st b,.wl .wi b{font-family:var(--fh);font-weight:600}
-.tag{font-family:var(--fh);font-weight:600;font-size:15px;padding:10px 14px}
+/* === Оформление без «шаблонных» признаков (21.10.2026): ценности и цифры без карточек, кнопки без стрелок,
+ * меньше скруглений, без эффектов. Шрифт заголовков – прежний Inter и бегущая строка партнёров – прежняя
+ * (дисплейный шрифт и статичную сетку логотипов убрали по просьбе USTEM 21.10.2026). Правила ниже перекрывают более ранние. === */
+:root{--rc:6px}
 .btn svg,.proof .btn:after,.pl .lnk svg,.nws .rd:after,.alig svg{display:none}
 .btn,.proof .btn{gap:0}
 .st{background:none;box-shadow:none;border-radius:0;padding:4px 0 4px 22px;min-height:0;border-left:3px solid #f0d3c3}
-.st b{font-size:clamp(34px,3vw,48px)}
 .stats{gap:30px 26px}
 .val{gap:34px 40px}
 .vl{background:none;box-shadow:none;border-radius:0;padding:0;grid-template-columns:60px 1fr;gap:18px;align-items:start}
@@ -572,27 +564,16 @@ h2.t,h1.t,.proof h3{font-family:var(--fh);font-weight:700;letter-spacing:0;font-
 .vl .ic img{width:38px;height:28px}
 .vl h4{font-size:18px;font-weight:700;color:var(--tx);line-height:1.25;margin:0 0 6px}
 .vl p{font-size:16px;line-height:1.55}
-.lgs{animation:none;width:auto;flex-wrap:wrap;justify-content:center;row-gap:10px}
-.lg[aria-hidden="true"]{display:none}
-.lg{width:200px;height:92px}
-.mq{margin-bottom:24px}
 .alc,.pc,.docs,.nws .card,.wc{border-radius:12px}
 .ec,.q{border-radius:10px}
 @media(max-width:900px){
-  .hero h1{font-size:clamp(20px,5.2vw,25px);line-height:1.22}
-  h2.t,h1.t,.proof h3,.mh{font-size:26px}
-  .mh{font-size:22px}
-  .bk{font-size:22px}
-  .dh h2,.wh h3,.dv{font-size:17px}
   .st{padding:2px 0 2px 16px}
-  .st b{font-size:28px;min-width:0}
+  .st b{min-width:0}
   .vl{grid-template-columns:52px 1fr;gap:14px;padding:0}
   .vl .ic{width:52px;height:52px;border-radius:9px;padding:0}
   .vl .ic img{width:32px;height:24px}
   .vl h4{font-size:16px}
   .vl p{font-size:15px}
-  .lg{width:150px;height:72px}
-  .lg img{max-height:56px;max-width:120px}
 }
 /* без эффектов: статичные цифры (см. app.js), карточки не «всплывают», вместо теней – тонкая рамка */
 a.alc{transition:none}
