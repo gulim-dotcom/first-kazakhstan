@@ -430,3 +430,17 @@ Object.assign(T.en,{regsoon:"registration opens soon"});
 KS[0]=[514,"","№ ",["Приказ Минпросвещения РК: FIRST – в перечне республиканских олимпиад и конкурсов","Білім министрлігінің бұйрығы: FIRST жарыстары ресми олимпиадалар тізбесінде","Ministry of Education order: FIRST is on the national list of olympiads and contests"],
   ["https://adilet.zan.kz/rus/docs/V1100007355","https://adilet.zan.kz/kaz/docs/V1100007355","https://adilet.zan.kz/rus/docs/V1100007355"]];
 for(const l in T)if(typeof T[l].proofp==="string")T[l].proofp=T[l].proofp.replace(/\s*(FIRST жарыстары республикалық|Соревнования FIRST включены|FIRST competitions are included)[\s\S]*$/,"");
+
+/* 21.10.2026, 17:00 (просьба USTEM): в блоке «Наши результаты» остаются только цифры Казахстана (4 шт.),
+ * «20 регионов» заменено на обучение педагогов (данные презентации USTEM «STEM-біліміндегі AI», стр. 16),
+ * а мировые цифры FIRST сжаты в одну строку под текстом вместо второго блока цифр. */
+KS[3]=[1000,"+","",["Педагогов и менторов ежегодно повышают квалификацию","Мұғалім мен тәлімгер жыл сайын біліктілігін арттырады","Teachers and mentors upgrade their skills every year"]];
+Object.assign(T.ru,{gline:"853 000+ школьников в 114 странах · 83% выпускников FIRST® выбирают STEM-специальности в университете"});
+Object.assign(T.kk,{gline:"114 елде 853 000+ оқушы · FIRST® түлектерінің 83%-ы университетте STEM мамандығын таңдайды"});
+Object.assign(T.en,{gline:"853,000+ students in 114 countries · 83% of FIRST® alumni major in STEM at university"});
+
+/* 21.10.2026, 17:10 (просьба USTEM): на телефоне блок программ был длиной в 10 экранов –
+ * показываем три программы, остальные открываются кнопкой. */
+Object.assign(T.ru,{allProg:"Показать все программы"});
+Object.assign(T.kk,{allProg:"Барлық бағдарламаларды көру"});
+Object.assign(T.en,{allProg:"Show all programs"});

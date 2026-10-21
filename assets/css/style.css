@@ -612,3 +612,28 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 @media(max-width:760px){.hero{background:#0c1e36 url(../img/team-kz-fgc.jpg) 50% 0/100% auto no-repeat;align-items:flex-start}
 .hero:before{background:linear-gradient(180deg,rgba(12,30,54,0) 0,rgba(12,30,54,0) calc(66.67vw - 70px),rgba(12,30,54,.6) calc(66.67vw - 22px),#0c1e36 calc(66.67vw + 1px))}
 .hero .in{padding:calc(66.67vw - 6px) 20px 44px}.hero p{margin-top:16px}.hero .btn{margin-top:28px}}
+/* «FIRST в мире» – одна строка текста вместо второго ряда цифр (21.10.2026, просьба USTEM: цифры не должны повторяться) */
+.wl{align-items:center}
+.wl .wtx{flex:1;margin:0;padding:0 0 0 24px;border-left:1px solid #e5e7eb;font-size:16px;line-height:1.5;color:var(--mu)}
+@media(max-width:900px){.wl{display:block;padding:18px 0}.wl .wlab{padding:0 0 8px}.wl .wtx{padding:0;border:0;font-size:15px}}
+/* Блок сезона FIRST CANOPY проще (21.10.2026, просьба USTEM: «простойлау, фон эффект көлеңке алып тастап»):
+ * без кремовой плашки, скруглений и теней – логотип и текст прямо на белом, тег «Жаңа маусым» обычной строкой сверху. */
+.sp{background:none;color:var(--tx);padding:0;border-radius:0;gap:28px 48px;align-items:center}
+.sp .tag{position:static;grid-column:1/-1;justify-self:start;margin:0}
+.bk{color:var(--tx)}
+.sx p{color:var(--mu);font-weight:400}
+.blinks a{color:var(--tx);text-decoration-color:#c2cad6}
+.blinks a:hover{text-decoration-color:var(--tx)}
+.sl{justify-content:flex-start}
+.season{padding:64px 0 8px}
+@media(max-width:900px){.sp{gap:22px 0;padding:0}.season{padding:56px 0 0}.sl{justify-content:flex-start}.sl img{max-width:260px}}
+/* Телефон: первые три программы, остальные – по кнопке (21.10.2026, просьба USTEM: раздел был длиной ~10 экранов).
+ * На десктопе ничего не меняется: кнопка скрыта, класс .cut ни на что не влияет. */
+.pmorew{display:none}
+@media(max-width:760px){
+  #progs.cut>.pc:nth-child(n+4){display:none}
+  .pmorew{display:block;margin-top:20px}
+  .pmore{display:inline-flex;align-items:center;justify-content:center;min-height:48px;width:100%;padding:0 20px;
+    border:1px solid var(--line);border-radius:var(--rc);background:#fff;color:var(--tx);font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+  .pmore:hover{border-color:#aab3c0}
+}

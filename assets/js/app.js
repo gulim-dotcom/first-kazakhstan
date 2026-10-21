@@ -147,7 +147,8 @@ function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[4] – ссылка на официальный документ (приказ № 514) */
-  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b>${fmt(g[0])}${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
+  /* мировые цифры FIRST – одна строка под текстом (21.10.2026), а не второй блок цифр */
+  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`;
   countUp(); /* цифры Казахстана снова растут с нуля (вернули по просьбе USTEM 21.10.2026); цифры FIRST в мире статичные */
 }
 function countUp(){
@@ -209,6 +210,9 @@ function renderPrograms(){const i=I[L];
         <p class="meta">${esc(meta)}</p>
         ${p.teaser?`<div class="pl"><a class="lnk tz" href="${esc(p.teaser)}" target="_blank" rel="noopener noreferrer">${esc(tt("tz"))}</a></div>`:""}
       </div></article>`}).join("");
+  /* телефон: показываем первые три программы, остальные – по кнопке (21.10.2026) */
+  const pg=$("#progs");pg.classList.add("cut");
+  const pm=$("#pmore");if(pm){pm.textContent=tt("allProg");pm.hidden=false}
   const rb=$("#rulesBtn");rb.href=rulesUrl();
   if(L!="kk"&&!RULES.ru)rb.querySelector("span").textContent=tt("docKk");
 }
@@ -348,6 +352,7 @@ document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()
 const refilter=()=>renderEvents();
 ["#fc","#ft","#fst"].forEach(s=>$(s).addEventListener("change",refilter));
 $("#fs").addEventListener("input",refilter);
+$("#pmore").addEventListener("click",function(){$("#progs").classList.remove("cut");this.hidden=true});
 $("#evs").addEventListener("click",e=>{const rg=e.target.closest(".rgl span");if(rg)rg.classList.toggle("x");if(e.target.closest(".more")){const eg=$("#evs .eg");if(eg)eg.scrollBy({top:Math.round(eg.clientHeight*.85),behavior:RM?"auto":"smooth"})}});
 document.querySelectorAll("[data-sc]").forEach(b=>b.addEventListener("click",()=>{const r=$(b.dataset.sc),f=r.firstElementChild;if(f)r.scrollBy({left:(+b.dataset.d)*(f.offsetWidth+22),behavior:"smooth"})}));
 /* карусель новостей: стрелка «назад» появляется после прокрутки вправо */
