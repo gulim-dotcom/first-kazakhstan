@@ -595,3 +595,16 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 /* ссылка на приказ № 514 внутри текста */
 .proof p a.law{color:var(--tx);text-decoration:underline;text-decoration-color:#4e80ee;text-underline-offset:3px}
 .proof p a.law:hover{color:#2d5fd6;text-decoration-thickness:2px}
+/* 16:40: число «№ 514» в статистике – ссылка на приказ в «Әділет»; тонкое подчёркивание, без других эффектов */
+.st b a.law{color:inherit;text-decoration:underline;text-decoration-color:#f0d3c3;text-decoration-thickness:2px;text-underline-offset:6px}
+.st b a.law:hover{text-decoration-color:#d9733f}
+/* hero с фотографией сборной (по просьбе USTEM 21.10.2026, 16:36): фото команды FIRST Global с флагом вместо общего фото FIRST,
+ * текст прижат к низу (лица остаются открытыми), затемнение снизу; заголовок – конкретный факт («4-кратный чемпион мира»).
+ * На низких экранах фото сдвинуто вверх, чтобы лица не уходили под текст. */
+.hero{background:#0c1e36 url(../img/team-kz-fgc.jpg) 50% 35%/cover no-repeat;align-items:flex-end}
+.hero:before{background:linear-gradient(180deg,rgba(10,26,50,.10) 0%,rgba(10,26,50,.22) 38%,rgba(10,26,50,.62) 68%,rgba(10,26,50,.84) 100%)}
+.hero .in{padding:120px 48px 64px 32px}
+.hero p{margin-top:26px;max-width:820px}
+.hero .btn{margin-top:40px}
+@media(min-width:761px) and (max-height:780px){.hero{background-position:50% 50%}}
+@media(max-width:760px){.hero{background-position:50% 30%}.hero:before{background:linear-gradient(180deg,rgba(10,26,50,.08) 0%,rgba(10,26,50,.25) 35%,rgba(10,26,50,.68) 62%,rgba(10,26,50,.86) 100%)}.hero .in{padding:250px 20px 56px}.hero p{margin-top:18px}.hero .btn{margin-top:32px}}
