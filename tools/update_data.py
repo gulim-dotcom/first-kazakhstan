@@ -661,7 +661,8 @@ def update_site(site_rows, news_rows, n_events, stamp):
 def main():
     os.makedirs(DATA, exist_ok=True)
     stamp = now_iso()
-    status = read_js('status.js', 'FK_STATUS') or {}
+    old_status = read_js('status.js', 'FK_STATUS') or {}
+    status = dict(old_status)
     prev = read_js('sheet.js', 'FK_SHEET') or {}
     rc = 0
 
@@ -710,8 +711,21 @@ def main():
         print('   Telegram недоступен:', e)
         status['telegram'] = 'error: %s' % str(e)[:150]
 
-    write_js('status.js', 'FK_STATUS', status, 'Время последней успешной проверки данных (tools/update_data.py).')
+    # Сайт показывает только дату проверки (по времени Алматы), поэтому status.js переписывается, когда меняется эта дата
+    # или результат проверки. Иначе каждый часовой запуск делал бы коммит только ради новой минуты в отметке.
+    if status != old_status and (almaty_day(status.get('checked')) != almaty_day(old_status.get('checked'))
+                                 or {k: v for k, v in status.items() if k != 'checked'} != {k: v for k, v in old_status.items() if k != 'checked'}):
+        write_js('status.js', 'FK_STATUS', status, 'Время последней успешной проверки данных (tools/update_data.py).')
     return rc
+
+
+def almaty_day(iso):
+    """'2026-10-21T20:15:00Z' -> '2026-10-22' (дата в Алматы, UTC+5); пусто или не разобралось -> ''."""
+    try:
+        t = datetime.datetime.strptime(iso or '', '%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        return ''
+    return (t + datetime.timedelta(hours=5)).date().isoformat()
 
 
 if __name__ == '__main__':

@@ -14,9 +14,9 @@ try{const p=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Almaty",year:"numeri
 const SHEET=window.FK_SHEET||{tabs:{}},FORMS=SHEET.forms||{};
 const ctext=c=>String(Array.isArray(c)?c[0]:(c==null?"":c)).replace(/\s+/g," ").trim();
 const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
-/* кнопка регистрации — только ссылка на Google Форму; любой другой адрес из таблицы кнопкой не становится */
-const FORM_HOSTS=["forms.gle","docs.google.com"];
-const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&FORM_HOSTS.includes(x.hostname)?u:""}catch(e){return""}};
+/* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
+ * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
+const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
