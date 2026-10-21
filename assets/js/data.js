@@ -413,3 +413,11 @@ V.length=0;V.push(
  ["Инновация","Инновация","Innovation","Мы используем креативность и настойчивость для решения проблем.","Біз мәселелерді шешу үшін шығармашылық пен табандылықты қолданамыз.","We use creativity and persistence to solve problems."]);
 /* иконка и фирменный цвет плитки для каждой ценности (красный, фиолетовый, зелёный FIRST) */
 const CV=[["teamwork","#ed1c24"],["inclusion","#5c2490"],["impact","#00a05a"],["fun","#00a05a"],["discovery","#5c2490"],["innovation","#ed1c24"]];
+
+/* ---- 21.10.2026 ---- */
+/* FIRST4ALL – карточка в «Событиях» без ссылки, пока нет формы регистрации.
+ * Когда появится форма: впишите её адрес в url (https://...), дату – в date (например "15.03.2027" или "15.03.2027 – 16.03.2027"). */
+const F4A={name:"FIRST4ALL",url:"",date:"",img:"assets/img/x-nw-first-table.jpg"};
+Object.assign(T.ru,{regsoon:"регистрация скоро"});
+Object.assign(T.kk,{regsoon:"тіркелу жақында ашылады"});
+Object.assign(T.en,{regsoon:"registration opens soon"});
