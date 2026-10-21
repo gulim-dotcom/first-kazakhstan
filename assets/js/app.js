@@ -162,7 +162,8 @@ function renderWinners(){const i=I[L];
 }
 function renderValues(){const i=I[L];
   $("#valh").innerHTML=firstH(tt("valh"));
-  $("#vals").innerHTML=V.map((v,k)=>`<div class="vl"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]||""}</svg></span><div><h4>${esc(v[i])}</h4><p>${esc(v[3+i])}</p></div></div>`).join("");
+  $("#vals").innerHTML=V.map((v,k)=>{const c=CV[k];
+    return `<div class="vl"><div class="ic" style="--c:${c[1]}"><img src="assets/img/cv-${c[0]}.svg" alt="" width="64" height="48"><h4>${esc(v[i])}</h4></div><p>${esc(v[3+i])}</p></div>`}).join("");
 }
 /* цитата: первая фраза — синим, как на firstrobotics.kz */
 function renderQuote(){const q=tt("quote"),m=q.match(/^(.*?[.!?])\s+([\s\S]*)$/);
