@@ -607,4 +607,8 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 .hero p{margin-top:26px;max-width:820px}
 .hero .btn{margin-top:40px}
 @media(min-width:761px) and (max-height:780px){.hero{background-position:50% 50%}}
-@media(max-width:760px){.hero{background-position:50% 30%}.hero:before{background:linear-gradient(180deg,rgba(10,26,50,.08) 0%,rgba(10,26,50,.25) 35%,rgba(10,26,50,.68) 62%,rgba(10,26,50,.86) 100%)}.hero .in{padding:250px 20px 56px}.hero p{margin-top:18px}.hero .btn{margin-top:32px}}
+/* телефон (16:50, USTEM: «справа голову обрезало»): фото целиком по ширине экрана (никого не режет), под ним текст на тёмно-синем;
+ * высота фото = ширина экрана × 2/3, граница фото и фона сведена градиентом */
+@media(max-width:760px){.hero{background:#0c1e36 url(../img/team-kz-fgc.jpg) 50% 0/100% auto no-repeat;align-items:flex-start}
+.hero:before{background:linear-gradient(180deg,rgba(12,30,54,0) 0,rgba(12,30,54,0) calc(66.67vw - 70px),rgba(12,30,54,.6) calc(66.67vw - 22px),#0c1e36 calc(66.67vw + 1px))}
+.hero .in{padding:calc(66.67vw - 6px) 20px 44px}.hero p{margin-top:16px}.hero .btn{margin-top:28px}}
