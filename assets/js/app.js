@@ -146,9 +146,8 @@ const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
-  $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[4] – ссылка на официальный документ (приказ № 514) */
+  $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
   /* мировые цифры FIRST – одна строка под текстом (21.10.2026), а не второй блок цифр */
-  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`;
   countUp(); /* цифры Казахстана снова растут с нуля (вернули по просьбе USTEM 21.10.2026); цифры FIRST в мире статичные */
 }
 function countUp(){

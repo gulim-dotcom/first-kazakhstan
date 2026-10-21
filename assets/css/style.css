@@ -616,17 +616,12 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 .wl{align-items:center}
 .wl .wtx{flex:1;margin:0;padding:0 0 0 24px;border-left:1px solid #e5e7eb;font-size:16px;line-height:1.5;color:var(--mu)}
 @media(max-width:900px){.wl{display:block;padding:18px 0}.wl .wlab{padding:0 0 8px}.wl .wtx{padding:0;border:0;font-size:15px}}
-/* Блок сезона FIRST CANOPY проще (21.10.2026, просьба USTEM: «простойлау, фон эффект көлеңке алып тастап»):
- * без кремовой плашки, скруглений и теней – логотип и текст прямо на белом, тег «Жаңа маусым» обычной строкой сверху. */
-.sp{background:none;color:var(--tx);padding:0;border-radius:0;gap:28px 48px;align-items:center}
-.sp .tag{position:static;grid-column:1/-1;justify-self:start;margin:0}
-.bk{color:var(--tx)}
-.sx p{color:var(--mu);font-weight:400}
-.blinks a{color:var(--tx);text-decoration-color:#c2cad6}
-.blinks a:hover{text-decoration-color:var(--tx)}
-.sl{justify-content:flex-start}
-.season{padding:64px 0 8px}
-@media(max-width:900px){.sp{gap:22px 0;padding:0}.season{padding:56px 0 0}.sl{justify-content:flex-start}.sl img{max-width:260px}}
+/* 21.10.2026, 17:25 (просьба USTEM): панель сезона снова кремовая, как раньше, но без «наклейки» –
+ * тег «Жаңа маусым» сидит в углу панели, без тени и свисания; на телефоне логотип по центру. */
+.sp{background:var(--cream);color:var(--brown2);padding:64px 60px 56px 72px;border-radius:12px;gap:32px 48px;align-items:center}
+.sp .tag{position:absolute;top:0;left:0;margin:0;border-radius:12px 0 8px 0;padding:10px 16px;font-size:16px;line-height:1.25}
+.season{padding:40px 0 8px}
+@media(max-width:900px){.sp{gap:24px 0;padding:72px 24px 36px}.season{padding:40px 0 0}.sl{justify-content:center}.sl img{max-width:260px}}
 /* Телефон: первые три программы, остальные – по кнопке (21.10.2026, просьба USTEM: раздел был длиной ~10 экранов).
  * На десктопе ничего не меняется: кнопка скрыта, класс .cut ни на что не влияет. */
 .pmorew{display:none}
