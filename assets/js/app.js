@@ -147,7 +147,7 @@ function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab)=>`<div class="st"><b>${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}</b><span class="lb">${esc(lab)}</span></div>`;
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],k[1],k[3][i])).join("");
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span>`+GS.map(g=>`<div class="wi"><b>${fmt(g[0])}${g[1]}</b><span>${esc(g[2][i])}</span></div>`).join("");
-  /* анимация «цифры растут с нуля» убрана 21.10.2026 – цифры статичные */
+  countUp(); /* цифры Казахстана снова растут с нуля (вернули по просьбе USTEM 21.10.2026); цифры FIRST в мире статичные */
 }
 function countUp(){
   const box=$("#stats");if(!box)return;

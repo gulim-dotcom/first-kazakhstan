@@ -583,3 +583,8 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 .ec{border:1px solid var(--line);border-left:4px solid var(--cream)}
 .ab figcaption{border:1px solid var(--line)}
 .wc{box-shadow:none}
+/* hero (по просьбе USTEM 21.10.2026, 15:16): текст на 10% мельче, межстрочный интервал чуть больше, блок чуть левее */
+.hero h1{font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
+.hero .in{padding:100px 48px 160px 32px} /* 15:19: текст ещё чуть выше (было 110/130) */
+@media(max-width:1060px){.hero .in{padding-right:32px}}
+@media(max-width:760px){.hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}.hero .in{padding:160px 20px 100px}}
