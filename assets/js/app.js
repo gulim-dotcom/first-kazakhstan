@@ -321,6 +321,21 @@ function render(){
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
 
+/* --- «FIRST» всегда курсивом (фирменное написание FIRST®) ---
+ * После каждой отрисовки слово FIRST в любом тексте оборачивается в <span class="fir">. Слитные названия (FIRST4ALL) и уже
+ * оформленные вручную фрагменты (.fi) не трогаются; <option> тоже – внутри него разметка не отображается. В flex/grid-контейнерах
+ * (например, ссылки в подвале с gap) обёртка получает display:contents, чтобы между FIRST и соседним словом не появлялся зазор. */
+const FW=/\b(FIRST)\b/;
+function italicFirst(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>FW.test(n.nodeValue)&&n.parentElement&&!n.parentElement.closest("script,style,option,.fi,.fir")?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});
+  const list=[];for(let n;(n=w.nextNode());)list.push(n);
+  list.forEach(t=>{const f=document.createDocumentFragment(),fx=/flex|grid/.test(getComputedStyle(t.parentElement).display);
+    t.nodeValue.split(FW).forEach((s,i)=>{if(!s)return;if(i%2){const e=document.createElement("span");e.className="fir";e.textContent=s;if(fx)e.style.display="contents";f.appendChild(e)}else f.appendChild(document.createTextNode(s))});
+    t.parentNode.replaceChild(f,t)});
+}
+const fwo=new MutationObserver(()=>{italicFirst(document.body);fwo.takeRecords()});
+fwo.observe(document.body,{childList:true,subtree:true,characterData:true});
+italicFirst(document.body);
 /* --- старт --- */
 let start="kk";
 try{localStorage.removeItem("fk-lang")}catch(e){}
