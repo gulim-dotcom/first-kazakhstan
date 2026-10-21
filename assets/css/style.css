@@ -54,14 +54,15 @@ button,select,input{font:inherit;color:inherit}
 .hero h1,.hero p{text-shadow:0 1px 14px rgba(8,20,40,.35)}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
-.hero .btn{margin-top:36px;text-shadow:none}
+.hero .btn{margin-top:36px;text-shadow:none;background:#fff;color:var(--tx)}
+.hero .btn:hover{background:#eef1f6}
 .hero p{font-size:clamp(20px,2vw,30px);line-height:1.25;font-weight:400;margin-top:24px;max-width:900px;color:#fff}
 
 /* ---------- новый сезон ---------- */
 .season{padding:56px 0 0}
 .sp{position:relative;display:grid;grid-template-columns:40% 1fr;gap:40px;align-items:center;padding:64px 60px 64px 80px;border-radius:20px;background:var(--cream);color:var(--brown2);overflow:visible}
 .sp>*{position:relative}
-.tag{position:absolute;top:-24px;left:20px;z-index:2;display:inline-block;padding:11px 15px;border-radius:var(--rc);background:var(--red);color:#fff;font-weight:700;font-size:18px;line-height:1.2}
+.tag{position:absolute;top:-24px;left:20px;z-index:2;display:inline-block;padding:11px 15px;border-radius:var(--rc);background:#043a49;color:#fff;font-weight:700;font-size:18px;line-height:1.2}
 .sl{display:flex;justify-content:flex-start}
 .sl img{width:100%;max-width:340px;height:auto}
 .bk{display:block;font-size:clamp(26px,2.6vw,38px);font-weight:800;color:var(--brown);line-height:1.15;margin-bottom:10px;white-space:nowrap}
