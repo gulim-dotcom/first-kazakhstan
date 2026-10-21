@@ -48,7 +48,7 @@ function parseDate(raw){
 }
 const dTxt=(d,i)=>d.tba?tt("tba"):d.txt[i];
 /* категории и ссылки регистрации; закрытые формы и формы чужого события скрываются (их отмечает tools/update_data.py) */
-const CAT_ORDER=["FLL-D","FLL-E","FLL-C","FE","FTC","FRC","SMC","SEM"];
+const CAT_ORDER=["FLL-D","FLL-E","FLL-C","FE","FTC","FRC","F4A","SMC","SEM"];
 function parseCat(text,url){
   const t=lo(text);let code="OTHER",label=text;
   if(/семинар|seminar/.test(t)){code="SEM";label=""}
@@ -128,6 +128,13 @@ const UPC=EVENTS.filter(e=>e.vis.length).sort((a,b)=>(a.start?+a.start:9e15)-(b.
 if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e.name))){const d=parseDate(SMC.start+" – "+SMC.end);
   if(d.end&&d.end>=TODAY){const n=CITY.online||["Онлайн","Онлайн","Online"];UPC.unshift({tab:"SMC",name:SMC.name,city:{key:"online",n:n},region:null,allowed:null,stage:"smc",codes:["SMC"],start:d.start,cn:n,cc:n[1],im:SMC.img||"",
     vis:[{d:d,v:null,cats:[{code:"SMC",label:"SMC",url:SMC.url,closed:false}],st:"",chg:""}]})}}
+/* FIRST4ALL – карточка из data.js (F4A). Пока ссылки нет, вместо кнопки – пометка «регистрация скоро».
+ * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
+if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
+  const d=F4A.date?parseDate(F4A.date):{start:null,end:null,tba:true,txt:["","",""]};
+  if(!d.end||d.end>=TODAY){const url=formUrl(String(F4A.url||""));
+    UPC.unshift({tab:"F4A",name:F4A.name,city:{key:"",n:null},region:null,allowed:null,stage:"big",codes:["F4A"],start:d.start,cn:null,cc:"",im:F4A.img||GEN_IMG,
+      vis:[{d:d,v:null,cats:[{code:"F4A",label:"FIRST4ALL",url:url,closed:false,soon:!url}],st:"",chg:""}]})}}
 
 /* --- блоки --- */
 const firstH=(word)=>L=="ru"?`${esc(word)} <span class="fi">FIRST</span>®`:`<span class="fi">FIRST</span>® ${esc(word)}`;
@@ -235,7 +242,7 @@ function evCard(e,t){const i=I[L],online=e.city.key==="online";
       <p class="dt">${ICO.cal}<span>${esc(dTxt(s.d,i))}</span></p>
       ${s.chg?`<p class="chg"><b>${esc(tt("chg"))}:</b> ${esc(s.chg)}</p>`:""}
       ${s.st?`<p class="chg"><b>${esc(tt("stt"))}:</b> ${esc(s.st)}</p>`:""}
-      ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed?' class="closed"':""}>${esc(catLabel(c))}${c.closed?` · ${esc(tt("regclosed"))}`:""}</span>`).join("")}</div>`:""}
+      ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed?' class="closed"':""}>${esc(catLabel(c))}${c.closed?` · ${esc(tt("regclosed"))}`:c.soon?` · ${esc(tt("regsoon"))}`:""}</span>`).join("")}</div>`:""}
       ${btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:""}
     </div>`};
   return `<div class="cell"><div class="ec"><div>
