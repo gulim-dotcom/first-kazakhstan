@@ -162,7 +162,10 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .alig{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:15px;color:var(--blue)}
 .alig svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .alig:hover{text-decoration:underline;text-underline-offset:3px}
-.alig:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+a.alc{color:inherit;transition:box-shadow .18s,transform .18s}
+a.alc:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+a.alc:hover .alig{text-decoration:underline;text-underline-offset:3px}
+a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 @media(min-width:901px){#alumni .cw.few .ar{display:none}}
 @media(max-width:900px){.alc{flex-basis:calc((100% - 24px)/2)}}
 @media(max-width:760px){.alc{flex-basis:86%}.alsub{margin-bottom:24px}.alb{padding:18px 20px 20px}}

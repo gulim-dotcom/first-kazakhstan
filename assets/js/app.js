@@ -177,7 +177,8 @@ function renderAlumni(){const box=$("#alums");if(!box)return;
   box.innerHTML=A.map(a=>{const n=pick(a.name),pa=pick(a.path),tx=pick(a.text),u=ig.test(a.url||"")?a.url:"";
     const ph=a.photo?`<div class="alim" style="background-image:${cu(a.photo)};background-position:${esc(a.pos||"center 25%")}"></div>`
       :`<div class="alim ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/></svg></div>`;
-    return `<article class="alc">${ph}<div class="alb">${n?`<b>${esc(n)}</b>`:""}${pa?`<span class="alpa">${esc(pa)}</span>`:""}${tx||!(n||pa)?`<p>${esc(tx||tt("alsoon"))}</p>`:""}${u?`<a class="alig" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(tt("alig"))} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>`:""}</div></article>`}).join("");
+    const body=`${ph}<div class="alb">${n?`<b>${esc(n)}</b>`:""}${pa?`<span class="alpa">${esc(pa)}</span>`:""}${tx||!(n||pa)?`<p>${esc(tx||tt("alsoon"))}</p>`:""}${u?`<span class="alig">${esc(tt("alig"))} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>`:""}</div>`;
+    return u?`<a class="alc" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<article class="alc">${body}</article>`}).join("");
 }
 function renderValues(){const i=I[L];
   $("#valh").innerHTML=firstH(tt("valh"));
