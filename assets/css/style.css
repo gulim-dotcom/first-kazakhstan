@@ -54,6 +54,7 @@ button,select,input{font:inherit;color:inherit}
 .hero h1,.hero p{text-shadow:0 1px 14px rgba(8,20,40,.35)}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:90px 48px 110px}
 .hero h1{font-size:clamp(30px,3.2vw,48px);line-height:1.05;font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em}
+.hero .btn{margin-top:36px;text-shadow:none}
 .hero p{font-size:clamp(20px,2vw,30px);line-height:1.25;font-weight:400;margin-top:24px;max-width:900px;color:#fff}
 
 /* ---------- новый сезон ---------- */
@@ -95,7 +96,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .ab .ax p{color:var(--mu);font-size:18px;line-height:1.6;margin:22px 0 24px}
 
 /* результаты */
-.dv{display:flex;align-items:center;margin:0 0 90px;color:var(--mu);font-size:18px;font-weight:500}
+.dv{display:flex;align-items:center;margin:0 0 90px;color:var(--mu);font-size:24px;font-weight:600;line-height:1.2}
 .dv:before{content:"";width:95px;height:2px;background:#4e80ee;margin-right:17px;flex:none}
 .dv:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:17px}
 .two.res{align-items:center;gap:64px}
@@ -127,9 +128,9 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 /* достижения */
 #winners{padding-top:30px}
 .wh{display:flex;align-items:center;gap:10px;margin-bottom:56px;color:var(--mu)}
-.wh svg{width:52px;height:52px;flex:none;fill:none;stroke:#808080;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
-.wh h3{font-size:24px;font-weight:500;color:var(--mu);line-height:1.2}
-.wh:after{content:"";flex:1;height:2px;background:var(--blue2);margin-left:10px}
+.wh svg{width:52px;height:52px;flex:none;fill:none;stroke:var(--mu);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.wh h3{font-size:24px;font-weight:600;color:var(--mu);line-height:1.2}
+.wh:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:10px}
 .cw{position:relative;min-width:0}
 .rail{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 0 16px;margin:0 52px}
 .rail::-webkit-scrollbar{display:none}
@@ -269,7 +270,7 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .mg{display:grid;grid-template-columns:520px 1fr;gap:48px;align-items:start}
 .mg>*{min-width:0}
 .mp{position:relative;border-radius:16px;padding:26px 26px 26px 24px;border-left:4px solid var(--blue);background:#f1f6fd}
-.mh{font-size:clamp(26px,2.3vw,32px);font-weight:700;text-transform:uppercase;color:var(--tx);line-height:1.1;letter-spacing:-.01em}
+.mh{font-size:clamp(26px,2.3vw,32px);font-weight:800;color:var(--tx);line-height:1.1;letter-spacing:-.01em}
 .msub{color:var(--blue);font-weight:600;margin:12px 0 18px;font-size:17px}
 .q{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(20,40,80,.05)}
 .q .qi{height:140px;border-radius:8px;background:url(../img/x-q.jpg) 40% 30%/cover;margin-bottom:18px}
@@ -303,9 +304,9 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 /* партнёры */
 .pt{padding:70px 0 40px}
 .dh{display:flex;align-items:center;margin:0 0 34px}
-.dh:before{content:"";width:80px;height:2px;background:#a6cdfb;margin-right:18px;flex:none}
-.dh h2{font-size:24px;color:#696969;font-weight:600;line-height:1.2;white-space:nowrap}
-.dh:after{content:"";flex:1;height:2px;background:#a6cdfb;margin-left:18px}
+.dh:before{content:"";width:95px;height:2px;background:#4e80ee;margin-right:17px;flex:none}
+.dh h2{font-size:24px;color:var(--mu);font-weight:600;line-height:1.2;white-space:nowrap}
+.dh:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:17px}
 .mq{overflow:hidden;margin-bottom:34px}
 .lgs{display:flex;width:max-content;animation:mq 42s linear infinite}
 .mq:hover .lgs{animation-play-state:paused}
@@ -428,7 +429,7 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .mh{font-size:26px}
   .sub{font-size:17px;margin-top:16px}
   .btn{min-height:48px;padding:0 24px;font-size:17px}
-  .dv{margin:0 0 40px;font-size:17px}
+  .dv{margin:0 0 40px;font-size:20px}
   .dv:before{width:48px;margin-right:16px}
   .dv:after{margin-left:16px}
   .proof p{font-size:16px;margin:16px 0 22px}
@@ -505,9 +506,9 @@ footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top
   .nws .rd{font-size:14px}
   .pt{padding:50px 0 60px}
   .dh{margin-bottom:16px}
-  .dh:before{width:40px;margin-right:16px}
+  .dh:before{width:48px;margin-right:16px}
   .dh:after{margin-left:16px}
-  .dh h2{font-size:19px}
+  .dh h2{font-size:20px}
   .mq{margin-bottom:36px}
   .lg{width:124px;height:66px}
   .lg img{max-height:50px;max-width:106px}

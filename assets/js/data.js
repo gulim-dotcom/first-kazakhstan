@@ -112,9 +112,9 @@ Object.assign(T.en,{pAge:"Age",pTeam:"Team",pCat:"Category",pStages:"Stages",pRu
  dTitle:"FIRST® CANOPY™ 2026–2027 season rules",dIntro:"The official regulations: categories, age and team size, stages and registration.",dBtn:"Open the rules",dSched:"Official schedule (sheet)",
  bTheme:"The season theme is biodiversity. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",bVideo:"Explore the season theme",bRules:"Season rules",
  cap1:"Team Kazakhstan",s_big:"Major event",fe:"Future Edition 3–8",rg:"Robot Game"});
-Object.assign(T.ru,{dLetter:"Письмо РНПЦ «Дарын»",dReg:"Регистрация на события"});
-Object.assign(T.kk,{dLetter:"«Дарын» РҒПО хаты",dReg:"Іс-шараларға тіркелу"});
-Object.assign(T.en,{dLetter:"Letter from the Daryn National Center",dReg:"Event registration"});
+Object.assign(T.ru,{dLetter:"Письмо РНПЦ «Дарын» и материалы сезона",dReg:"Регистрация на события"});
+Object.assign(T.kk,{dLetter:"«Дарын» РҒПО хаты және маусым материалдары",dReg:"Іс-шараларға тіркелу"});
+Object.assign(T.en,{dLetter:"Daryn National Center letter and season materials",dReg:"Event registration"});
 
 /* Строки для расписания из официальной таблицы и автоновостей */
 Object.assign(T.ru,{evsrc:"По официальному расписанию сезона",evupd:"обновлено",vtba:"Площадка уточняется",ctba:"Место уточняется",chg:"Изменения",stt:"Статус",none:"По выбранным фильтрам событий нет",fe0:"Future Edition",tgsrc:"Telegram"});
@@ -416,8 +416,10 @@ const CV=[["teamwork","#ed1c24"],["inclusion","#5c2490"],["impact","#00a05a"],["
 
 /* ---- 21.10.2026 ---- */
 /* FIRST4ALL – карточка в «Событиях» без ссылки, пока нет формы регистрации.
- * Когда появится форма: впишите её адрес в url (Google Форма: https://forms.gle/… или docs.google.com/forms/…), дату – в date (например "15.03.2027" или "15.03.2027 – 16.03.2027"). */
-const F4A={name:"FIRST4ALL",url:"",date:"",img:"assets/img/x-nw-first-table.jpg"};
+ * Когда появится форма: впишите её адрес в url (Google Форма: https://forms.gle/… или docs.google.com/forms/…).
+ * По регламенту FIRST4ALL 2026–2027 (п. 3.1–3.2) это инициатива без площадки: команды-наставники подают список новых команд
+ * до 25.12.2026 23:59 по времени Астаны, поэтому строки «место проведения» в карточке нет, а дата – срок подачи списка (dateTxt: ru, kk, en). */
+const F4A={name:"FIRST4ALL",url:"",date:"25.12.2026",dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026 дейін","Team lists due by 25.12.2026"],noLoc:true,img:"assets/img/x-nw-first-table.jpg"};
 Object.assign(T.ru,{regsoon:"регистрация скоро"});
 Object.assign(T.kk,{regsoon:"тіркелу жақында ашылады"});
 Object.assign(T.en,{regsoon:"registration opens soon"});

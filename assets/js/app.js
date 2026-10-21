@@ -132,8 +132,9 @@ if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e
  * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
 if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
   const d=F4A.date?parseDate(F4A.date):{start:null,end:null,tba:true,txt:["","",""]};
+  if(Array.isArray(F4A.dateTxt)&&F4A.dateTxt.length===3&&!d.tba)d.txt=F4A.dateTxt;
   if(!d.end||d.end>=TODAY){const url=formUrl(String(F4A.url||""));
-    UPC.unshift({tab:"F4A",name:F4A.name,city:{key:"",n:null},region:null,allowed:null,stage:"big",codes:["F4A"],start:d.start,cn:null,cc:"",im:F4A.img||GEN_IMG,
+    UPC.unshift({tab:"F4A",name:F4A.name,city:{key:"",n:null},region:null,allowed:null,stage:"big",codes:["F4A"],start:d.start,cn:null,cc:"",noLoc:!!F4A.noLoc,im:F4A.img||GEN_IMG,
       vis:[{d:d,v:null,cats:[{code:"F4A",label:"FIRST4ALL",url:url,closed:false,soon:!url}],st:"",chg:""}]})}}
 
 /* --- блоки --- */
@@ -260,7 +261,7 @@ function evCard(e,t){const i=I[L],online=e.city.key==="online";
     </div>`};
   return `<div class="cell"><div class="ec"><div>
     <h4>${esc(e.name)}</h4>
-    <p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>
+    ${e.noLoc?"":`<p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>`}
     ${e.allowed?`<p class="rgl">${ICO.pin}<span title="${esc(e.allowed[i])}"><b>${esc(tt("regs"))}:</b> ${esc(e.allowed[i])}</span></p>`:""}
     ${vis.map(ses).join("")}
   </div><div class="eim" style="background-image:${cu(e.im)}"></div></div></div>`;
