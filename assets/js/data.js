@@ -450,4 +450,4 @@ Object.assign(T.en,{allProg:"Show all programs"});
  * 500+ команд из 30+ стран на чемпионате Центральной Азии; мировые цифры FIRST – строкой текста под блоком. */
 KS.length=1; /* остаётся только № 514 со ссылкой на «Әділет» */
 KS.push([20000,"+","",["участников FIRST® в Центральной Азии – Казахстан, Узбекистан, Кыргызстан","Орталық Азиядағы FIRST® қатысушысы – Қазақстан, Өзбекстан, Қырғызстан","FIRST® participants across Central Asia – Kazakhstan, Uzbekistan, Kyrgyzstan"]]);
-KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане (2026)","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында (2026)","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan (2026)"]]);
+KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]]);
