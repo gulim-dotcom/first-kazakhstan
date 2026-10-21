@@ -647,10 +647,10 @@ h2.t.ul:after{background:#c3cad4}
 .abcap{position:absolute;left:3%;bottom:0;margin:0;font-size:14px;line-height:1.4;color:var(--lt)}
 /* «Қалай бастау керек»: үш қадам, сандар – нәтижелердегі сандар стилінде */
 #start{padding:90px 0 24px}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
 .step{border-top:2px solid var(--line);padding-top:22px;min-width:0}
 .step b{display:block;font-size:44px;line-height:1;font-weight:700;color:#d9733f;font-variant-numeric:tabular-nums}
-.step h3{font-size:20px;font-weight:700;line-height:1.3;margin:18px 0 10px;color:var(--tx)}
+.step h3{font-size:20px;font-weight:700;line-height:1.3;margin:18px 0 4px;color:var(--tx)}
 .step p{font-size:16px;line-height:1.55;color:var(--mu)}
 .step a{display:inline-flex;align-items:center;min-height:44px;margin-top:6px;font-weight:600;font-size:16px;color:var(--tx);text-decoration:underline;text-underline-offset:4px;text-decoration-color:#d9a183}
 .step a:hover{text-decoration-color:var(--tx)}
