@@ -592,3 +592,6 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 @media(max-width:1060px){.hero .in{padding-right:32px}}
 @media(min-width:761px) and (max-height:700px){.hero .in{padding-top:80px;padding-bottom:100px}} /* невысокие экраны ноутбуков: тег «Жаңа маусым» остаётся на первом экране */
 @media(max-width:760px){.hero{min-height:0}.hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}.hero .in{padding:160px 20px 100px}.hero p{margin-top:18px}.hero .btn{margin-top:36px}}
+/* ссылка на приказ № 514 внутри текста */
+.proof p a.law{color:var(--tx);text-decoration:underline;text-decoration-color:#4e80ee;text-underline-offset:3px}
+.proof p a.law:hover{color:#2d5fd6;text-decoration-thickness:2px}
