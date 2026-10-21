@@ -451,3 +451,8 @@ Object.assign(T.en,{allProg:"Show all programs"});
 KS.length=1; /* остаётся только № 514 со ссылкой на «Әділет» */
 KS.push([20000,"+","",["участников FIRST® в Центральной Азии – Казахстан, Узбекистан, Кыргызстан","Орталық Азиядағы FIRST® қатысушысы – Қазақстан, Өзбекстан, Қырғызстан","FIRST® participants across Central Asia – Kazakhstan, Uzbekistan, Kyrgyzstan"]]);
 KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]]);
+
+/* 21.10.2026, 18:25 (просьба USTEM): блок «Қалай бастау керек» – три коротких шага перед программами, прежние размеры шрифтов */
+Object.assign(T.ru,{sth:"С чего начать",st1:"Выберите программу",st1a:"Программы",st2:"Соберите команду и зарегистрируйтесь",st2a:"Расписание событий",st3:"Изучите правила сезона",st3a:"Правила и документы"});
+Object.assign(T.kk,{sth:"Қалай бастау керек",st1:"Бағдарламаны таңдаңыз",st1a:"Бағдарламалар",st2:"Команда құрып, тіркеліңіз",st2a:"Іс-шаралар кестесі",st3:"Маусым ережесімен танысыңыз",st3a:"Ереже мен құжаттар"});
+Object.assign(T.en,{sth:"How to start",st1:"Choose a program",st1a:"Programs",st2:"Form a team and register",st2a:"Event schedule",st3:"Read the season rules",st3a:"Rules and documents"});
