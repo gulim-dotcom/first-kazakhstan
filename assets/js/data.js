@@ -1,463 +1,789 @@
-/* FIRST® Kazakhstan — контент сайта (тексты, программы, события, новости, партнёры).
- * Источник: актуальный архив FIRST_Kazakhstan_site.zip; события сезона 2025–2026 — в past-events.js (из таблицы PUBLIC FIRST AGE Season Events 2025-2026.xlsx). */
+/* FIRST® Kazakhstan — контент сайта: тексты интерфейса, программы, статистика, достижения, главные новости, партнёры
+ * и справочники для расписания. Отрисовка — assets/js/app.js (главная) и assets/js/news-page.js (новости).
+ * События — assets/data/sheet.js (снимок официальной таблицы, обновляется автоматически), посты Telegram — assets/data/news.js,
+ * вкладка «Сайт» таблицы — assets/data/site.js (её значения имеют приоритет над этим файлом).
+ * Порядок языков во всех массивах: [ru, kk, en]. Слово FIRST курсивом делает app.js, знак ® – только в заголовках и названиях. */
 let L="ru";
-const IMG={"pd0": "assets/img/img-pd0.webp", "pd1": "assets/img/x-pd1.webp", "pd2": "assets/img/x-pd2.webp", "pd3": "assets/img/x-pd3.webp", "lg0": "assets/img/x-lg0.webp", "lg1": "assets/img/x-lg1.webp", "lg2": "assets/img/x-lg2.webp", "lg3": "assets/img/x-lg3.webp", "lg4": "assets/img/x-lg4.webp","q": "assets/img/x-q.webp", "forbes": "assets/img/x-forbes.webp"};
-const LG={"apple": "assets/img/lg-apple.png", "mmm": "assets/img/x-mmm.png", "boeing": "assets/img/x-boeing.png", "cat": "assets/img/x-cat.png", "fedex": "assets/img/x-fedex.png", "nasa": "assets/img/x-nasa.png", "rtx": "assets/img/x-rtx.png", "lego": "assets/img/x-lego.webp", "jnj": "assets/img/x-jnj.png", "google": "assets/img/x-google.png","daryn": "assets/img/x-daryn.webp", "epam": "assets/img/x-epam.png", "star": "assets/img/x-star.webp", "adaryny": "assets/img/x-adaryny.webp", "digital": "assets/img/x-digital.png", "edu": "assets/img/x-edu.png"};
-const T={
-ru:{docDear:"Уважаемое сообщество FIRST!",docTitle:"Правила сезона и расписание соревнований",docIntro:"Официальные документы и контакты для подготовки к сезону FIRST® CANOPY™ 2026–2027.",docKk:"Правила на казахском",docRu:"Правила на русском",docSchedule:"Расписание соревнований",docDaryn:"Материалы Дарын",docNotice:"В течение сезона даты и места проведения отдельных соревнований могут меняться. Перед подготовкой к соревнованиям проверьте актуальные версии документов и расписания. Все изменения и важные обновления публикуются в Telegram-канале.",docTelegram:"Обновления в Telegram",docUstem:"Участие и организация: USTEM Foundation",docShop:"Игровые поля и оборудование: STEMShop",docWish:"Пусть новый сезон будет полон возможностей, опыта и побед!",less:"Свернуть",programSource:"Информация FIRST",evp:"Прошедшие события",tz:"Смотреть тизер",abt:"О программе",oth:"Другие программы",tba:"Дата уточняется",evl:"Событие",n6:"Регламенты",rg2:"Официальные правила и расписание соревнований сезона",rg3:"Здесь собраны официальные документы для участников и команд, расписание соревнований и важные обновления сезона.",rg4:"Официальные документы",c1t:"Правила на казахском языке",c1d:"Официальные правила сезона FIRST® CANOPY™ 2026–2027.",c2t:"Правила на русском языке",c2d:"Официальные правила сезона на русском языке.",c3t:"Расписание соревнований сезона",c3d:"Актуальные даты и места проведения соревнований.",c4t:"Официальное письмо РНПЦ «Дарын»",c4d:"Официальный материал, предоставленный вместе с правилами соревнований.",open:"Открыть",open2:"Открыть таблицу",nh:"Обратите внимание:",nt:"в течение сезона даты и места проведения отдельных соревнований могут меняться. Перед поездкой проверьте последние версии документов и расписания. Важные обновления публикуются в Telegram-канале FIRST Kazakhstan.",tg:"Обновления в Telegram",tgd:"Важные объявления по сезону",usd:"Вопросы участия и организации: +7 708 021 0101",shd:"Игровые поля и оборудование: +7 747 587 4747",fkd:"Начать подготовку к новому сезону",regb:"Записаться",rt:"РЕГИСТРАЦИЯ",r1:"Готовы присоединиться",r2:"к FIRST® Kazakhstan?",r3:"Оставьте заявку — мы расскажем о программах, формате и сроках и ответим на все вопросы в течение 24 часов.",r4:"Мы с радостью ответим на любые вопросы об участии, возрасте и условиях. Свяжитесь с нами удобным способом или оставьте заявку.",cp:"Телефон",fh:"Заявка на участие",fsub:"Заполните форму, и мы свяжемся с вами для уточнения деталей.",l1:"Имя и фамилия *",l2:"Номер телефона *",l3:"Электронная почта *",l4:"Программа",p1:"Ваше имя",sel:"Не выбрано",g1:"События",g2:"Программы",sbm:"Отправить заявку",okh:"Заявка отправлена!",okp:"Спасибо! Мы свяжемся с вами в течение 24 часов.",cls:"Закрыть",n0:"Главная",n7:"Результаты",n8:"Ценности",n1:"О нас",n2:"Программы",n3:"События",n4:"СМИ о нас",n5:"Партнёры",h1:"Казахстан – 4-кратный чемпион мира FIRST Global Challenge",h1p:"Программы робототехники FIRST для школьников Казахстана. Открыта регистрация на сезон 2026–2027",cta:"Выбрать программу",new:"Новый сезон",age:"«FIRST® CANOPY™ 2026–2027» – новый сезон на тему биоразнообразия: участники с помощью STEM создают процветающую планету. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",about:"FIRST® вдохновляет молодых людей становиться лидерами и новаторами в области науки и технологий через увлекательные программы под руководством наставников. В Казахстане эти программы проводит общественный фонд «USTEM Foundation».",res:"Наши результаты",proof:"Доказанная польза",proofp:"FIRST® помогает молодым людям развивать критическое мышление, навыки сотрудничества и лидерства. Участие в программах FIRST® улучшает успеваемость в школе и повышает интерес к STEM-направлениям. Выпускники часто продолжают образование и строят успешную карьеру в этих областях.",valp:"Наши основные ценности воплощают принципы благородного профессионализма и сотрудничества.",win:"Наши достижения",valh:"Ценности",prog:"Программы",progp:"В зависимости от возраста и интересов ученики могут участвовать в разных программах.",more:"Подробнее",join:"Участвовать",quote:"Робототехника – перспективная сфера. Я поддерживаю вас. Сейчас в мире, в том числе и в Казахстане, большой акцент делается на искусственный интеллект. Это очень важное направление.",reg:"Региональные партнёры",intl:"Международные партнёры",read:"Читать далее",yrs:"лет",fa:"Все города",fc:"Все категории",fs:"Поиск событий",st:["Выпускников FIRST® работают или учатся в сфере STEM","В 2 раза выше вероятность повышения интереса к STEM","Доступных стипендиальных средств","Участников улучшают навыки командной работы."]},
-kk:{docDear:"Құрметті FIRST қауымдастығы!",docTitle:"Маусым ережелері мен жарыс кестесі",docIntro:"2026–2027 FIRST® CANOPY™ маусымына дайындалуға арналған ресми құжаттар мен байланыстар.",docKk:"Қазақ тіліндегі ереже",docRu:"Орыс тіліндегі ереже",docSchedule:"Жарыс кестесі",docDaryn:"Дарын материалдары",docNotice:"Маусым барысында жекелеген жарыстардың күндері мен өткізу орындары өзгеруі мүмкін. Жарысқа дайындалмас бұрын құжаттар мен кестенің өзекті нұсқасын тексеріңіз. Барлық өзгерістер мен маңызды жаңартулар Telegram арнасында жарияланады.",docTelegram:"Telegram жаңартулары",docUstem:"Қатысу және ұйымдастыру: USTEM Foundation",docShop:"Ойын алаңдары мен жабдықтар: STEMShop",docWish:"Жаңа маусым жаңа мүмкіндіктерге, тәжірибеге және жеңістерге толы болсын!",less:"Жинау",programSource:"FIRST ресми ақпараты",evp:"Өтіп қойғандар",tz:"Тизерді көру",abt:"Бағдарлама туралы",oth:"Басқа бағдарламалар",tba:"Күні нақтылануда",evl:"Іс-шара",n6:"Регламенттер",rg2:"Маусымның ресми ережелері мен жарыс кестесі",rg3:"Қатысушылар мен командалар үшін қажетті ресми құжаттарды, жарыс кестесін және маусым барысында маңызды жаңартуларды бір жерден табуға болады.",rg4:"Ресми құжаттар",c1t:"Ереженің қазақ тіліндегі нұсқасы",c1d:"2026–2027 FIRST® CANOPY™ маусымының ресми ережесі.",c2t:"Ереженің орыс тіліндегі нұсқасы",c2d:"Маусымның ресми ережесі орыс тілінде.",c3t:"Маусым жарыстарының кестесі",c3d:"Жарыстардың күндері мен өткізу орындарының өзекті кестесі.",c4t:"«Дарын» РҒПО ресми хаты",c4d:"Жарыс ережесімен бірге ұсынылған ресми материал.",open:"Ашу",open2:"Кестені ашу",nh:"Назар аударыңыз:",nt:"маусым барысында жекелеген жарыстардың күндері мен өткізу орындары өзгеруі мүмкін. Жолға шығар алдында құжаттар мен жарыс кестесінің ең соңғы нұсқасын тексеріңіз. Маңызды жаңартулар FIRST Kazakhstan Telegram арнасында жарияланады.",tg:"Telegram жаңартулары",tgd:"Маусым бойынша маңызды хабарландырулар",usd:"Қатысу және ұйымдастыру мәселелері: +7 708 021 0101",shd:"Ойын алаңдары мен жабдықтары: +7 747 587 4747",fkd:"Жаңа маусымға дайындалуды бастау",regb:"Тіркелу",rt:"ТІРКЕЛУ",r1:"FIRST® Kazakhstan-ға",r2:"қосылуға дайынсыз ба?",r3:"Өтініш жіберіңіз — біз бағдарламалар, формат және мерзімдер туралы түсіндіріп, барлық сұрақтарыңызға 24 сағат ішінде жауап береміз.",r4:"Қатысу, жас шектеуі және шарттар туралы кез келген сұраққа жауап беруге қуаныштымыз. Бізбен ыңғайлы тәсілмен хабарласыңыз немесе өтініш жіберіңіз.",cp:"Телефон",fh:"Қатысуға өтініш",fsub:"Нысанды толтырыңыз, біз сізбен мәліметтерді нақтылау үшін хабарласамыз.",l1:"Аты-жөні *",l2:"Телефон нөмірі *",l3:"Электрондық пошта *",l4:"Бағдарлама",p1:"Сіздің атыңыз",sel:"Таңдалмаған",g1:"Іс-шаралар",g2:"Бағдарламалар",sbm:"Өтініш беру",okh:"Өтініш жіберілді!",okp:"Рахмет! Біз сізбен 24 сағат ішінде хабарласамыз.",cls:"Жабу",n0:"Басты бет",n7:"Нәтижелер",n8:"Құндылықтар",n1:"Біз туралы",n2:"Бағдарламалар",n3:"Іс-шаралар",n4:"БАҚ біз туралы",n5:"Серіктестер",h1:"Қазақстан – FIRST Global Challenge-дің 4\u00a0дүркін әлем чемпионы",h1p:"Қазақстан мектеп оқушыларына арналған FIRST робототехника бағдарламалары. 2026–2027 маусымына тіркелу ашық",cta:"Бағдарламаны таңдау",new:"Жаңа маусым",age:"«FIRST® CANOPY™ 2026–2027» – биоалуантүрлілік тақырыбындағы жаңа маусым: қатысушылар STEM арқылы өркендеген планета құрады. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",about:"FIRST® жастарды тәлімгерлер жетекшілігіндегі қызықты бағдарламалар арқылы ғылым мен технология саласында көшбасшы әрі жаңашыл болуға шабыттандырады. Қазақстанда бұл бағдарламаларды «USTEM Foundation» қоғамдық қоры жүргізеді.",res:"Біздің нәтижелеріміз",proof:"Дәлелденген пайда",proofp:"FIRST® жастарға сыни ойлауды, ынтымақтастықты және көшбасшылық дағдыларды дамытуға көмектеседі. FIRST® бағдарламаларына қатысу мектептегі үлгерімді жақсартып, STEM бағыттарына қызығушылықты арттырады. Түлектер көбіне білімін жалғастырып, осы салаларда табысты мансап құрады.",valp:"Біздің негізгі құндылықтарымыз қайырымды кәсібилік пен ынтымақтастық қағидаттарына негізделген.",win:"Біздің жетістіктер",valh:"Құндылықтар",prog:"бағдарламалары",progp:"Жасы мен қызығушылығына қарай оқушылар әртүрлі бағдарламаларға қатыса алады.",more:"Толығырақ",join:"Қатысу",quote:"Робототехника – болашағы зор сала. Мен сіздерді қолдаймын. Қазір әлемде, соның ішінде Қазақстанда да жасанды интеллектке үлкен көңіл бөлінуде. Бұл өте маңызды бағыт.",reg:"Өңірлік серіктестер",intl:"Халықаралық серіктестер",read:"Әрі қарай оқу",yrs:"жас",fa:"Барлық қала",fc:"Барлық санат",fs:"Іс-шара іздеу",st:["FIRST® түлектері STEM саласында жұмыс істейді немесе оқиды","STEM-ге деген қызығушылық 2 есе жоғары","Қолжетімді шәкіртақы қаражаты","Қатысушылар топта жұмыс істеу дағдыларын жақсартады"]},
-en:{docDear:"Dear FIRST community!",docTitle:"Season rules and competition schedule",docIntro:"Official documents and contacts to help you prepare for the 2026–2027 FIRST® CANOPY™ season.",docKk:"Rules in Kazakh",docRu:"Rules in Russian",docSchedule:"Competition schedule",docDaryn:"Daryn resources",docNotice:"Dates and venues of individual competitions may change during the season. Check the latest documents and schedule before preparing for an event. All changes and important updates are published in the Telegram channel.",docTelegram:"Telegram updates",docUstem:"Participation and organization: USTEM Foundation",docShop:"Game fields and equipment: STEMShop",docWish:"May the new season bring opportunities, experience and victories!",less:"Show less",programSource:"Official FIRST information",evp:"Past events",tz:"Watch teaser",abt:"About the program",oth:"Other programs",tba:"Date TBA",evl:"Event",n6:"Regulations",rg2:"Official season rules and competition schedule",rg3:"Find the official documents for participants and teams, the competition schedule and key season updates in one place.",rg4:"Official documents",c1t:"Rules in Kazakh",c1d:"Official rules of the 2026–2027 FIRST® CANOPY™ season.",c2t:"Rules in Russian",c2d:"Official season rules in Russian.",c3t:"Season competition schedule",c3d:"Up-to-date dates and venues of the competitions.",c4t:"Official letter from Daryn",c4d:"Official material provided together with the competition rules.",open:"Open",open2:"Open schedule",nh:"Please note:",nt:"dates and venues of individual competitions may change during the season. Before you travel, check the latest versions of the documents and the schedule. Important updates are posted on the FIRST Kazakhstan Telegram channel.",tg:"Telegram updates",tgd:"Key announcements for the season",usd:"Participation and organization: +7 708 021 0101",shd:"Game fields and equipment: +7 747 587 4747",fkd:"Start preparing for the new season",regb:"Register",rt:"REGISTRATION",r1:"Ready to join",r2:"FIRST® Kazakhstan?",r3:"Send a request — we'll explain the programs, format and dates, and answer all your questions within 24 hours.",r4:"We're happy to answer any questions about participation, age and conditions. Contact us in a way that suits you or leave a request.",cp:"Phone",fh:"Participation request",fsub:"Fill in the form and we'll get in touch to confirm the details.",l1:"Full name *",l2:"Phone number *",l3:"Email *",l4:"Program",p1:"Your name",sel:"Not selected",g1:"Events",g2:"Programs",sbm:"Submit request",okh:"Request sent!",okp:"Thank you! We'll contact you within 24 hours.",cls:"Close",n0:"Home",n7:"Results",n8:"Values",n1:"About us",n2:"Programs",n3:"Events",n4:"In the media",n5:"Partners",h1:"Kazakhstan – 4-time FIRST Global Challenge world champion",h1p:"FIRST robotics programs for school students across Kazakhstan. Registration for the 2026–2027 season is open",cta:"Choose a program",new:"New season",age:"“FIRST® CANOPY™ 2026–2027” is the new biodiversity-themed season: participants use STEM to engineer a thriving planet. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",about:"FIRST® inspires young people to become leaders and innovators in science and technology through engaging, mentor-led programs. In Kazakhstan, these programs are run by USTEM Foundation, a public foundation.",res:"Our results",proof:"Proven impact",proofp:"FIRST® helps young people build critical thinking, collaboration and leadership skills. Taking part in FIRST® programs improves school performance and boosts interest in STEM. Alumni often continue their education and build successful careers in these fields.",valp:"Our core values reflect the principles of Gracious Professionalism® and collaboration.",win:"Our achievements",valh:"Values",prog:"Programs",progp:"Depending on their age and interests, students can join different programs.",more:"Learn more",join:"Register",quote:"Robotics is a promising field. I support you. Around the world, including in Kazakhstan, there is now a strong focus on artificial intelligence. This is a very important area.",reg:"Regional partners",intl:"International partners",read:"Read more",yrs:"years",fa:"All cities",fc:"All categories",fs:"Search events",st:["of FIRST® alumni work or study in STEM","2x more likely to grow their interest in STEM","in available scholarship funds","of participants improve their teamwork skills"]}};
 const I={ru:0,kk:1,en:2};
-const IC=[`<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,`<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>`,`<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,`<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,`<circle cx="12" cy="12" r="9.5"/><path d="M8 14.2s1.4 2.2 4 2.2 4-2.2 4-2.2"/><path d="M9 9.5h.01M15 9.5h.01"/>`,`<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>`];
-const V=[["Открытие","Ашылым","Discovery","Мы осваиваем новые навыки и идеи, превращая любопытство в знания.","Біз жаңа дағдылар мен идеяларды меңгеріп, қызығушылықты білімге айналдырамыз.","We explore new skills and ideas, turning curiosity into knowledge."],["Инновации","Инновация","Innovation","Мы решаем задачи смело и творчески, опираясь на идеи и упорство.","Мәселелерді батыл әрі шығармашылықпен, идеялар мен табандылық арқылы шешеміз.","We tackle problems boldly and creatively, with ideas and persistence."],["Влияние","Ықпал","Impact","Мы применяем полученные знания, чтобы делать окружающий мир лучше.","Алған білімімізді қоршаған әлемді жақсарту үшін қолданамыз.","We use what we learn to make the world around us better."],["Командная работа","Командалық жұмыс","Teamwork","Вместе мы достигаем большего: наши силы растут, когда мы действуем сообща.","Бірге біз көп нәрсеге жетеміз: ортақ әрекет күшімізді арттырады.","Together we achieve more — our strength grows when we act as one."],["Веселье","Қуаныш","Fun","Мы получаем удовольствие от работы и радуемся каждому достижению!","Жұмыстан ләззат алып, әр жетістікке бірге қуанамыз!","We enjoy our work and celebrate every achievement!"],["Инклюзивность","Инклюзивтілік","Inclusion","Мы уважаем друг друга и принимаем различия: в команде есть место каждому.","Бір-бірімізді құрметтеп, айырмашылықтарды қабылдаймыз: командада әркімге орын бар.","We respect each other and embrace our differences — there is a place for everyone."]];
-const EI={"Astana": "assets/img/ei-astana.webp", "Qonaev": "assets/img/x-qonaev.webp", "Almaty": "assets/img/x-almaty.webp", "Aktobe": "assets/img/x-aktobe.webp", "Jetisu": "assets/img/x-jetisu.webp", "Oskemen": "assets/img/x-oskemen.webp", "Qyzylorda": "assets/img/x-qyzylorda.webp", "Burabay": "assets/img/x-burabay.webp"};
-const W=[["4-е место из 185 стран", "185 елден 4-орын", "4th of 185 countries", "2026", "Республика Корея", "Корея Республикасы", "Republic of Korea", "11 побед из 11 в отборочном раунде, выход в плей-офф", "Іріктеу кезеңіндегі 11 матчтың бәрінде жеңіс, плей-офф", "Won all 11 qualification matches, reached the playoffs"],["1-е место, четырёхкратный чемпион","1-орын, төрт дүркін чемпион","1st place, four-time champion","2025","Панама","Панама","Panama","Grand Challenge Award · Albert Einstein Award (золотая медаль)","Grand Challenge Award · Albert Einstein Award (алтын медаль)","Grand Challenge Award · Albert Einstein Award (gold medal)"],["1-е место, трёхкратный чемпион","1-орын, үш дүркін чемпион","1st place, three-time champion","2024","Греция","Грекия","Greece","Grand Challenge Award (золотая медаль)","Grand Challenge Award (алтын медаль)","Grand Challenge Award (gold medal)"],["1-е место из 191 страны","191 елден 1-орын","1st of 191 countries","2023","Сингапур","Сингапур","Singapore"],["1-е место из 180 стран","180 елден 1-орын","1st of 180 countries","2022","Швейцария","Швейцария","Switzerland"],["3-е место из 190 стран","190 елден 3-орын","3rd of 190 countries","2019","ОАЭ","БАӘ","UAE"],["8-е место из 163 стран","163 елден 8-орын","8th of 163 countries","2017","США","АҚШ","USA"]];
-const WI={"2026": "assets/img/nwi-nw-fgc-2026-team.jpg", "2025": "assets/img/wi-2025.jpg", "2024": "assets/img/x-2024.webp", "2023": "assets/img/x-2023.webp", "2022": "assets/img/x-2022.webp", "2019": "assets/img/x-2019.webp", "2017": "assets/img/x-2017.webp"};
-/* Новости — только главные результаты (вручную). Посты Telegram-канала с хэштегом #сайт добавляются автоматически (assets/data/news.js). */
-const N=[{"src": "zhaikpress.kz", "date": "2026-10-12", "url": "https://zhaikpress.kz/ru/news/kazaxstan-voshyol-v-chetvyorku-silnejshix-na-first-global-challenge-2026/", "img": "assets/img/nwi-nw-fgc-2026-team.jpg", "pos": "50% 45%", "t": ["FIRST Global Challenge 2026, Инчхон: Казахстан в четвёрке сильнейших", "FIRST Global Challenge 2026, Инчхон: Қазақстан үздік төрттікте", "FIRST Global Challenge 2026, Incheon: Kazakhstan in the top four"], "p": ["Сборная Казахстана выиграла все 11 матчей отборочного раунда, вышла в плей-офф и заняла 4-е место среди команд из 185 стран.", "Қазақстан құрамасы іріктеу кезеңіндегі 11 матчтың бәрінде жеңіп, плей-оффқа шықты және 185 елдің командалары арасында 4-орын алды.", "Team Kazakhstan won all 11 qualification matches, reached the playoffs and finished 4th among teams from 185 countries."]}, {"src": "Kazinform", "date": "2026-08-19", "url": "https://qazinform.com/news/kazakhstan-wins-23-awards-first-lego-league-asia-open-championship-in-beijing-9edca2", "img": "assets/img/x-nw-fll-asia-open-2026.jpg", "pos": "50% 45%", "t": ["FIRST LEGO League Asia Open 2026, Пекин: команды Казахстана завоевали 23 награды", "FIRST LEGO League Asia Open 2026, Бейжің: Қазақстан командалары 23 марапат алды", "FIRST LEGO League Asia Open 2026, Beijing: Kazakhstan's teams win 23 awards"], "p": ["13–16 августа в Пекине соревновались 375 команд из 25 стран и регионов. Команды Казахстана получили 3 серебряные, 5 бронзовых и 15 специальных наград.", "13–16 тамызда Бейжіңде 25 ел мен өңірден 375 команда бақ сынады. Қазақстан командалары 3 күміс, 5 қола және 15 арнайы марапат алды.", "On 13–16 August, 375 teams from 25 countries and regions competed in Beijing. Kazakhstan's teams won 3 silver, 5 bronze and 15 special awards."]}, {"src": "Kazinform", "date": "2026-05-13", "url": "https://inform.kz/ru/kazahstanskie-shkolniki-stali-prizerami-chempionata-po-robototehnike-v-gretsii-904311b9", "img": "assets/img/x-nw-first-table.webp", "pos": "50% 50%", "t": ["Команда Qazygurt стала призёром международного чемпионата в Греции", "Qazygurt командасы Грекиядағы халықаралық чемпионатта жүлдегер атанды", "Team Qazygurt wins an award at an international championship in Greece"], "p": ["Команда Qazygurt из Туркестанской области заняла 2-е место в номинации Champions Award на Open International Championship 2026 в Коринфе. Путёвку она получила по итогам Alem Tech Fest.", "Түркістан облысының Qazygurt командасы Коринфте өткен Open International Championship 2026-да Champions Award номинациясында екінші орын алды. Жолдаманы Alem Tech Fest қорытындысы бойынша алды.", "Team Qazygurt from Turkistan Region took second place in the Champions Award category at the Open International Championship 2026 in Corinth. The team qualified through Alem Tech Fest."]}, {"src": "Kazinform", "date": "2026-05-04", "url": "https://www.inform.kz/ru/sbornaya-kazahstana-zavoevala-12-nagrad-na-chempionate-mira-po-robototehnike-v-h-abe020c1", "img": "assets/img/ph3.webp", "pos": "50% 50%", "t": ["FIRST Championship 2026, Хьюстон: команды Казахстана завоевали 12 наград", "FIRST Championship 2026, Хьюстон: Қазақстан командалары 12 марапат алды", "FIRST Championship 2026, Houston: Kazakhstan teams win 12 awards"], "p": ["В чемпионате мира в Хьюстоне участвовали 17 команд — рекордная делегация из 225 школьников. Результаты стали возможны при поддержке Министерства просвещения РК, USTEM Foundation и РНПЦ «Дарын».", "Хьюстондағы әлем чемпионатына 17 команда — 225 оқушыдан тұратын рекордтық делегация барды. Бұл нәтижеге ҚР Оқу-ағарту министрлігінің, USTEM Foundation-ның және «Дарын» РҒПО-ның қолдауымен қол жеткізілді.", "A record delegation of 17 teams and 225 students took part in the world championship in Houston. The results were made possible with support from the Ministry of Education of Kazakhstan, USTEM Foundation and the Daryn National Center."]}, {"src": "The Astana Times", "date": "2026-02-12", "url": "https://astanatimes.com/2026/02/alem-tech-fest-brings-central-asias-young-innovators-to-astana/", "img": "assets/img/x-nw-alem-tech-fest.jpg", "pos": "50% 35%", "t": ["Alem Tech Fest 2026: 5 000 школьников из 7 стран в Астане", "Alem Tech Fest 2026: Астанада 7 елден 5 000 оқушы", "Alem Tech Fest 2026: 5,000 school students from 7 countries in Astana"], "p": ["11–13 февраля на площадке EXPO прошёл крупнейший в Центральной Азии фестиваль робототехники и STEM. 50 лучших команд получили путёвки на международные турниры FIRST, в том числе на чемпионат мира в Хьюстоне.", "11–13 ақпанда EXPO алаңында Орталық Азиядағы ең ірі робототехника және STEM фестивалі өтті. 50 үздік команда FIRST халықаралық турнирлеріне, соның ішінде Хьюстондағы әлем чемпионатына жолдама алды.", "On 11–13 February, Central Asia's largest robotics and STEM festival took place at EXPO. The top 50 teams qualified for international FIRST competitions, including the world championship in Houston."]}, {"src": "gov.kz", "date": "2025-11-02", "url": "https://www.gov.kz/memleket/entities/edu/press/news/details/1097414?lang=ru", "img": "assets/img/x-nw-hero.webp", "pos": "50% 30%", "t": ["Четвёртая победа. Казахстан — снова чемпион мира", "Төртінші жеңіс. Қазақстан — тағы да әлем чемпионы", "A fourth victory: Kazakhstan is world champion again"], "p": ["В Панама-Сити сборная Казахстана победила на FIRST Global Challenge 2025 и получила золотые награды Grand Challenge Award и Albert Einstein Award.", "Панама-Ситиде Қазақстан құрамасы FIRST Global Challenge 2025-те жеңіп, Grand Challenge Award және Albert Einstein Award алтын марапаттарын иеленді.", "In Panama City, Team Kazakhstan won the FIRST Global Challenge 2025, taking gold with the Grand Challenge Award and the Albert Einstein Award."]}];
-Object.assign(LG,{"astana":"assets/img/lg-astana.webp","ms":"assets/img/x-ms.png","kerneu":"assets/img/x-kerneu.webp"});
-const RP=[["edu"],["digital"],["daryn"],["astana"],["ms"],["epam"],["star"],["adaryny"],["kerneu"]],IP=["mmm","apple","boeing","cat","fedex","google","lego","nasa","rtx","jnj"].map(k=>[k]); // по странице FIRST Supporters (firstinspires.org/about/our-supporters), 2026
-const IM2={"hero": "assets/img/im2-hero.webp", "logo": "assets/img/x-logo.webp", "canopy": "assets/img/x-canopy.webp"};
-const EVI={"Ташкент-Өзбекстан": "assets/img/evi-kd2d15.webp", "Декан": "assets/img/x-kfd6d2.jpg", "Жыланды": "assets/img/x-ke987d.webp", "Батыс": "assets/img/x-kfcf5b.webp", "Оңтүстік": "assets/img/x-k0be78.webp", "Қызылжар": "assets/img/x-ke00fd.webp", "Бішкек": "assets/img/x-k07b6b.webp", "Маңғыстау": "assets/img/x-kfcf5b.webp", "Сарыарқа": "assets/img/x-ka5740.webp", "Көкшетау": "assets/img/x-k84c3e.webp", "Қостанай": "assets/img/x-kb3f4e.webp", "Түркістан": "assets/img/x-ked8c9.webp", "Абай": "assets/img/x-k0319c.webp", "Шымкент": "assets/img/x-k0be78.webp", "Атырау": "assets/img/x-k19ca6.webp", "ұлытау": "assets/img/x-k5acbb.webp", "Жайық": "assets/img/x-kf6800.webp", "Ертіс": "assets/img/x-kd675f.webp", "Тараз": "assets/img/x-kb4f41.webp", "Ош": "assets/img/x-k99dfe.jpg"};const EVM={"Osh FIRST Regional 2025": "Ош", "Taraz FIRST Regional 2025": "Тараз", "Ertis FIRST Regional 2025": "Ертіс", "Jaiyq FIRST Regional 2025": "Жайық", "Ulytau FIRST Regional 2025": "ұлытау", "Atyrau FIRST Regional 2025": "Атырау", "Shymkent FIRST Regional 2025": "Шымкент", "Abay FIRST Regional 2025": "Абай", "Turkistan FIRST Regional 2025": "Түркістан", "Qostanay FIRST Regional 2025": "Қостанай", "Kokshetau FIRST Regional 2025": "Көкшетау", "Saryarqa FIRST Regional 2025": "Сарыарқа", "Mangystau FIRST Regional 2025": "Маңғыстау", "Bishkek FIRST Regional 2025": "Бішкек", "Qyzylzhar FIRST Regional 2025": "Қызылжар", "Ontustik FIRST Qualifier 2026": "Оңтүстік", "Batys FIRST Qualifier 2026": "Батыс", "Zhylandy International FIRST Off-Season": "Жыланды", "Tashkent FIRST Regional 2025": "Ташкент-Өзбекстан", "Dean's List Interview": "Декан", "Uzbekistan FIRST Championship": "Ташкент-Өзбекстан", "Kyrgyzstan FIRST Championship": "Бішкек"};
-const CITY={"Астана+":["Астана + Онлайн","Астана + Онлайн","Astana + Online"],"Алматы+":["Алматы + Онлайн","Алматы + Онлайн","Almaty + Online"],"Аягөз":["Аягоз","Аягөз","Ayagoz"],"Лепсі":["Лепсы","Лепсі","Lepsi"],"Ош":["Ош","Ош","Osh"],"Бурабай":["Бурабай","Бурабай","Burabay"],"Қызылорда":["Кызылорда","Қызылорда","Kyzylorda"],"Тараз":["Тараз","Тараз","Taraz"],"Павлодар":["Павлодар","Павлодар","Pavlodar"],"Орал":["Уральск","Орал","Oral"],"Астана":["Астана","Астана","Astana"],"Қонаев":["Конаев","Қонаев","Qonaev"],"Алматы":["Алматы","Алматы","Almaty"],"Ақтөбе":["Актобе","Ақтөбе","Aktobe"],"Талдықорған":["Талдыкорган","Талдықорған","Taldykorgan"],"Өскемен":["Усть-Каменогорск","Өскемен","Oskemen"],"Жезқазған":["Жезказган","Жезқазған","Zhezkazgan"],"Атырау":["Атырау","Атырау","Atyrau"],"Шымкент":["Шымкент","Шымкент","Shymkent"],"Семей":["Семей","Семей","Semey"],"Түркістан":["Туркестан","Түркістан","Turkistan"],"Қостанай":["Костанай","Қостанай","Kostanay"],"Көкшетау":["Кокшетау","Көкшетау","Kokshetau"],"Қарағанды":["Караганда","Қарағанды","Karaganda"],"Ақтау":["Актау","Ақтау","Aktau"],"Бішкек":["Бишкек","Бішкек","Bishkek"],"Петропавл":["Петропавловск","Петропавл","Petropavl"],"Ташкент":["Ташкент","Ташкент","Tashkent"],"Жыланды":["Жыланды","Жыланды","Zhylandy"],"online":["Онлайн","Онлайн","Online"]};
-const EIK={"Астана":"Astana","Қонаев":"Qonaev","Алматы":"Almaty","Ақтөбе":"Aktobe","Талдықорған":"Jetisu","Өскемен":"Oskemen","Қызылорда":"Qyzylorda","Бурабай":"Burabay"};
-const ALLC=[["Астана", "Астана", "Astana"], ["Алматы", "Алматы", "Almaty"], ["Шымкент", "Шымкент", "Shymkent"], ["Актау", "Ақтау", "Aktau"], ["Актобе", "Ақтөбе", "Aktobe"], ["Атырау", "Атырау", "Atyrau"], ["Караганда", "Қарағанды", "Karaganda"], ["Кокшетау", "Көкшетау", "Kokshetau"], ["Костанай", "Қостанай", "Kostanay"], ["Кызылорда", "Қызылорда", "Kyzylorda"], ["Уральск", "Орал", "Oral"], ["Усть-Каменогорск", "Өскемен", "Oskemen"], ["Павлодар", "Павлодар", "Pavlodar"], ["Петропавловск", "Петропавл", "Petropavl"], ["Семей", "Семей", "Semey"], ["Талдыкорган", "Талдықорған", "Taldykorgan"], ["Тараз", "Тараз", "Taraz"], ["Туркестан", "Түркістан", "Turkistan"], ["Жезказган", "Жезқазған", "Zhezkazgan"], ["Конаев", "Қонаев", "Qonaev"], ["Аксу", "Ақсу", "Aksu"], ["Аксай", "Ақсай", "Aksai"], ["Алга", "Алға", "Alga"], ["Аральск", "Арал", "Aral"], ["Аркалык", "Арқалық", "Arkalyk"], ["Арыс", "Арыс", "Arys"], ["Атбасар", "Атбасар", "Atbasar"], ["Аягоз", "Аягөз", "Ayagoz"], ["Байконур", "Байқоңыр", "Baikonur"], ["Балхаш", "Балқаш", "Balkhash"], ["Бурабай", "Бурабай", "Burabay"], ["Державинск", "Державин", "Derzhavinsk"], ["Ерейментау", "Ерейментау", "Yereymentau"], ["Есиль", "Есіл", "Esil"], ["Есик", "Есік", "Esik"], ["Жанаозен", "Жаңаөзен", "Zhanaozen"], ["Жанатас", "Жаңатас", "Zhanatas"], ["Жаркент", "Жаркент", "Zharkent"], ["Жем", "Жем", "Zhem"], ["Житикара", "Жітіқара", "Zhitikara"], ["Жетысай", "Жетісай", "Zhetysay"], ["Зайсан", "Зайсан", "Zaysan"], ["Зыряновск", "Зырян", "Zyryanovsk"], ["Казалинск", "Қазалы", "Kazaly"], ["Кандыагаш", "Қандыағаш", "Kandyagash"], ["Капшагай", "Қапшағай", "Kapshagay"], ["Каражал", "Қаражал", "Karazhal"], ["Каратау", "Қаратау", "Karatau"], ["Каркаралинск", "Қарқаралы", "Karkaraly"], ["Каскелен", "Қаскелең", "Kaskelen"], ["Кентау", "Кентау", "Kentau"], ["Кульсары", "Құлсары", "Kulsary"], ["Курчатов", "Курчатов", "Kurchatov"], ["Лисаковск", "Лисаков", "Lisakovsk"], ["Макинск", "Макинск", "Makinsk"], ["Мамлютка", "Мамлют", "Mamlyutka"], ["Приозёрск", "Приозёрск", "Priozersk"], ["Риддер", "Риддер", "Ridder"], ["Рудный", "Рудный", "Rudny"], ["Сарань", "Саран", "Saran"], ["Сарканд", "Сарқан", "Sarkand"], ["Сарыагаш", "Сарыағаш", "Saryagash"], ["Сатпаев", "Сәтбаев", "Satpayev"], ["Серебрянск", "Серебрянск", "Serebryansk"], ["Сергеевка", "Сергеевка", "Sergeyevka"], ["Степногорск", "Степногор", "Stepnogorsk"], ["Степняк", "Степняк", "Stepnyak"], ["Тайынша", "Тайынша", "Taiynsha"], ["Талгар", "Талғар", "Talgar"], ["Текели", "Текелі", "Tekeli"], ["Темиртау", "Теміртау", "Temirtau"], ["Ушарал", "Үшарал", "Usharal"], ["Уштобе", "Ұштөбе", "Ushtobe"], ["Хромтау", "Хромтау", "Khromtau"], ["Шалкар", "Шалқар", "Shalkar"], ["Шардара", "Шардара", "Shardara"], ["Шахтинск", "Шахтинск", "Shakhtinsk"], ["Шемонаиха", "Шемонаиха", "Shemonaikha"], ["Шу", "Шу", "Shu"], ["Экибастуз", "Екібастұз", "Ekibastuz"], ["Эмба", "Ембі", "Emba"]];
-const RGN={"mng": ["Мангистауская область", "Маңғыстау облысы", "Mangystau Region"], "pvl": ["Павлодарская область", "Павлодар облысы", "Pavlodar Region"], "trk": ["Туркестанская область", "Түркістан облысы", "Turkistan Region"], "nko": ["Северо-Казахстанская область", "Солтүстік Қазақстан облысы", "North Kazakhstan Region"], "atr": ["Атырауская область", "Атырау облысы", "Atyrau Region"], "kst": ["Костанайская область", "Қостанай облысы", "Kostanay Region"], "jmb": ["Жамбылская область", "Жамбыл облысы", "Jambyl Region"], "alo": ["Алматинская область", "Алматы облысы", "Almaty Region"], "kzo": ["Кызылординская область", "Қызылорда облысы", "Kyzylorda Region"], "akm": ["Акмолинская область", "Ақмола облысы", "Akmola Region"], "krg": ["Карагандинская область", "Қарағанды облысы", "Karaganda Region"], "uly": ["область Улытау", "Ұлытау облысы", "Ulytau Region"], "aba": ["область Абай", "Абай облысы", "Abai Region"], "akt": ["Актюбинская область", "Ақтөбе облысы", "Aktobe Region"], "vko": ["Восточно-Казахстанская область", "Шығыс Қазақстан облысы", "East Kazakhstan Region"], "zko": ["Западно-Казахстанская область", "Батыс Қазақстан облысы", "West Kazakhstan Region"], "jet": ["область Жетысу", "Жетісу облысы", "Jetisu Region"]};
-const CT=k=>CITY[k]||[k,k,k];
-const BRD={Mangystau:"Маңғыстау",Ertis:"Ертіс",Turkistan:"Түркістан",Qyzylzhar:"Қызылжар",Taraz:"Тараз",Kokshetau:"Көкшетау",Saryarqa:"Сарыарқа",Bishkek:"Бішкек",Ulytau:"ұлытау",Abay:"Абай",Shymkent:"Шымкент",Jaiyq:"Жайық",Tashkent:"Ташкент-Өзбекстан",Ontustik:"Оңтүстік",Batys:"Батыс",Atyrau:"Атырау",Qostanay:"Қостанай"};
-const IMK={Qyzylorda:"Qyzylorda",Aktobe:"Aktobe",Oskemen:"Oskemen",Jetisu:"Jetisu",Astana:"Astana",Almaty:"Almaty",Qonaev:"Qonaev",IQanat:"Burabay"};
-const BASE={"Астана+":"Астана","Алматы+":"Алматы"};
-/* Как названия из официальной таблицы сопоставляются со справочниками сайта */
-const CITY_ALIAS={"online":"online","онлайн":"online","астана + online":"Астана+","астана + онлайн":"Астана+","алматы + online":"Алматы+","алматы + онлайн":"Алматы+","бишкек":"Бішкек","петропавловск":"Петропавл","актау":"Ақтау","актобе":"Ақтөбе","караганда":"Қарағанды","костанай":"Қостанай","кокшетау":"Көкшетау","кызылорда":"Қызылорда","конаев":"Қонаев","талдыкорган":"Талдықорған","туркестан":"Түркістан","жезказган":"Жезқазған","уральск":"Орал","усть-каменогорск":"Өскемен"};
-const REG_ALIAS={"сқо":"nko","шқо":"vko","бқо":"zko","қарағанды":"krg","жетісу":"jet","абай":"aba","ұлытау":"uly"};
-const PHRASE={"«дарын» рғпо жүйесіне қарасты білім беру ұйымдары":["организации образования системы РНПЦ «Дарын»","«Дарын» РҒПО жүйесіне қарасты білім беру ұйымдары","schools of the Daryn National Center network"]};
-const CITY_EVI={"Ташкент":"Ташкент-Өзбекстан","Жыланды":"Жыланды","Бішкек":"Бішкек"};
-const ONLINE_IMG="assets/img/x-forbes.webp",FTC_IMG="assets/img/x-pd3.webp",GEN_IMG="assets/img/x-nw-first-table.webp";
-const evim=(t,ck,codes)=>{if(ck==="online")return ONLINE_IMG;const b=String(t).split(" ")[0];return EVI[BRD[b]]||EI[IMK[b]]||EI[EIK[ck]]||EVI[ck]||EVI[CITY_EVI[ck]]||(codes&&codes.length===1&&codes[0]==="FTC"?FTC_IMG:GEN_IMG)};
-const stg=t=>/Kick-/i.test(t)?"kick":/Scrimmage/.test(t)?"scrim":/Qualifier/.test(t)?"qual":/Regional|Digital Bridge/.test(t)?"reg":/Kazakhstan.*Championship/.test(t)?"rep":/Off-Season|Tech Cup/i.test(t)?"off":"big";
-const CITIES=()=>{const m={};[...ALLC,...Object.values(CITY)].forEach(c=>{if(!m[c[1]])m[c[1]]=c});return Object.values(m).sort((a,b)=>a[I[L]].localeCompare(b[I[L]],L))};
-Object.assign(T.ru,{regclosed:"регистрация закрыта",sem:"Семинар для учителей",bs:"Сезон 2025–2026",msub:"Поддержка — залог успеха",ta:"Все время",tu:"Предстоящие события",tp:"Предстоящие",ns:"Не указано",cs:"Правила и расписание сезона",csb:"Открыть",age:"«FIRST® AGE™ 2025–2026» – новый сезон, где участники исследуют артефакты прошлого и через робототехнику находят инновационные решения, связывая их с наследием предков. Команды объединяют науку и инженерию, стремясь решать сложные задачи реальной жизни и раскрывать безграничные возможности STEM."});
-Object.assign(T.kk,{regclosed:"тіркелу жабық",sem:"Мұғалімдерге арналған семинар",bs:"2025–2026 маусымы",valh:"құндылықтары",msub:"Қолдау – жетістік кілті",ta:"Барлық уақытта",tu:"Алдағы іс-шаралар",tp:"Алдағы",ns:"Көрсетілмеген",cs:"Маусым ережелері мен кестесі",csb:"Ашу",proof:"Бағдарламаның пайдасы",age:"«FIRST® AGE™ 2025–2026» жаңа маусымында – қатысушылар өткен тарихтың жәдігерлерін зерттеп, робототехника арқылы инновациялық шешімдерді бабалар мұрасымен байланыстырады. Командалар ғылым мен инженерияны біріктіріп, шынайы өмірдегі күрделі мәселелерді шешуге талпынады және STEM саласындағы шексіз мүмкіндіктерді ашады."});
-Object.assign(T.en,{regclosed:"registration closed",sem:"Teacher seminar",bs:"Season 2025–2026",msub:"Support is the key to success",ta:"All time",tu:"Upcoming events",tp:"Upcoming",ns:"Not specified",cs:"Season rules and schedule",csb:"Open",age:"“FIRST® AGE™ 2025–2026” is the new season, where participants explore artifacts of the past and use robotics to find innovative solutions that connect with the heritage of their ancestors. Teams combine science and engineering to tackle complex real-life challenges and unlock the limitless possibilities of STEM."});
-const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'};
-const AGE={"ru": "«FIRST® CANOPY™ 2026–2027» – новый сезон на тему биоразнообразия: участники с помощью STEM создают процветающую планету. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.", "kk": "«FIRST® CANOPY™ 2026–2027» – биоәртүрлілік тақырыбындағы жаңа маусым: қатысушылар STEM көмегімен гүлденген планетаны жасайды. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.", "en": "“FIRST® CANOPY™ 2026–2027” is the new biodiversity-themed season: participants use STEM to create a thriving planet. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™."};for(const l in AGE)T[l].age=AGE[l];
-Object.assign(T.ru,{"tg1": "Сообщество FIRST® в Центральной Азии: Казахстан, Кыргызстан и Узбекистан.", "tg2": "Официальный канал FIRST® в Казахстане: новости, события и объявления.", "tgo": "Открыть в Telegram"});Object.assign(T.kk,{"tg1": "Орталық Азиядағы FIRST® қауымдастығы: Қазақстан, Қырғызстан және Өзбекстан.", "tg2": "FIRST®-тің Қазақстандағы ресми арнасы: жаңалықтар, іс-шаралар және хабарландырулар.", "tgo": "Telegram-да ашу"});Object.assign(T.en,{"tg1": "The FIRST® community in Central Asia: Kazakhstan, Kyrgyzstan and Uzbekistan.", "tg2": "The official FIRST® channel in Kazakhstan: news, events and announcements.", "tgo": "Open in Telegram"});
-Object.assign(T.ru,{"ig1": "Фото и видео с соревнований, событий и жизни сообщества FIRST® в Казахстане.", "igo": "Открыть Instagram", "ml1": "Вопросы о программах, участии и сотрудничестве — пишите нам.", "mlo": "Написать письмо"});Object.assign(T.kk,{"ig1": "Қазақстандағы FIRST® қауымдастығының жарыстары, іс-шаралары мен өмірінен фото және бейнелер.", "igo": "Instagram-ды ашу", "ml1": "Бағдарламалар, қатысу және ынтымақтастық туралы сұрақтарыңызды жазыңыз.", "mlo": "Хат жазу"});Object.assign(T.en,{"ig1": "Photos and videos from FIRST® competitions, events and community life in Kazakhstan.", "igo": "Open Instagram", "ml1": "Questions about programs, participation and partnerships — write to us.", "mlo": "Send an email"});
-Object.assign(T.ru,{"fstg": "Этап", "s_kick": "Кик-офф (старт сезона)", "s_scrim": "Скримидж (тренировочный)", "s_reg": "Региональный этап", "s_qual": "Зональный этап (Qualifier)", "s_rep": "Национальный этап (Центральная Азия)", "s_off": "Межсезонье (Off-Season)", "regs": "Регионы (для FLL)"});Object.assign(T.kk,{"fstg": "Кезең", "s_kick": "Кик-офф (маусым басы)", "s_scrim": "Скримидж (жаттығу кезеңі)", "s_reg": "Аймақтық кезең (Regional)", "s_qual": "Зоналық кезең (Qualifier)", "s_rep": "Ұлттық кезең (Орталық Азия)", "s_off": "Маусымаралық (Off-Season)", "regs": "Қатысатын аймақтар (FLL үшін)"});Object.assign(T.en,{"fstg": "Stage", "s_kick": "Kick-off (season start)", "s_scrim": "Scrimmage (practice round)", "s_reg": "Regional stage", "s_qual": "Qualifier stage", "s_rep": "National stage", "s_off": "Off-Season", "regs": "Regions (for FLL)"});
-const NWI={"nw-fgc-2026-team": "assets/img/nwi-nw-fgc-2026-team.jpg", "nw-fll-asia-open-2026": "assets/img/x-nw-fll-asia-open-2026.jpg", "nw-first-table": "assets/img/x-nw-first-table.webp", "nw-alem-tech-fest": "assets/img/x-nw-alem-tech-fest.jpg", "nw-hero": "assets/img/x-nw-hero.webp"};Object.assign(LG,{"p_samruk-kazyna": "assets/img/x-p_samruk-kazyna.webp", "p_samruk-kazyna-trust": "assets/img/x-p_samruk-kazyna-trust.png", "p_qazaqstan-halqyna": "assets/img/x-p_qazaqstan-halqyna.png", "p_exxonmobil": "assets/img/x-p_exxonmobil.webp", "p_batyr-bolamyn": "assets/img/x-p_batyr-bolamyn.png", "p_akimat-almaty": "assets/img/x-p_akimat-almaty.svg", "p_stemshop": "assets/img/x-p_stemshop.webp", "p_ghandi": "assets/img/x-p_ghandi.svg", "p_3dgo": "assets/img/x-p_3dgo.svg"});
-RP.push(["p_samruk-kazyna"],["p_samruk-kazyna-trust"],["p_qazaqstan-halqyna"],["p_exxonmobil"],["p_batyr-bolamyn"],["p_akimat-almaty"],["p_stemshop"],["p_ghandi"],["p_3dgo"]);
-Object.assign(T.kk,{n4s:"БАҚ",n7:"Нәтижелер",m1:"Біз туралы",m3:"Бағдарлама",m4:"Іс-шара",h2b:"Іс-шараға тіркелу",vk:"Маусым бейнебаяны",vh:"FIRST® CANOPY™ 2026–2027",vp:"Жаңа маусымның тақырыбы мен идеясын қысқа бейнеден көріңіз. Командаңызбен бөлісіп, маусымға бірге дайындалыңыз.",vb:"YouTube-та көру",cap1:"Қазақстан құрамасы",res2:"Ауқым мен нәтижелер",gk:"Әлемдегі FIRST®",gh:"Әлемдік деңгейдегі робототехника қозғалысы",gsrc:"Дереккөздер",kh:"FIRST® Kazakhstan нәтижелері",kzp:"Қазақстандық командалардың FIRST® жарыстарындағы жетістіктері мен мүмкіндіктері."});
-Object.assign(T.ru,{n4s:"СМИ",m1:"О нас",m3:"Программы",m4:"События",h2b:"Записаться на событие",vk:"Видео сезона",vh:"FIRST® CANOPY™ 2026–2027",vp:"Посмотрите короткое видео о теме и идее нового сезона. Поделитесь им с командой и готовьтесь к сезону вместе.",vb:"Смотреть на YouTube",cap1:"Сборная Казахстана",res2:"Масштаб и результаты",gk:"FIRST® в мире",gh:"Движение робототехники мирового масштаба",gsrc:"Источники",kh:"Результаты FIRST® Kazakhstan",kzp:"Достижения и возможности казахстанских команд в соревнованиях FIRST®."});
-Object.assign(T.en,{n4s:"Media",m1:"About",m3:"Programs",m4:"Events",h2b:"Join an event",vk:"Season video",vh:"FIRST® CANOPY™ 2026–2027",vp:"Watch a short video about the theme and idea of the new season. Share it with your team and get ready for the season together.",vb:"Watch on YouTube",cap1:"Team Kazakhstan",res2:"Scale and results",gk:"FIRST® worldwide",gh:"A robotics movement on a global scale",gsrc:"Sources",kh:"FIRST® Kazakhstan results",kzp:"What Kazakhstani teams have achieved in FIRST® competitions, and what it opens up."});
-// Official FIRST figures (see sources under the panel)
-const GS=[[853000,"+",["школьников в 114 странах мира (сезон 2024–2025)","оқушы әлемнің 114 елінде (2024–2025 маусымы)","students in 114 countries (2024–2025 season)"]],
-[190,"",["стран участвовали в FIRST Global Challenge 2025 в Панаме","ел Панамадағы FIRST Global Challenge 2025-ке қатысты","nations competed at FIRST Global Challenge 2025 in Panama"]],
-[51000,"+",["человек на FIRST Championship 2026 в Хьюстоне — рекорд","адам Хьюстондағы FIRST Championship 2026-да — рекорд","people at FIRST Championship 2026 in Houston, a record"]],
-[83,"%",["выпускников FIRST к 4-му курсу вуза учатся на STEM-специальностях","FIRST түлектері ЖОО-ның 4-курсында STEM мамандығында оқиды","of FIRST alumni pursue STEM majors by year four of college"]]];
-const KS=[[4,"×","",["Чемпионы мира FIRST Global Challenge (2022–2025)","FIRST Global Challenge әлем чемпиондары (2022–2025)","FIRST Global Challenge world champions (2022–2025)"]],
-[20000,"+","",["ежегодных участников в Казахстане, Узбекистане и Кыргызстане","Қазақстан, Өзбекстан және Қырғызстан бойынша жыл сайынғы қатысушылар","annual participants across Kazakhstan, Uzbekistan and Kyrgyzstan"]],
-[60,"+","",["мероприятий запланировано на сезон 2026–2027","2026–2027 маусымына жоспарланған іс-шара","events planned for the 2026–2027 season"]],
-[514,"","№ ",["приказ Мин. просвещения РК: возможность поступления в ТОП-100 вузов","ҚР Оқу-ағарту мин. бұйрығы бойынша ТОП-100 ЖОО-ға түсу мүмкіндігі","Order of the RK Ministry of Education: a pathway to the TOP-100 universities"]]];
-IMG.n_rob="assets/img/ph3.webp";Object.assign(IMG,NWI);
 
-/* ---- Программы: факты из официальных правил сезона FIRST® CANOPY™ 2026–2027 (разделы 3–5) ---- */
-/* Правила сезона: русское «Положение FIRST CANOPY 2026–2027 Казахстан» и казахский регламент, оба открыты по ссылке (проверено 19.10.2026). Вкладка «Сайт» таблицы (строка «Правила», B = ru, C = kk) переопределяет эти ссылки. */
-const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
-const SCHED="https://docs.google.com/spreadsheets/d/1QJbpsCGQfsV_idUxsbKhKHm1SgQgFZAqQCVM67HY6VY/edit?gid=0#gid=0";
-const PROG=[
-{name:"LEGO® League Discover",cat:"FLL-D · BIOGLOW™",age:"4–6",color:"#b536f0",logo:IMG.lg0,photo:IMG.pd0,teaser:"https://www.youtube.com/watch?v=yF_zKolSUI8",
- intro:["Первое знакомство со STEM через игру с LEGO® DUPLO®.","LEGO® DUPLO® арқылы STEM әлеміне алғашқы қадам.","A first look at STEM through play with LEGO® DUPLO®."],
- team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"],
- stages:["Скримидж → Региональный → Зональный → Национальный этап (Центральная Азия)", "Scrimmage → Аймақтық → Өңірлік → Ұлттық кезең (Орталық Азия)", "Scrimmage → Regional → Qualifier → National stage (Central Asia)"]},
-{name:"LEGO® League Explore",cat:"FLL-E · BIOGLOW™",age:"6–10",color:"#0fbf4a",logo:IMG.lg1,photo:IMG.pd1,teaser:"https://www.youtube.com/watch?v=BayY9b0uX8A",
- intro:["Исследование темы сезона и первый код: движущаяся модель LEGO® и постер команды.","Маусым тақырыбын зерттеу және алғашқы код: қозғалмалы LEGO® моделі мен команда постері.","Exploring the season theme and first code: a moving LEGO® model and a team poster."],
- team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"],
- stages:["Скримидж → Региональный → Зональный → Национальный этап (Центральная Азия)", "Scrimmage → Аймақтық → Өңірлік → Ұлттық кезең (Орталық Азия)", "Scrimmage → Regional → Qualifier → National stage (Central Asia)"]},
-{name:"LEGO® League Challenge",cat:"FLL-C · BIOGLOW™",age:"10–16",color:"#ff4646",logo:IMG.lg2,photo:IMG.pd2,teaser:"https://www.youtube.com/watch?v=MkpSgkw8A7I",
- intro:["Автономный робот LEGO® на поле, инновационный проект и ценности FIRST®.","Алаңдағы автономды LEGO® роботы, инновациялық жоба және FIRST® құндылықтары.","An autonomous LEGO® robot on the field, an innovation project and FIRST® Core Values."],
- team:["2–8 участников, до 2 тренеров","2–8 қатысушы, 2 тренерге дейін","2–8 members, up to 2 coaches"],
- stages:["Скримидж → Региональный → Зональный → Национальный этап (Центральная Азия) → Мировой финал (Хьюстон)", "Scrimmage → Аймақтық → Өңірлік → Ұлттық кезең (Орталық Азия) → Әлемдік финал (Хьюстон)", "Scrimmage → Regional → Qualifier → National stage (Central Asia) → World final (Houston)"]},
-{name:"LEGO® League Future Edition",cat:"FLL Future Edition · K–2 и 3–8",age:"5–16",ageTxt:["K–2: 5–7 лет · 3–8 классы: 8–16 лет","K–2: 5–7 жас · 3–8 сынып: 8–16 жас","K–2: ages 5–7 · grades 3–8: ages 8–16"],color:"#0ea5e9",wordmark:["LEGO® LEAGUE","FUTURE EDITION"],photo:IMG["nw-first-table"],
- intro:["Новый формат на базе LEGO® Education Computer Science & AI, две категории: K–2 и 3–8.","LEGO® Education Computer Science & AI негізіндегі жаңа формат, екі санат: K–2 және 3–8.","A new format based on LEGO® Education Computer Science & AI, two categories: K–2 and 3–8."],
- team:["3–8: 4–8 участников, до 2 тренеров · K–2: состав уточняется","3–8: 4–8 қатысушы, 2 тренерге дейін · K–2: құрамы нақтыланады","3–8: 4–8 members, up to 2 coaches · K–2: team size to be confirmed"],
- stages:["Скримидж → Региональный → Зональный → Национальный этап (Центральная Азия)", "Scrimmage → Аймақтық → Өңірлік → Ұлттық кезең (Орталық Азия)", "Scrimmage → Regional → Qualifier → National stage (Central Asia)"]},
-{name:"Tech Challenge",cat:"FTC · BIOBUZZ™",age:"12–18",color:"#ff8200",logo:IMG.lg3,photo:IMG.pd3,teaser:"https://www.youtube.com/watch?v=dxfRKaqIiP8",
- intro:["Команда проектирует, собирает и программирует робота для матчей на поле.","Команда алаңдағы матчтарға арналған роботты жобалап, құрастырып, бағдарламалайды.","Teams design, build and program a robot for matches on the field."],
- team:["2–15 участников, до 2 тренеров","2–15 қатысушы, 2 тренерге дейін","2–15 members, up to 2 coaches"],
- stages:["Скримидж → Региональный или зональный (любой регион) → Национальный этап (Центральная Азия) → Мировой финал (Хьюстон)", "Scrimmage → Аймақтық немесе өңірлік (кез келген аймақ) → Ұлттық кезең (Орталық Азия) → Әлемдік финал (Хьюстон)", "Scrimmage → Regional or Qualifier (any region) → National stage (Central Asia) → World final (Houston)"]},
-{name:"Robotics Competition",cat:"FRC · BIOCORE™",age:"14–18",color:"#1d4ed8",wordmark:["ROBOTICS","COMPETITION"],photo:IM2.hero,
- intro:["Старшая программа FIRST®: робот промышленного масштаба, созданный командой с наставниками.","FIRST®-тің жоғары бағдарламасы: команда тәлімгерлермен бірге өнеркәсіптік деңгейдегі робот жасайды.","FIRST®'s senior program: an industrial-scale robot built by the team with mentors."],
- team:["Состав без ограничений, 2 взрослых Lead Coach","Құрам шектеусіз, 2 ересек Lead Coach","No team-size limit, 2 adult Lead Coaches"],
- stages:["Kick-off (Алматы) → Мировой финал (Хьюстон, 28.04–01.05.2027)", "Kick-off (Алматы) → Әлемдік финал (Хьюстон, 28.04–01.05.2027)", "Kick-off (Almaty) → World final (Houston, 28.04–01.05.2027)"]},
-{name:"Global Challenge",cat:"FGC · сборная Казахстана",age:"14–18",color:"#f0620a",logo:IMG.lg4,photo:IMG["nw-fgc-2026-team"],teaser:"https://www.youtube.com/watch?v=Sl9oSw5MRpk",site:"https://first.global/fgc/",wide:true,
- intro:["Международная олимпиада по робототехнике среди национальных сборных.","Ұлттық құрамалар арасындағы халықаралық робототехника олимпиадасы.","The international robotics olympiad for national teams."],
- team:["Сборная Казахстана по итогам национального отбора","Ұлттық іріктеу қорытындысы бойынша Қазақстан құрамасы","Team Kazakhstan, selected at the national selection event"],
- stages:["Национальный отбор → FIRST Global Challenge", "Ұлттық іріктеу → FIRST Global Challenge", "National selection → FIRST Global Challenge"]}
-];
-PROG[6].cat=["FGC · сборная Казахстана","FGC · Қазақстан құрамасы","FGC · Team Kazakhstan"];
-PROG[3].cat=["FLL Future Edition · K–2 и 3–8","FLL Future Edition · K–2 және 3–8","FLL Future Edition · K–2 and 3–8"];
-/* ---- Тексты интерфейса ---- */
-Object.assign(T.ru,{pAge:"Возраст",pTeam:"Команда",pCat:"Категория",pStages:"Этапы",pRules:"Подробнее: правила",pTeaser:"Тизер",pSite:"Сайт FIRST Global",
- regNote:"Регистрация на события — ниже, в разделе «События».",regGo:"Перейти к событиям",
- dTitle:"Правила сезона FIRST® CANOPY™ 2026–2027",dIntro:"Официальный регламент: категории, возраст и состав команд, этапы и порядок регистрации.",dBtn:"Открыть правила",dSched:"Официальное расписание (таблица)",
- bTheme:"Тема сезона — биоразнообразие. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",bVideo:"Познакомиться с темой сезона",bRules:"Правила сезона",
- cap1:"Сборная Казахстана",s_big:"Крупное событие",fe:"Future Edition 3–8",rg:"Robot Game"});
-Object.assign(T.kk,{pAge:"Жасы",pTeam:"Команда",pCat:"Санат",pStages:"Кезеңдер",pRules:"Толығырақ: ереже",pTeaser:"Тизер",pSite:"FIRST Global сайты",
- regNote:"Іс-шараларға тіркелу — төменде, «Іс-шаралар» бөлімінде.",regGo:"Іс-шараларға өту",
- dTitle:"FIRST® CANOPY™ 2026–2027 маусымының ережесі",dIntro:"Ресми регламент: санаттар, жас және команда құрамы, кезеңдер және тіркелу тәртібі.",dBtn:"Ережені ашу",dSched:"Ресми кесте",
- bTheme:"Маусым тақырыбы — биоалуантүрлілік. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",bVideo:"Маусым тақырыбымен танысу",bRules:"Маусым ережесі",
- cap1:"Қазақстан құрамасы",s_big:"Ірі іс-шара",fe:"Future Edition 3–8",rg:"Robot Game"});
-Object.assign(T.en,{pAge:"Age",pTeam:"Team",pCat:"Category",pStages:"Stages",pRules:"More: season rules",pTeaser:"Teaser",pSite:"FIRST Global website",
- regNote:"Event registration is below, in the Events section.",regGo:"Go to events",
- dTitle:"FIRST® CANOPY™ 2026–2027 season rules",dIntro:"The official regulations: categories, age and team size, stages and registration.",dBtn:"Open the rules",dSched:"Official schedule (sheet)",
- bTheme:"The season theme is biodiversity. FIRST® LEGO® League – BIOGLOW™, FIRST® Tech Challenge – BIOBUZZ™, FIRST® Robotics Competition – BIOCORE™.",bVideo:"Explore the season theme",bRules:"Season rules",
- cap1:"Team Kazakhstan",s_big:"Major event",fe:"Future Edition 3–8",rg:"Robot Game"});
-Object.assign(T.ru,{dLetter:"Письмо РНПЦ «Дарын» и материалы сезона",dReg:"Регистрация на события"});
-Object.assign(T.kk,{dLetter:"«Дарын» РҒПО хаты және маусым материалдары",dReg:"Іс-шараларға тіркелу"});
-Object.assign(T.en,{dLetter:"Daryn National Center letter and season materials",dReg:"Event registration"});
-
-/* Строки для расписания из официальной таблицы и автоновостей */
-Object.assign(T.ru,{evsrc:"По официальному расписанию сезона",evupd:"обновлено",vtba:"Площадка уточняется",ctba:"Место уточняется",chg:"Изменения",stt:"Статус",none:"По выбранным фильтрам событий нет",fe0:"Future Edition",tgsrc:"Telegram"});
-Object.assign(T.kk,{evsrc:"Маусымның ресми кестесі бойынша",evupd:"жаңартылды",vtba:"Өтетін орны нақтылануда",ctba:"Өтетін жері нақтылануда",chg:"Өзгерістер",stt:"Мәртебесі",none:"Таңдалған сүзгілер бойынша іс-шара жоқ",fe0:"Future Edition",tgsrc:"Telegram"});
-Object.assign(T.en,{evsrc:"Per the official season schedule",evupd:"updated",vtba:"Venue TBA",ctba:"Location TBA",chg:"Changes",stt:"Status",none:"No events match the selected filters",fe0:"Future Edition",tgsrc:"Telegram"});
-Object.assign(T.ru,{more:"Показать ещё"});Object.assign(T.kk,{more:"Тағы көрсету"});Object.assign(T.en,{more:"Show more"});
-/* кнопки «Подробнее»; цвета программ — как на firstrobotics.kz */
-Object.assign(T.ru,{more2:"Подробнее"});Object.assign(T.kk,{more2:"Толығырақ"});Object.assign(T.en,{more2:"Learn more"});
-PROG[0].color="#b536f0";PROG[1].color="#4fb047";PROG[2].color="#e8504e";PROG[4].color="#ec7f2c";PROG[6].color="#ec7f2c";
-PROG.forEach(p=>{delete p.wide});
-PROG[5].ppos="12% 55%";PROG[4].ppos="78% 45%";
-PROG[4].photo="assets/img/ph3.webp";PROG[4].ppos="50% 40%";
-
-/* ---- Шлифовка 19.10.2026 (вечер): короче, точнее, без лишних плиток и сносок ---- */
-Object.assign(T.ru,{gh:"FIRST® в мире",win:"Наши победители",fstg:"Все этапы",joinSem:"Записаться на семинар",qauthor:"– Касым-Жомарт Токаев",evupd:"Обновлено",evsrc:"",sheetsrc:"FIRST Kazakhstan",bVideo:"Видео сезона",
-  bTheme:"Тема сезона – биоразнообразие: FIRST LEGO League – BIOGLOW, FIRST Tech Challenge – BIOBUZZ, FIRST Robotics Competition – BIOCORE.",
-  dTitle:"Правила и документы сезона",dIntro:"Официальный регламент сезона: категории, возраст и состав команд, порядок регистрации.",
-  dStages:"Этапы сезона: скримидж, региональный, зональный и национальный этап (Центральная Азия). FIRST LEGO League Challenge и FIRST Tech Challenge далее – мировой финал в Хьюстоне; FIRST Robotics Competition – kick-off в Алматы и финал в Хьюстоне 28.04–01.05.2027.",
-  dBtn:"Правила сезона",docKk:"Правила сезона (на казахском)",dSched:"Расписание сезона",dReg:"Регистрация – в разделе «События» ниже",
-  proofp:T.ru.proofp+" Соревнования FIRST включены в Перечень республиканских и международных олимпиад и конкурсов научных проектов (приказ Министерства просвещения РК № 514)."});
-Object.assign(T.kk,{gh:"FIRST® әлемде",win:"Біздің жеңімпаздарымыз",fstg:"Барлық кезең",joinSem:"Семинарға жазылу",qauthor:"– Қасым-Жомарт Тоқаев",evupd:"Жаңартылды",evsrc:"",sheetsrc:"FIRST Kazakhstan",bVideo:"Маусым бейнебаяны",
-  bTheme:"Маусым тақырыбы – биоалуантүрлілік: FIRST LEGO League – BIOGLOW, FIRST Tech Challenge – BIOBUZZ, FIRST Robotics Competition – BIOCORE.",
-  dTitle:"Маусым ережесі мен құжаттары",dIntro:"Маусымның ресми регламенті: санаттар, жас шектеулері мен команда құрамы, тіркелу тәртібі.",
-  dStages:"Маусым кезеңдері: скримидж, аймақтық, өңірлік және ұлттық кезең (Орталық Азия). FIRST LEGO League Challenge пен FIRST Tech Challenge одан әрі – Хьюстондағы әлемдік финал; FIRST Robotics Competition – Алматыдағы kick-off және 28.04–01.05.2027 Хьюстондағы финал.",
-  dBtn:"Маусым ережесі",docKk:"Маусым ережесі (қазақша)",dSched:"Маусым кестесі",dReg:"Тіркелу – төмендегі «Іс-шаралар» бөлімінде",
-  proofp:T.kk.proofp+" FIRST жарыстары республикалық және халықаралық олимпиадалар мен ғылыми жобалар конкурстарының тізіміне енгізілген (ҚР Оқу-ағарту министрлігінің № 514 бұйрығы)."});
-Object.assign(T.en,{gh:"FIRST® worldwide",win:"Our winners",fstg:"All stages",joinSem:"Sign up for the seminar",qauthor:"– Kassym-Jomart Tokayev",evupd:"Updated",evsrc:"",sheetsrc:"FIRST Kazakhstan",bVideo:"Season video",
-  bTheme:"The season theme is biodiversity: FIRST LEGO League – BIOGLOW, FIRST Tech Challenge – BIOBUZZ, FIRST Robotics Competition – BIOCORE.",
-  dTitle:"Season rules and documents",dIntro:"The official season regulations: categories, age ranges, team sizes and registration.",
-  dStages:"Season stages: scrimmage, regional, qualifier and the national stage (Central Asia). FIRST LEGO League Challenge and FIRST Tech Challenge then go on to the world final in Houston; FIRST Robotics Competition: kick-off in Almaty and the final in Houston on 28.04–01.05.2027.",
-  dBtn:"Season rules",docKk:"Season rules (in Kazakh)",dSched:"Season schedule",dReg:"To register, see the Events section below",
-  proofp:T.en.proofp+" FIRST competitions are included in the list of national and international olympiads and science project competitions approved by the Ministry of Education of Kazakhstan (Order No. 514)."});
-/* статистика Казахстана: 4 карточки; приказ № 514 перенесён в текст «Доказанная польза» */
-KS.length=0;KS.push(
-  [4,"×","",["Чемпионы мира FIRST Global Challenge, 2022–2025","FIRST Global Challenge әлем чемпионы, 2022–2025","FIRST Global Challenge world champions, 2022–2025"]],
-  [20000,"+","",["Участников в год в Казахстане, Узбекистане и Кыргызстане","Қазақстан, Өзбекстан және Қырғызстандағы жыл сайынғы қатысушы","Participants a year across Kazakhstan, Uzbekistan and Kyrgyzstan"]],
-  [60,"+","",["Событий в сезоне 2026–2027","2026–2027 маусымындағы іс-шара","Events in the 2026–2027 season"]],
-  [17,"","",["Команд Казахстана на FIRST Championship 2026 в Хьюстоне – рекорд","Қазақстан командасы Хьюстондағы FIRST Championship 2026-да – рекорд","Kazakhstan teams at FIRST Championship 2026 in Houston, a record"]]);
-GS.length=0;GS.push(
-  [853000,"+",["Школьников в 114 странах, сезон 2024–2025","114 елдегі оқушы, 2024–2025 маусымы","Students in 114 countries, 2024–2025 season"]],
-  [190,"",["Страна на FIRST Global Challenge 2025 в Панаме","Панамадағы FIRST Global Challenge 2025-ке қатысқан ел","Nations at FIRST Global Challenge 2025 in Panama"]],
-  [51000,"+",["Участников FIRST Championship 2026 в Хьюстоне","Қатысушы Хьюстондағы FIRST Championship 2026-да","Attendees at FIRST Championship 2026 in Houston"]],
-  [83,"%",["Выпускников FIRST учатся на STEM-специальностях к 4-му курсу","FIRST түлектері 4-курста STEM мамандығында оқиды","FIRST alumni in STEM majors by year four of college"]]);
-/* ценности: короткие фразы, как на firstrobotics.kz */
-[["Мы осваиваем новые навыки и идеи.","Біз жаңа дағдылар мен идеяларды меңгереміз.","We explore new skills and ideas."],
- ["Мы решаем задачи с помощью творчества и упорства.","Мәселелерді шығармашылық пен табандылық арқылы шешеміз.","We use creativity and persistence to solve problems."],
- ["Мы применяем знания, чтобы улучшать мир вокруг.","Білімімізді айналамызды жақсартуға жұмсаймыз.","We apply what we learn to improve our world."],
- ["Наши силы растут, когда мы действуем вместе.","Бірге әрекет еткенде күшіміз артады.","We are stronger when we work together."],
- ["Мы наслаждаемся тем, что делаем, и празднуем это!","Істеген ісімізден ләззат алып, оны тойлаймыз!","We enjoy and celebrate what we do!"],
- ["Мы уважаем друг друга и принимаем различия.","Бір-бірімізді құрметтеп, айырмашылықтарымызды қабылдаймыз.","We respect each other and embrace our differences."]].forEach((t,k)=>{V[k][3]=t[0];V[k][4]=t[1];V[k][5]=t[2]});
-/* иконки ценностей: заливочные пиктограммы (книга и человек, лампа, глобус, команда, хлопушка, руки) */
-IC.length=0;IC.push(
- '<circle cx="12" cy="4.6" r="2.3"/><path d="M9.6 7.6h4.8a1.4 1.4 0 0 1 1.4 1.4v2.4H8.2V9a1.4 1.4 0 0 1 1.4-1.4z"/><path d="M2.5 12.4c2.6-1.1 5.6-1 8.3.4v8.6c-2.7-1.4-5.7-1.5-8.3-.4zM21.5 12.4c-2.6-1.1-5.6-1-8.3.4v8.6c2.7-1.4 5.7-1.5 8.3-.4z"/>',
- '<path d="M12 2a7 7 0 0 0-4.2 12.6c.5.4.8 1 .8 1.6v.8h6.8v-.8c0-.6.3-1.2.8-1.6A7 7 0 0 0 12 2z"/><path d="M9 18.5h6v1.3a1.2 1.2 0 0 1-1.2 1.2h-3.6A1.2 1.2 0 0 1 9 19.8z"/><path d="M12 6.2v4.6M9.9 8.5h4.2" fill="none" stroke="#d3a85f" stroke-width="1.5" stroke-linecap="round"/>',
- '<circle cx="12" cy="12" r="10"/><g fill="none" stroke="#d3a85f" stroke-width="1.5"><ellipse cx="12" cy="12" rx="4.2" ry="10"/><path d="M2 12h20M3.6 7h16.8M3.6 17h16.8"/></g>',
- '<circle cx="12" cy="6.2" r="3"/><circle cx="4.8" cy="8.4" r="2.3"/><circle cx="19.2" cy="8.4" r="2.3"/><path d="M6.6 20.5v-3.8a5.4 5.4 0 0 1 10.8 0v3.8z"/><path d="M.9 18.2v-2.4a3.9 3.9 0 0 1 5.5-3.6 7 7 0 0 0-1.6 6zM23.1 18.2v-2.4a3.9 3.9 0 0 0-5.5-3.6 7 7 0 0 1 1.6 6z"/>',
- '<path d="M3 21l4.2-11.4 7.2 7.2z"/><path d="M10.4 7.8l1.7-1.7M14.6 12.4l2.3-.5M12.6 5.4l.3-2.4M16.9 8.3l2-1.4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><circle cx="16.8" cy="4.2" r="1.3"/><circle cx="20.6" cy="9.8" r="1.3"/><circle cx="19.4" cy="14.6" r="1.1"/>',
- '<circle cx="12" cy="5.4" r="2.5"/><path d="M9.8 8.8h4.4a1.5 1.5 0 0 1 1.5 1.5v3.4H8.3v-3.4a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M2.3 14.9a1.9 1.9 0 0 1 2.8-.2l3.3 3.1h2.4a1.2 1.2 0 0 1 0 2.4H6.3L2.3 17z"/><path d="M21.7 14.9a1.9 1.9 0 0 0-2.8-.2l-3.3 3.1h-2.4a1.2 1.2 0 0 0 0 2.4h4.5l4-3.2z"/>');
-/* победители: один шаблон заголовка «место из N стран», место проведения без лишних слов */
-W[0][4]="Инчхон, Корея";W[0][5]="Инчхон, Корея";W[0][6]="Incheon, Korea";
-W[1][0]="1-е место из 190 стран";W[1][1]="190 елден 1-орын";W[1][2]="1st of 190 countries";
-W[2][0]="1-е место из 193 стран";W[2][1]="193 елден 1-орын";W[2][2]="1st of 193 countries";
-/* программы: одна фраза-описание, строка «категория · состав», этапы один раз в блоке документов */
-[["первое знакомство со STEM: дети играют и строят модели из LEGO DUPLO.","STEM әлеміне алғашқы қадам: балалар LEGO DUPLO-дан модельдер құрастырып ойнайды.","a first step into STEM: children play and build models with LEGO DUPLO."],
- ["команда исследует тему сезона и собирает движущуюся модель LEGO.","командалар маусым тақырыбын зерттеп, қозғалмалы LEGO моделін құрастырады.","teams explore the season theme and build a moving LEGO model."],
- ["команда программирует автономного робота LEGO и готовит инновационный проект.","команда автономды LEGO роботын бағдарламалап, инновациялық жоба дайындайды.","teams program an autonomous LEGO robot and develop an innovation project."],
- ["новый формат на базе LEGO Education Computer Science & AI для классов K–2 и 3–8.","K–2 және 3–8-сыныптарға арналған LEGO Education Computer Science & AI негізіндегі жаңа формат.","a new format based on LEGO Education Computer Science & AI for grades K–2 and 3–8."],
- ["команда проектирует, собирает и программирует робота для матчей на поле.","команда алаңдағы матчтарға арналған роботты жобалап, құрастырып, бағдарламалайды.","teams design, build and program a robot for matches on the field."],
- ["старшая программа FIRST: команда с наставниками строит робота промышленного масштаба.","FIRST-тің жоғары сатыдағы бағдарламасы: команда тәлімгерлермен бірге өнеркәсіптік деңгейдегі робот жасайды.","the senior FIRST program: teams build an industrial-scale robot with their mentors."],
- ["международная олимпиада по робототехнике среди национальных сборных.","ұлттық құрамалар арасындағы халықаралық робототехника олимпиадасы.","the international robotics olympiad for national teams."]].forEach((t,k)=>{PROG[k].intro=t});
-PROG.forEach(p=>{if(typeof p.cat=="string")p.cat=p.cat.replace(/™/g,"")});
-PROG[3].team=["3–8 классы: 4–8 участников, до 2 тренеров · K–2: состав уточняется","3–8 сынып: 4–8 қатысушы, 2 тренерге дейін · K–2: құрамы нақтыланады","grades 3–8: 4–8 members, up to 2 coaches · K–2: team size to be confirmed"];
-PROG[6].wide=true;
-/* единое тире « – » во всех текстах, как на firstrobotics.kz */
-(function(){const fix=s=>typeof s=="string"?s.replace(/ [—–-] /g,"\u00a0– "):s;
-  for(const l in T)for(const k in T[l])T[l][k]=fix(T[l][k]);
-  [KS,GS].forEach(a=>a.forEach(x=>{const arr=x[x.length-1];for(let j=0;j<arr.length;j++)arr[j]=fix(arr[j])}));
-  N.forEach(n=>{n.t=n.t.map(fix);n.p=n.p.map(fix)});
-  W.forEach(w=>{for(let j=0;j<w.length;j++)w[j]=fix(w[j])});
-  V.forEach(v=>{for(let j=0;j<v.length;j++)v[j]=fix(v[j])});
-  PROG.forEach(p=>{p.intro=p.intro.map(fix);p.team=p.team.map(fix)});
-})();
-PROG[3].ageTxt=null;PROG[3].team=["4–8 участников, до 2 тренеров (3–8 классы); K–2 – состав уточняется","4–8 қатысушы, 2 тренерге дейін (3–8 сынып); K–2 – құрамы нақтыланады","4–8 members, up to 2 coaches (grades 3–8); K–2 team size to be confirmed"];
-PROG[6].team=["по итогам национального отбора","ұлттық іріктеу қорытындысы бойынша","selected at the national selection event"];
-
-/* ---- Финальная проверка 19.10.2026: единые термины, площадки на трёх языках, подписи для скринридеров ---- */
-const VENUE={"ақтөбе білім-инновация лицей-интернаты":["Лицей-интернат «Білім-инновация»","Ақтөбе «Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum"],
-"дарынды ер балаларға арналған білім-инновация лицей-интернаты":["Лицей-интернат «Білім-инновация» для одарённых мальчиков","Дарынды ер балаларға арналған «Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum for Gifted Boys"],
-"\"білім-инновация\" лицей интернаты":["Лицей-интернат «Білім-инновация»","«Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum"],
-"сыр жұлдыздары":["«Сыр жұлдыздары»","«Сыр жұлдыздары»","Syr Zhuldyzdary"],
-"шәкәрім атындағы гимназия":["Гимназия имени Шакарима","Шәкәрім атындағы гимназия","Shakarim Gymnasium"],
-"№221 мектеп":["Школа № 221","№ 221 мектеп","School No. 221"],
-"№9 орта мектеп-гимназиясы":["Школа-гимназия № 9","№ 9 орта мектеп-гимназиясы","School-Gymnasium No. 9"],
-"№ 51 жалпы орта білім беретін мектеп":["Школа № 51","№ 51 жалпы орта білім беретін мектеп","School No. 51"],
-"жалпы білім беретін №33 мектеп":["Школа № 33","№ 33 жалпы білім беретін мектеп","School No. 33"],
-"жалпы білім беретін №35 мектеп":["Школа № 35","№ 35 жалпы білім беретін мектеп","School No. 35"],
-"нұрорда мектеп-лицейі":["Школа-лицей «Нұрорда»","Нұрорда мектеп-лицейі","Nurorda School-Lyceum"],
-"оқушылар сарайы":["Дворец школьников","Оқушылар сарайы","Palace of Schoolchildren"]};
-Object.assign(T.ru,{a_menu:"Меню",a_prev:"Назад",a_next:"Вперёд",a_city:"Город",a_cat:"Категория",a_stg:"Этап",a_srch:"Поиск",
-  bTheme:"Тема сезона – биоразнообразие. Игры сезона: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
-  dStages:"Этапы сезона: скримидж, региональный, зональный и национальный этап (Центральная Азия). Лучшие команды FIRST LEGO League Challenge и FIRST Tech Challenge едут на мировой финал в Хьюстон; сезон FIRST Robotics Competition начинается с кик-оффа в Алматы и завершается финалом в Хьюстоне 28.04–01.05.2027."});
-Object.assign(T.kk,{a_menu:"Мәзір",a_prev:"Артқа",a_next:"Алға",a_city:"Қала",a_cat:"Санат",a_stg:"Кезең",a_srch:"Іздеу",
-  bTheme:"Маусым тақырыбы – биоалуантүрлілік. Маусым ойындары: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
-  dStages:"Маусым кезеңдері: скримидж, аймақтық, зоналық және ұлттық кезең (Орталық Азия). FIRST LEGO League Challenge мен FIRST Tech Challenge үздік командалары Хьюстондағы әлемдік финалға барады; FIRST Robotics Competition маусымы Алматыдағы кик-оффтан басталып, Хьюстондағы финалмен (28.04–01.05.2027) аяқталады."});
-Object.assign(T.en,{a_menu:"Menu",a_prev:"Previous",a_next:"Next",a_city:"City",a_cat:"Category",a_stg:"Stage",a_srch:"Search",
+/* ================= тексты интерфейса ================= */
+const T={
+ ru:{
+  n1:"О нас",
+  n7:"Результаты",
+  n2:"Программы",
+  n3:"События",
+  n4s:"СМИ",
+  n5:"Партнёры",
+  n8:"Контакты",
+  a_menu:"Меню",
+  a_prev:"Назад",
+  a_next:"Вперёд",
+  a_city:"Город",
+  a_cat:"Категория",
+  a_stg:"Этап",
+  a_srch:"Поиск",
+  metaDesc:"FIRST® Kazakhstan\u00a0– глобальное сообщество робототехники и STEM. Программы FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition и FIRST® Global Challenge, календарь соревнований и регистрация. Оператор в Казахстане\u00a0– USTEM Foundation.",
+  h1:"Казахстан\u00a0– 4-кратный чемпион мира FIRST Global Challenge",
+  h1p:"Международные программы робототехники FIRST для школьников. Открыта регистрация на сезон 2026–2027",
+  regb:"Записаться",
+  new:"Новый сезон",
+  bTheme:"Тема сезона\u00a0– биоразнообразие. Игры сезона: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
+  bVideo:"Видео сезона",
+  bRules:"Правила сезона",
+  about:"FIRST вдохновляет молодых людей становиться лидерами и новаторами в области науки и технологий через увлекательные программы под руководством наставников. В Казахстане эти программы проводит общественный фонд «USTEM Foundation».",
+  cap1:"Сборная Казахстана",
+  res:"Наши результаты",
+  proof:"Доказанная польза",
+  proofp:"FIRST помогает молодым людям развивать критическое мышление, навыки сотрудничества и лидерства. Участие в программах FIRST улучшает успеваемость в школе и повышает интерес к STEM-направлениям. Выпускники часто продолжают образование и строят успешную карьеру в этих областях.",
+  rep:"Официальные данные FIRST о пользе программ (англ.)",
+  gh:"FIRST® в мире",
+  gline:"853 000+ школьников в 114 странах · 83% выпускников FIRST® выбирают STEM-специальности в университете",
+  win:"Наши достижения",
+  valh:"Ценности",
+  valp:"Наши основные ценности воплощают принципы благородного профессионализма и сотрудничества.",
+  sth:"С чего начать",
+  st1:"Выберите программу",
+  st1a:"Программы",
+  st2:"Соберите команду и зарегистрируйтесь",
+  st2a:"Расписание событий",
+  st3:"Изучите правила сезона",
+  st3a:"Правила и документы",
+  prog:"Программы",
+  progp:"В зависимости от возраста и интересов ученики могут участвовать в разных программах.",
+  yrs:"лет",
+  tz:"Смотреть тизер",
+  allProg:"Показать все программы",
+  dTitle:"Правила и документы сезона",
+  dIntro:"Официальное положение сезона: категории, возраст и состав команд, порядок регистрации.",
+  dStages:"Этапы: тренировочный (Scrimmage), региональный (Regional), отборочный по областям (Qualifier) и национальный (Центральная Азия). Победители национального этапа получают квоты на мировой финал в Хьюстоне: число квот в каждой категории опубликуют в начале 2027 года (для FTC – в декабре 2026 года). FIRST Robotics Competition: кик-офф в Алматы – финал в Хьюстоне (28.04–01.05.2027).",
+  dReg:"Регистрация\u00a0– в разделе «События» ниже",
+  dBtn:"Правила сезона",
+  docKk:"Правила сезона (на казахском)",
+  dPres:"Презентация скримиджа «STEM-білімге AI енгізу» (на казахском)",
+  dLetter:"Письмо РНПЦ «Дарын» и материалы сезона",
+  dSched:"Расписание сезона",
+  fa:"Все города",
+  fc:"Все категории",
+  fs:"Поиск событий",
+  fstg:"Все этапы",
+  s_kick:"Кик-офф",
+  s_scrim:"Скримидж",
+  s_reg:"Региональный этап",
+  s_qual:"Отборочный этап (Qualifier)",
+  s_rep:"Национальный этап",
+  s_big:"Крупное событие",
+  s_off:"Межсезонье (Off-Season)",
+  semSel:"Семинары для учителей",
+  fe0:"Future Edition",
+  sem:"Семинар для учителей",
+  join:"Участвовать",
+  joinSem:"Записаться на семинар",
+  smcBtn:"Условия и задания",
+  regclosed:"регистрация закрыта",
+  regsoon:"регистрация скоро",
+  regs:"Регионы (для FLL)",
+  tba:"Дата уточняется",
+  vtba:"Площадка уточняется",
+  ctba:"Место уточняется",
+  chg:"Изменения",
+  stt:"Статус",
+  none:"По выбранным фильтрам событий нет",
+  noneAll:"Расписание сезона уточняется",
+  more:"Показать ещё",
+  evupd:"Обновлено",
+  n4:"СМИ о нас",
+  msub:"Поддержка\u00a0– залог успеха",
+  quote:"Робототехника\u00a0– перспективная сфера. Я поддерживаю вас. Сейчас в мире, в том числе и в Казахстане, большой акцент делается на искусственный интеллект. Это очень важное направление.",
+  qauthor:"– Касым-Жомарт Токаев",
+  qname:"Касым-Жомарт Токаев",
+  allNews:"Все новости",
+  read:"Читать далее",
+  tgsrc:"Telegram",
+  sheetsrc:"FIRST Kazakhstan",
+  newsTitle:"Новости",
+  newsSub:"Результаты команд и события сезона",
+  newsMeta:"Новости FIRST® Kazakhstan: результаты команд и события сезона.",
+  reg:"Партнёры",
+  ptCta:"Хотите поддержать программы FIRST в Казахстане? Напишите нам:",
+  partner:"Партнёр FIRST Kazakhstan",
+  tmH:"Связаться с командой",
+  tm1:"Партнёр FIRST по реализации программ · Руководитель программ FTC",
+  tm2:"Руководитель программ FLL",
+  tm3:"Менеджер по мероприятиям и медиа"
+ },
+ kk:{
+  n1:"Біз туралы",
+  n7:"Нәтижелер",
+  n2:"Бағдарламалар",
+  n3:"Іс-шаралар",
+  n4s:"БАҚ",
+  n5:"Серіктестер",
+  n8:"Байланыс",
+  a_menu:"Мәзір",
+  a_prev:"Артқа",
+  a_next:"Алға",
+  a_city:"Қала",
+  a_cat:"Санат",
+  a_stg:"Кезең",
+  a_srch:"Іздеу",
+  metaDesc:"FIRST® Kazakhstan\u00a0– робототехника және STEM жаһандық қауымдастығы. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition және FIRST® Global Challenge бағдарламалары, жарыс күнтізбесі және тіркелу. Қазақстандағы операторы\u00a0– USTEM Foundation.",
+  h1:"Қазақстан\u00a0– FIRST Global Challenge-дің 4\u00a0дүркін әлем чемпионы",
+  h1p:"Мектеп оқушыларына арналған FIRST халықаралық робототехника бағдарламалары. 2026–2027 маусымына тіркелу ашық",
+  regb:"Тіркелу",
+  new:"Жаңа маусым",
+  bTheme:"Маусым тақырыбы\u00a0– биоалуантүрлілік. Маусым ойындары: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
+  bVideo:"Маусым бейнебаяны",
+  bRules:"Маусым ережесі",
+  about:"FIRST® жастарды ғылыми, инженерлік және технологиялық дағдыларды дамытуға бағытталған қызықты бағдарламалар арқылы тәлімгерлердің жетекшілігімен ғылым мен технология саласындағы көшбасшылар мен жаңашылдар болуға ынталандырады. Қазақстанда бұл бағдарламаларды «USTEM Foundation» Қоғамдық Қоры жүзеге асырады.",
+  cap1:"Қазақстан құрамасы",
+  res:"Біздің нәтижелеріміз",
+  proof:"Бағдарламаның пайдасы",
+  proofp:"FIRST жастарға сыни ойлауды, ынтымақтастықты және көшбасшылық дағдыларды дамытуға көмектеседі. FIRST бағдарламаларына қатысу мектептегі үлгерімді жақсартып, STEM бағыттарына қызығушылықты арттырады. Түлектер көбіне білімін жалғастырып, осы салаларда табысты мансап құрады.",
+  rep:"FIRST бағдарламаларының пайдасы туралы ресми деректер (ағылш.)",
+  gh:"FIRST® әлемде",
+  gline:"114 елде 853 000+ оқушы · FIRST® түлектерінің 83%-ы университетте STEM мамандығын таңдайды",
+  win:"Біздің жетістіктеріміз",
+  valh:"құндылықтары",
+  valp:"Біздің негізгі құндылықтарымыз игі кәсіпқойлық пен ынтымақтастық қағидаттарына негізделген.",
+  sth:"Қалай бастау керек",
+  st1:"Бағдарламаны таңдаңыз",
+  st1a:"Бағдарламалар",
+  st2:"Команда құрып, тіркеліңіз",
+  st2a:"Іс-шаралар кестесі",
+  st3:"Маусым ережесімен танысыңыз",
+  st3a:"Ереже мен құжаттар",
+  prog:"бағдарламалары",
+  progp:"Жасы мен қызығушылығына қарай оқушылар әртүрлі бағдарламаларға қатыса алады.",
+  yrs:"жас",
+  tz:"Тизерді көру",
+  allProg:"Барлық бағдарламаларды көру",
+  dTitle:"Маусым ережесі мен құжаттары",
+  dIntro:"Маусымның ресми ережесі: санаттар, жас шектеулері, команда құрамы және тіркелу тәртібі.",
+  dStages:"Кезеңдер: жаттығу кезеңі (Scrimmage), аймақтық (Regional), өңірлік (Qualifier) және ұлттық (Орталық Азия). Ұлттық кезең жеңімпаздары Хьюстондағы әлемдік финалға квота алады: әр санаттағы квота саны 2027 жылдың басында жарияланады (FTC бойынша – 2026 жылғы желтоқсанда). FIRST Robotics Competition: Алматыдағы кик-офф – Хьюстондағы финал (28.04–01.05.2027).",
+  dReg:"Тіркелу\u00a0– төмендегі «Іс-шаралар» бөлімінде",
+  dBtn:"Маусым ережесі",
+  docKk:"Маусым ережесі (қазақша)",
+  dPres:"Скримидж презентациясы: «STEM-білімге AI енгізу»",
+  dLetter:"«Дарын» РҒПО хаты және маусым материалдары",
+  dSched:"Маусым кестесі",
+  fa:"Барлық қала",
+  fc:"Барлық санат",
+  fs:"Іс-шара іздеу",
+  fstg:"Барлық кезең",
+  s_kick:"Кик-офф",
+  s_scrim:"Скримидж",
+  s_reg:"Аймақтық (Regional)",
+  s_qual:"Өңірлік (Qualifier)",
+  s_rep:"Ұлттық кезең",
+  s_big:"Ірі іс-шара",
+  s_off:"Маусымаралық (Off-Season)",
+  semSel:"Мұғалім семинарлары",
+  fe0:"Future Edition",
+  sem:"Мұғалімдерге арналған семинар",
+  join:"Қатысу",
+  joinSem:"Семинарға жазылу",
+  smcBtn:"Шарттары мен тапсырмалары",
+  regclosed:"тіркелу жабық",
+  regsoon:"тіркелу жақында ашылады",
+  regs:"Қатысатын аймақтар (FLL үшін)",
+  tba:"Күні нақтылануда",
+  vtba:"Өтетін орны нақтылануда",
+  ctba:"Өтетін жері нақтылануда",
+  chg:"Өзгерістер",
+  stt:"Мәртебесі",
+  none:"Таңдалған сүзгілер бойынша іс-шара жоқ",
+  noneAll:"Маусым кестесі нақтылануда",
+  more:"Тағы көрсету",
+  evupd:"Жаңартылды",
+  n4:"БАҚ біз туралы",
+  msub:"Қолдау\u00a0– жетістік кілті",
+  quote:"Робототехника\u00a0– болашағы зор сала. Мен сіздерді қолдаймын. Қазір әлемде, соның ішінде Қазақстанда да жасанды интеллектке үлкен көңіл бөлінуде. Бұл өте маңызды бағыт.",
+  qauthor:"– Қасым-Жомарт Тоқаев",
+  qname:"Қасым-Жомарт Тоқаев",
+  allNews:"Барлық жаңалықтар",
+  read:"Әрі қарай оқу",
+  tgsrc:"Telegram",
+  sheetsrc:"FIRST Kazakhstan",
+  newsTitle:"Жаңалықтар",
+  newsSub:"Команда нәтижелері мен маусым оқиғалары",
+  newsMeta:"FIRST® Kazakhstan жаңалықтары: команда нәтижелері мен маусым оқиғалары.",
+  reg:"Серіктестер",
+  ptCta:"FIRST бағдарламаларын қолдағыңыз келе ме? Бізге жазыңыз:",
+  partner:"FIRST Kazakhstan серіктесі",
+  tmH:"Командамен байланыс",
+  tm1:"FIRST бағдарламаларын іске асыру серіктесі · FTC бағдарламаларының жетекшісі",
+  tm2:"FLL бағдарламаларының жетекшісі",
+  tm3:"Іс-шаралар және медиа менеджері"
+ },
+ en:{
+  n1:"About us",
+  n7:"Results",
+  n2:"Programs",
+  n3:"Events",
+  n4s:"Media",
+  n5:"Partners",
+  n8:"Contact",
+  a_menu:"Menu",
+  a_prev:"Previous",
+  a_next:"Next",
+  a_city:"City",
+  a_cat:"Category",
+  a_stg:"Stage",
+  a_srch:"Search",
+  metaDesc:"FIRST® Kazakhstan\u00a0– a global robotics and STEM community. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition and FIRST® Global Challenge programs, competition calendar and registration. Operated in Kazakhstan by USTEM Foundation.",
+  h1:"Kazakhstan\u00a0– 4-time FIRST Global Challenge world champion",
+  h1p:"FIRST international robotics programs for school students. Registration for the 2026–2027 season is open",
+  regb:"Register",
+  new:"New season",
   bTheme:"The season theme is biodiversity. Season games: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
-  dStages:"Season stages: scrimmage, regional, qualifier and the national stage (Central Asia). The best FIRST LEGO League Challenge and FIRST Tech Challenge teams go on to the world final in Houston; the FIRST Robotics Competition season starts with the kick-off in Almaty and ends with the Houston final on 28 April – 1 May 2027."});
-/* знак ® только в заголовках и названиях программ, в абзацах — нет */
-["about","proofp","valp","h1","h1p"].forEach(k=>{for(const l in T)if(typeof T[l][k]=="string")T[l][k]=T[l][k].replace(/FIRST®/g,"FIRST")});
-/* официальные страницы программ для кнопки «Подробнее» */
-PROG[0].site=PROG[1].site=PROG[2].site=PROG[3].site="https://www.firstinspires.org/robotics/fll";
-PROG[4].site="https://www.firstinspires.org/robotics/ftc";PROG[5].site="https://www.firstinspires.org/robotics/frc";
-/* карточки Future Edition и FRC: понятнее и короче */
-PROG[3].cat="FLL Future Edition";
-PROG[3].intro=["новый формат на базе LEGO Education Computer Science & AI для двух групп: K–2 (5–7 лет) и 3–8 классы (8–16 лет).","LEGO Education Computer Science & AI негізіндегі жаңа формат: K–2 тобы (5–7 жас) және 3–8-сыныптар (8–16 жас).","a new format based on LEGO Education Computer Science & AI: grades K–2 (ages 5–7) and 3–8 (ages 8–16)."];
-PROG[3].team=["4–8 участников, до 2 тренеров; для K–2 состав уточняется","4–8 қатысушы, 2 тренерге дейін; K–2 үшін құрамы нақтыланады","4–8 members, up to 2 coaches; K–2 team size to be confirmed"];
-PROG[5].team=["состав без ограничений, 2 взрослых наставника (Lead Coach)","құрам шектеусіз, 2 ересек тәлімгер (Lead Coach)","no team-size limit, 2 adult Lead Coaches"];
-PROG[6].team[2]="chosen through national selection";
-/* пиктограммы «Открытие» (книга) и «Инклюзивность» (руки и сердце) — проще и читаемее */
-IC[0]='<path d="M2.5 5.5c2.8-1.1 6-1 8.5.6v13.4c-2.5-1.6-5.7-1.7-8.5-.6z"/><path d="M21.5 5.5c-2.8-1.1-6-1-8.5.6v13.4c2.5-1.6 5.7-1.7 8.5-.6z"/>';
-IC[5]='<path d="M12 10.5c-1.6-2-5-1.3-5 1.3 0 2.3 3.4 4.2 5 5.4 1.6-1.2 5-3.1 5-5.4 0-2.6-3.4-3.3-5-1.3z"/><path d="M2.3 15.9a1.9 1.9 0 0 1 2.8-.2l3.3 3.1h2.4a1.2 1.2 0 0 1 0 2.4H6.3L2.3 18z"/><path d="M21.7 15.9a1.9 1.9 0 0 0-2.8-.2l-3.3 3.1h-2.4a1.2 1.2 0 0 0 0 2.4h4.5l4-3.2z"/>';
-/* тире не отрывается от предыдущего слова (неразрывный пробел перед « – ») */
-(function(){const fix=s=>typeof s=="string"?s.replace(/ [—–-] /g," – "):s;
-  for(const l in T)for(const k in T[l])T[l][k]=fix(T[l][k]);
-  [KS,GS].forEach(a=>a.forEach(x=>{const arr=x[x.length-1];for(let j=0;j<arr.length;j++)arr[j]=fix(arr[j])}));
-  N.forEach(n=>{n.t=n.t.map(fix);n.p=n.p.map(fix)});
-  W.forEach(w=>{for(let j=0;j<w.length;j++)w[j]=fix(w[j])});
-  V.forEach(v=>{for(let j=0;j<v.length;j++)v[j]=fix(v[j])});
-  PROG.forEach(p=>{p.intro=p.intro.map(fix);p.team=p.team.map(fix);p.cat=Array.isArray(p.cat)?p.cat.map(fix):fix(p.cat);if(p.ageTxt)p.ageTxt=p.ageTxt.map(fix)});
-})();
-/* короткие подписи в селектах (не обрезаются), семинары в селекте категорий, подпись кнопки отчёта */
-Object.assign(T.ru,{s_kick:"Кик-офф",s_scrim:"Скримидж",s_reg:"Региональный этап",s_qual:"Зональный этап",s_rep:"Национальный этап",semSel:"Семинары для учителей",rep:"Годовой отчёт FIRST (англ.)"});
-Object.assign(T.kk,{s_kick:"Кик-офф",s_scrim:"Скримидж",s_reg:"Аймақтық кезең",s_qual:"Зоналық кезең",s_rep:"Ұлттық кезең",semSel:"Мұғалім семинарлары",rep:"FIRST жылдық есебі (ағылш.)"});
-Object.assign(T.en,{s_kick:"Kick-off",s_scrim:"Scrimmage",s_reg:"Regional stage",s_qual:"Qualifier stage",s_rep:"National stage",semSel:"Teacher seminars",rep:"FIRST annual report"});
+  bVideo:"Season video",
+  bRules:"Season rules",
+  about:"FIRST inspires young people to become leaders and innovators in science and technology through engaging, mentor-led programs. In Kazakhstan, these programs are run by USTEM Foundation, a public foundation.",
+  cap1:"Team Kazakhstan",
+  res:"Our results",
+  proof:"Proven impact",
+  proofp:"FIRST helps young people build critical thinking, collaboration and leadership skills. Taking part in FIRST programs improves school performance and boosts interest in STEM. Alumni often continue their education and build successful careers in these fields.",
+  rep:"Official FIRST impact data",
+  gh:"FIRST® worldwide",
+  gline:"853,000+ students in 114 countries · 83% of FIRST® alumni major in STEM at university",
+  win:"Our achievements",
+  valh:"Values",
+  valp:"Our core values reflect the principles of Gracious Professionalism® and collaboration.",
+  sth:"How to start",
+  st1:"Choose a program",
+  st1a:"Programs",
+  st2:"Form a team and register",
+  st2a:"Event schedule",
+  st3:"Read the season rules",
+  st3a:"Rules and documents",
+  prog:"Programs",
+  progp:"Depending on their age and interests, students can join different programs.",
+  yrs:"years old",
+  tz:"Watch teaser",
+  allProg:"Show all programs",
+  dTitle:"Season rules and documents",
+  dIntro:"Official regulations: categories, age ranges, team sizes and registration.",
+  dStages:"Stages: scrimmage, regional, qualifier and the national stage (Central Asia). National-stage winners earn places at the world final in Houston; the number per category will be announced in early 2027 (for FTC, in December 2026). FIRST Robotics Competition: kick-off in Almaty, final in Houston (28 April – 1 May 2027).",
+  dReg:"To register, see the Events section below",
+  dBtn:"Season rules",
+  docKk:"Season rules (in Kazakh)",
+  dPres:"Scrimmage presentation: AI in STEM education (in Kazakh)",
+  dLetter:"Daryn National Center letter and season materials",
+  dSched:"Season schedule",
+  fa:"All cities",
+  fc:"All categories",
+  fs:"Search events",
+  fstg:"All stages",
+  s_kick:"Kick-off",
+  s_scrim:"Scrimmage",
+  s_reg:"Regional stage",
+  s_qual:"Qualifier stage",
+  s_rep:"National stage",
+  s_big:"Major event",
+  s_off:"Off-Season",
+  semSel:"Teacher seminars",
+  fe0:"Future Edition",
+  sem:"Teacher seminar",
+  join:"Register",
+  joinSem:"Sign up for the seminar",
+  smcBtn:"Rules and tasks",
+  regclosed:"registration closed",
+  regsoon:"registration opens soon",
+  regs:"Regions (for FLL)",
+  tba:"Date TBA",
+  vtba:"Venue TBA",
+  ctba:"Location TBA",
+  chg:"Changes",
+  stt:"Status",
+  none:"No events match the selected filters",
+  noneAll:"The season schedule will be announced soon",
+  more:"Show more",
+  evupd:"Updated",
+  n4:"In the media",
+  msub:"Support is the key to success",
+  quote:"Robotics is a promising field. I support you. Around the world, including in Kazakhstan, there is now a strong focus on artificial intelligence. This is a very important area.",
+  qauthor:"– Kassym-Jomart Tokayev",
+  qname:"Kassym-Jomart Tokayev",
+  allNews:"All news",
+  read:"Read more",
+  tgsrc:"Telegram",
+  sheetsrc:"FIRST Kazakhstan",
+  newsTitle:"News",
+  newsSub:"Team results and season events",
+  newsMeta:"FIRST® Kazakhstan news: team results and season events.",
+  reg:"Partners",
+  ptCta:"Want to support FIRST programs in Kazakhstan? Write to us:",
+  partner:"FIRST Kazakhstan partner",
+  tmH:"Contact our team",
+  tm1:"Program Delivery Partner · FTC Program Lead",
+  tm2:"FLL Program Lead",
+  tm3:"Events & Media Manager"
+ }
+};
 
-/* ---- Сверка с регламентом и официальными источниками (19.10.2026, ~20:25) ---- */
-KS[1][3]=["Участников программ FIRST в Центральной Азии","Орталық Азиядағы FIRST бағдарлама\u00adларының қатысушысы","FIRST participants across Central Asia"];
-KS[3][3]=["Команд Казахстана на FIRST Championship 2026 в Хьюстоне – рекордная делегация из 225 школьников","Хьюстондағы FIRST Championship 2026-ға қатысқан Қазақстан командасы – 225 оқушыдан тұратын рекордтық делегация","Kazakhstan teams at FIRST Championship 2026 in Houston, a record delegation of 225 students"];
-GS[1][0]=191;
-GS[2][2]=["Человек на FIRST Championship 2026 в Хьюстоне","Хьюстондағы FIRST Championship 2026-ға қатысқан адам","Attendees at FIRST Championship 2026 in Houston"];
-/* FIRST Global: Панама 2025 – 191 страна (итоговый пресс-релиз), Вашингтон 2017 – 157 стран (163 команды) */
-W[1][0]="1-е место из 191 страны";W[1][1]="191 елден 1-орын";W[1][2]="1st of 191 countries";
-W[6][0]="8-е место из 157 стран";W[6][1]="157 елден 8-орын";W[6][2]="8th of 157 countries";
-[["Панама-Сити, Панама","Панама-Сити, Панама","Panama City, Panama"],["Афины, Греция","Афина, Грекия","Athens, Greece"],["Сингапур","Сингапур","Singapore"],["Женева, Швейцария","Женева, Швейцария","Geneva, Switzerland"],["Дубай, ОАЭ","Дубай, БАӘ","Dubai, UAE"],["Вашингтон, США","Вашингтон, АҚШ","Washington, D.C., USA"]].forEach((c,k)=>{W[k+1][4]=c[0];W[k+1][5]=c[1];W[k+1][6]=c[2]});
-/* этапы по регламенту (п. 5.2, 5.8): квоты в Хьюстон получают победители национального этапа; казахские термины как в регламенте */
-Object.assign(T.ru,{dStages:"Этапы сезона: скримидж, региональный, зональный (Qualifier) и национальный этап (Центральная Азия). Победители национального этапа получают квоты на мировой финал в Хьюстоне (число квот по категориям будет объявлено в начале 2027 года). Сезон FIRST Robotics Competition начинается с кик-оффа в Алматы и завершается финалом в Хьюстоне 28.04–01.05.2027.",partner:"Партнёр FIRST Kazakhstan"});
-Object.assign(T.kk,{s_reg:"Аймақтық (Regional)",s_qual:"Өңірлік (Qualifier)",dStages:"Маусым кезеңдері: скримидж, аймақтық (Regional), өңірлік (Qualifier) және ұлттық кезең (Орталық Азия). Ұлттық кезең жеңімпаздары Хьюстондағы әлемдік финалға квота алады (санаттар бойынша квота саны 2027 жылдың басында жарияланады). FIRST Robotics Competition маусымы Алматыдағы кик-оффтан басталып, Хьюстондағы финалмен (28.04–01.05.2027) аяқталады.",partner:"FIRST Kazakhstan серіктесі"});
-Object.assign(T.en,{dStages:"Season stages: scrimmage, regional, qualifier and the national stage (Central Asia). Winners of the national stage receive places at the world final in Houston (the number of places per category will be announced in early 2027); the FIRST Robotics Competition season starts with the kick-off in Almaty and ends with the Houston final on 28 April – 1 May 2027.",partner:"FIRST Kazakhstan partner"});
-VENUE["әл-фараби атындағы binom school мектеп-лицейі"]=["Школа-лицей BINOM SCHOOL им. аль-Фараби","Әл-Фараби атындағы BINOM SCHOOL мектеп-лицейі","Al-Farabi BINOM SCHOOL Lyceum"];
-/* названия партнёров для alt-текста логотипов (по странице FIRST Supporters и именам файлов из архива заказчика) */
-const PNAMES={mmm:"3M",apple:"Apple",boeing:"Boeing",cat:"Caterpillar",fedex:"FedEx",google:"Google.org",lego:"LEGO Education",nasa:"NASA",rtx:"RTX",jnj:"Johnson & Johnson",daryn:"РНПЦ «Дарын»",epam:"EPAM","p_samruk-kazyna":"Samruk-Kazyna","p_samruk-kazyna-trust":"Samruk-Kazyna Trust","p_qazaqstan-halqyna":"Qazaqstan Halqyna","p_exxonmobil":"ExxonMobil","p_akimat-almaty":"Акимат города Алматы","p_stemshop":"STEM Shop","p_3dgo":"3DGO"};
-(function(){const fix=s=>typeof s=="string"?s.replace(/ [—–-] /g," – "):s;
-  for(const l in T)for(const k in T[l])T[l][k]=fix(T[l][k]);
-  [KS,GS].forEach(a=>a.forEach(x=>{const arr=x[x.length-1];for(let j=0;j<arr.length;j++)arr[j]=fix(arr[j])}));
-  N.forEach(n=>{n.t=n.t.map(fix);n.p=n.p.map(fix)});
-  W.forEach(w=>{for(let j=0;j<w.length;j++)w[j]=fix(w[j])});
-  V.forEach(v=>{for(let j=0;j<v.length;j++)v[j]=fix(v[j])});
-})();
-/* пункт меню «Контакты», страница «Новости» */
-Object.assign(T.ru,{n8:"Контакты",allNews:"Все новости",newsTitle:"Новости",newsSub:"Результаты команд и события сезона"});
-Object.assign(T.kk,{n8:"Байланыс",allNews:"Барлық жаңалықтар",newsTitle:"Жаңалықтар",newsSub:"Команда нәтижелері мен маусым оқиғалары"});
-Object.assign(T.en,{n8:"Contact",allNews:"All news",newsTitle:"News",newsSub:"Team results and season events"});
-Object.assign(T.ru,{tmH:"Связаться с командой",tm1:"Партнёр FIRST по реализации программ · Руководитель программ FTC",tm2:"Руководитель программ FLL",tm3:"Менеджер по мероприятиям и медиа"});
-Object.assign(T.kk,{tmH:"Командамен байланыс",tm1:"FIRST бағдарламаларын іске асыру серіктесі · FTC бағдарламаларының жетекшісі",tm2:"FLL бағдарламаларының жетекшісі",tm3:"Іс-шаралар және медиа менеджері"});
-Object.assign(T.en,{tmH:"Contact our team",tm1:"Program Delivery Partner · FTC Program Lead",tm2:"FLL Program Lead",tm3:"Events & Media Manager"});
-/* подпись фото цитаты, описание страницы для поисковиков, названия партнёров по языкам */
-Object.assign(T.ru,{qname:"Касым-Жомарт Токаев",metaDesc:"FIRST® Kazakhstan – глобальное сообщество робототехники и STEM. Программы FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition и FIRST® Global Challenge, календарь соревнований и регистрация. Оператор в Казахстане – USTEM Foundation.",newsMeta:"Новости FIRST® Kazakhstan: результаты команд и события сезона."});
-Object.assign(T.kk,{qname:"Қасым-Жомарт Тоқаев",metaDesc:"FIRST® Kazakhstan – робототехника және STEM жаһандық қауымдастығы. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition және FIRST® Global Challenge бағдарламалары, жарыс күнтізбесі және тіркелу. Қазақстандағы операторы – USTEM Foundation.",newsMeta:"FIRST® Kazakhstan жаңалықтары: команда нәтижелері мен маусым оқиғалары."});
-Object.assign(T.en,{qname:"Kassym-Jomart Tokayev",metaDesc:"FIRST® Kazakhstan – a global robotics and STEM community. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition and FIRST® Global Challenge programs, competition calendar and registration. Operated in Kazakhstan by USTEM Foundation.",newsMeta:"FIRST® Kazakhstan news: team results and season events."});
-const PNAMES_L={kk:{daryn:"«Дарын» РҒПО","p_akimat-almaty":"Алматы қаласының әкімдігі"},en:{daryn:"Daryn National Center","p_akimat-almaty":"Almaty City Akimat"}};
-/* названия региональных партнёров для alt-текста логотипов (логотип «star» не опознан – общая подпись) */
-Object.assign(PNAMES,{edu:"Министерство просвещения РК",digital:"Министерство цифрового развития, инноваций и аэрокосмической промышленности РК",astana:"Astana Hub",ms:"Microsoft",adaryny:"Астана дарыны",kerneu:"Kerneu Group","p_batyr-bolamyn":"Batyr Bolamyn","p_ghandi":"Специализированный лицей № 92 имени Махатмы Ганди"});
-Object.assign(PNAMES_L.kk,{edu:"ҚР Оқу-ағарту министрлігі",digital:"ҚР Цифрлық даму, инновациялар және аэроғарыш өнеркәсібі министрлігі","p_ghandi":"Махатма Ганди атындағы № 92 мамандандырылған лицей"});
-Object.assign(PNAMES_L.en,{edu:"Ministry of Education of Kazakhstan",digital:"Ministry of Digital Development, Innovations and Aerospace Industry of Kazakhstan",adaryny:"Astana Daryny","p_ghandi":"Mahatma Gandhi Specialized Lyceum No. 92"});
-/* возраст по-английски: «4–6 years old» */
-T.en.yrs="years old";
-/* сообщение, когда в расписании пока нет предстоящих событий (между сезонами) */
-Object.assign(T.ru,{noneAll:"Расписание сезона уточняется"});
-Object.assign(T.kk,{noneAll:"Маусым кестесі нақтылануда"});
-Object.assign(T.en,{noneAll:"The season schedule will be announced soon"});
-/* 19.10.2026, 22:30: казахские тексты «О нас» и «Польза» – слово в слово по сообщению заказчика; блок «Правила и документы сезона» короче; ссылка на годовой отчёт убрана из index.html */
-Object.assign(T.kk,{about:"FIRST® жастарды ғылыми, инженерлік және технологиялық дағдыларды дамытуға бағытталған қызықты бағдарламалар арқылы тәлімгерлердің жетекшілігімен ғылым мен технология саласындағы көшбасшылар мен жаңашылдар болуға ынталандырады. Қазақстанда бұл бағдарламаларды «USTEM Foundation» Қоғамдық Қоры жүзеге асырады.",
-proofp:"FIRST жастарға сыни ойлауды, ынтымақтастықты және көшбасшылық дағдыларды дамытуға көмектеседі. FIRST бағдарламаларына қатысу мектептегі үлгерімді жақсартып, STEM бағыттарына қызығушылықты арттырады. Түлектер көбіне білімін жалғастырып, осы салаларда табысты мансап құрады. FIRST жарыстары республикалық және халықаралық олимпиадалар мен ғылыми жобалар конкурстарының тізіміне енгізілген (ҚР Оқу-ағарту министрлігінің № 514 бұйрығы).",
-dIntro:"Ресми регламент: санаттар, жас шектеулері, команда құрамы және тіркелу тәртібі.",
-dStages:"Кезеңдер: скримидж, аймақтық (Regional), өңірлік (Qualifier) және ұлттық (Орталық Азия). Ұлттық кезең жеңімпаздары Хьюстондағы әлемдік финалға квота алады, квота саны 2027 жылдың басында жарияланады. FIRST Robotics Competition: Алматыдағы кик-офф – Хьюстондағы финал (28.04–01.05.2027)."});
-Object.assign(T.ru,{dIntro:"Официальный регламент: категории, возраст и состав команд, порядок регистрации.",
-dStages:"Этапы: скримидж, региональный, зональный (Qualifier) и национальный (Центральная Азия). Победители национального этапа получают квоты на мировой финал в Хьюстоне, число квот объявят в начале 2027 года. FIRST Robotics Competition: кик-офф в Алматы – финал в Хьюстоне (28.04–01.05.2027)."});
-Object.assign(T.en,{dIntro:"Official regulations: categories, age ranges, team sizes and registration.",
-dStages:"Stages: scrimmage, regional, qualifier and the national stage (Central Asia). National-stage winners earn places at the world final in Houston; the number per category will be announced in early 2027. FIRST Robotics Competition: kick-off in Almaty, final in Houston (28 April – 1 May 2027)."});
-for(const l in T)delete T[l].rep;
-(function(){const fix=s=>typeof s=="string"?s.replace(/ [—–-] /g,"\u00a0– "):s;for(const l in T)for(const k in T[l])T[l][k]=fix(T[l][k])})();
-/* Social Media Challenge – 4-й этап сезона (п. 5.2 регламента), сроки по п. 5.10; ссылка – папка приложения № 7 (условия участия и задания). Карточка в «Событиях» исчезает после даты end. */
-const SMC={name:"Social Media Challenge (SMC)",start:"23.09.2026",end:"25.01.2027",url:"https://drive.google.com/drive/folders/1Sk4qLMkO3AX-cTWk9B3sXjKQB-fm5bfm",img:"assets/img/x-nw-hero.webp"};
-Object.assign(T.ru,{dSmc:"Social Media Challenge (SMC)",smcBtn:"Условия и задания",win:"Наши достижения"});
-Object.assign(T.kk,{dSmc:"Social Media Challenge (SMC)",smcBtn:"Шарттары мен тапсырмалары",win:"Біздің жетістіктеріміз"});
-Object.assign(T.en,{dSmc:"Social Media Challenge (SMC)",smcBtn:"Rules and tasks",win:"Our achievements"});
-/* Достижения в других программах (после карточек FIRST Global Challenge). Поля: 0–2 результат, 3 год, 4–6 город, 10–12 соревнование, 13 фото.
- * Источники: Kazinform 04.05.2026 (Хьюстон 2026, 12 наград), Qazinform 19.08.2026 (Пекин, 23 награды), Kazinform 13.05.2026 (Коринф), 24.kz 21.04.2025 (Хьюстон 2025, 6 наград). */
-W.push(
-["12 наград","12 марапат","12 awards","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","FIRST® Championship","FIRST® Championship","FIRST® Championship","assets/img/ph2.jpg"],
-["23 награды","23 марапат","23 awards","2026","Пекин, Китай","Бейжің, Қытай","Beijing, China","","","","FIRST® LEGO® League Asia Open","FIRST® LEGO® League Asia Open","FIRST® LEGO® League Asia Open","assets/img/x-nw-fll-asia-open-2026.jpg"],
-["2-е место, Champions Award","2-орын, Champions Award","2nd place, Champions Award","2026","Коринф, Греция","Коринф, Грекия","Corinth, Greece","","","","Open International Championship","Open International Championship","Open International Championship","assets/img/x-nw-first-table.webp"],
-["6 наград","6 марапат","6 awards","2025","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","FIRST® Championship","FIRST® Championship","FIRST® Championship","assets/img/im2-hero.webp"]);
-/* Порядок карточек «Наши достижения»: по дате события, новые сверху. Поле 14 – дата ГГГГ-ММ-ДД (для старых строк берётся из WDATE по году и городу).
- * Даты: FIRST Global Challenge – даты финалов по сайту FIRST Global; Хьюстон – дни FIRST Championship; Пекин – 13–16.08.2026; Коринф – по публикации Kazinform 13.05.2026. */
-const WDATE={"2026|Инчхон":"2026-10-10","2025|Панама":"2025-11-01","2024|Афины":"2024-09-29","2023|Сингапур":"2023-10-10","2022|Женева":"2022-10-16","2019|Дубай":"2019-10-27","2017|Вашингтон":"2017-07-18",
-  "2026|Хьюстон":"2026-05-02","2026|Пекин":"2026-08-16","2026|Коринф":"2026-05-13","2025|Хьюстон":"2025-04-19"};
-W.forEach(w=>{if(!w[14]){const k=Object.keys(WDATE).find(k=>k.split("|")[0]===w[3]&&String(w[4]).indexOf(k.split("|")[1])===0);w[14]=k?WDATE[k]:w[3]}});
-W.sort((a,b)=>String(b[14]).localeCompare(String(a[14])));
-/* строка для партнёров под логотипами (19.10.2026, 22:58) */
-Object.assign(T.ru,{ptCta:"Хотите поддержать программы FIRST в Казахстане? Напишите нам:"});
-Object.assign(T.kk,{ptCta:"FIRST бағдарламаларын қолдағыңыз келе ме? Бізге жазыңыз:"});
-Object.assign(T.en,{ptCta:"Want to support FIRST programs in Kazakhstan? Write to us:"});
-/* маленькая ссылка под «Пользой» на официальные данные FIRST о пользе программ (23:00, по просьбе заказчика) */
-Object.assign(T.ru,{rep:"Официальные данные FIRST о пользе программ (англ.)"});
-Object.assign(T.kk,{rep:"FIRST бағдарламаларының пайдасы туралы ресми деректер (ағылш.)"});
-Object.assign(T.en,{rep:"Official FIRST impact data"});
-/* ===== 20.10.2026: правки по сообщению заказчика (фото, достижения, партнёры, программы, цифры) =====
- * Источники: регламент «Положение FIRST CANOPY 2026–2027 Казахстан» (FLL Discover в сезоне BIOGLOW не проводится, п. 1.2 прил. 1;
- * 20 регионов по 2 квоты, п. 5.6); firstinspires.org/first-canopy (BIOGLOW, BIOBUZZ, BIOCORE); Kazinform и gov.kz 04.05.2026 (Хьюстон 2026);
- * 24.kz 21.04.2025 (Хьюстон 2025); ustem.kz/kz/partners (партнёры); Forbes Kazakhstan 18.12.2025 (Samruk-Kazyna Trust и ExxonMobil – проект STEM Hanym). */
-/* цифры: 85+ событий сезона; вместо «17 команд в Хьюстоне» – 20 регионов */
-KS[2][0]=85;
-KS[3]=[20,"","",["Регионов Казахстана, где мы проводим соревнования FIRST","Өңірде FIRST жарыстарын өткіземіз","Regions of Kazakhstan where we hold FIRST competitions"]];
-/* программы: FLL Discover – без BIOGLOW и без тизера (в сезоне BIOGLOW не проводится, используются материалы прошлых сезонов);
- * Future Edition – BIOGLOW; FTC – официальный ролик BIOBUZZ; фото FTC и FGC – с FIRST Championship 2026 и FIRST Global Challenge 2026 */
-PROG[0].cat="FLL-D";PROG[0].teaser=null;
-PROG[3].cat="FLL Future Edition · BIOGLOW";
-PROG[4].photo="assets/img/p-ftc-2026.webp";PROG[4].ppos="50% 45%";PROG[4].teaser="https://www.youtube.com/watch?v=sUH3z5a5S9I";
-PROG[5].photo="assets/img/p-frc-2026.webp";PROG[5].ppos="50% 50%"; /* FRC: фото робота с соревнований (22.10.2026) */
-PROG[6].photo="assets/img/p-fgc-2026.webp";PROG[6].ppos="50% 50%";
-/* достижения: только FIRST Global Challenge и FIRST Championship; Хьюстон 2026 – по итогам (Kazinform, gov.kz), фото команд с чемпионата */
-WI["2026"]="assets/img/w-fgc-2026.webp";
-(function(){
-  const H="2026-05-02",P=["Хьюстон, США","Хьюстон, АҚШ","Houston, USA"],c=s=>[s,s,s];
-  const hou=(r,comp,img)=>[r[0],r[1],r[2],"2026",P[0],P[1],P[2],"","","",...c(comp),img,H];
-  for(let k=W.length-1;k>=0;k--){const w=W[k];
-    if(/Asia Open|Open International/.test(w[10]||"")||(w[10]==="FIRST® Championship"&&w[3]==="2026"))W.splice(k,1);
-    else if(w[10]==="FIRST® Championship"&&w[3]==="2025")w[13]="assets/img/w-hou25.webp";}
-  W.push(
-    hou(["Финалист Champions Award, топ-5 мира","Champions Award финалисі, әлемдік топ-5","Champions Award finalist, world top 5"],"Tolebi Daryn · FIRST® LEGO® League Challenge","assets/img/w-hou26-tolebi.webp"),
-    hou(["Победители Sustain Award и Reach Award","Sustain Award және Reach Award жеңімпаздары","Sustain Award and Reach Award winners"],"JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","assets/img/w-hou26-ftc-gold.webp"),
-    hou(["3-е место: Think Award и Reach Award","Think Award және Reach Award, 3-орын","3rd place: Think Award and Reach Award"],"XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","assets/img/w-hou26-ftc-3rd.webp"),
-    hou(["Впервые в топ-8: капитаны альянсов","Алғаш рет топ-8: альянс капитандары","First time in the top 8: alliance captains"],"Panheya, Celestial · FIRST® Tech Challenge","assets/img/w-hou26-alliance.webp"),
-    hou(["Gracious Professionalism Award и топ-6 игры роботов","Gracious Professionalism Award және робот-ойында ТОП-6","Gracious Professionalism Award and top 6 in the robot game"],"Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","assets/img/w-hou26-fllc.webp"),
-    hou(["Core Values Award и Team Model Award","Core Values Award және Team Model Award","Core Values Award and Team Model Award"],"Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","assets/img/w-hou26-flle.webp"));
-  W.sort((a,b)=>String(b[14]).localeCompare(String(a[14])));
-})();
-/* новости: у каждой карточки – фото из той же публикации */
-[["zhaikpress.kz","assets/img/n-fgc26.webp","50% 50%"],["23-awards-first-lego-league-asia-open","assets/img/n-asia26.webp","50% 40%"],["prizerami-chempionata-po-robototehnike-v-gretsii","assets/img/n-gr26.webp","50% 45%"],
- ["12-nagrad","assets/img/n-hou26.webp","50% 50%"],["astanatimes.com","assets/img/n-alem26.webp","50% 55%"],["/details/1097414","assets/img/n-fgc25.webp","50% 40%"]]
- .forEach(([u,img,pos])=>N.forEach(n=>{if(n.url.indexOf(u)>=0){n.img=img;n.pos=pos}}));
-/* партнёры: один блок «Серіктестер»; из международных остаётся только LEGO Education; 3DGO, Microsoft, EPAM и партнёры, которых нет
- * в официальном списке ustem.kz, убраны. Логотипы министерств – актуальные, с ustem.kz (тёмная версия). Логотип «star» – Qazaq Army (как на ustem.kz).
- * Цветные логотипы «Дарын» (x-daryn.webp) и Samruk-Kazyna (x-p_samruk-kazyna.webp) – официальные файлы от USTEM Foundation, 21.10.2026. */
-RP.length=0;RP.push(["edu"],["digital"],["daryn"],["astana"],["star"],["adaryny"],["kerneu"],["p_samruk-kazyna"],["p_exxonmobil"],["p_stemshop"],["lego"]);
-IP.length=0;
-LG.edu="assets/img/lg-min-enlightenment.webp";LG.digital="assets/img/x-ai-digital.webp"; /* цветной логотип AI & Digital Ministry – файл от USTEM 21.10.2026 (с сайта trustexam.ai) */
-Object.assign(PNAMES,{digital:"Министерство искусственного интеллекта и цифрового развития РК",star:"Qazaq Army"});
-Object.assign(PNAMES_L.kk,{digital:"ҚР Жасанды интеллект және цифрлық даму министрлігі"});
-Object.assign(PNAMES_L.en,{edu:"Ministry of Enlightenment of Kazakhstan",digital:"Ministry of Artificial Intelligence and Digital Development of Kazakhstan"});
-Object.assign(T.ru,{reg:"Партнёры",dPres:"Презентация скримиджа «STEM-білімге AI енгізу» (на казахском)"});
-Object.assign(T.kk,{reg:"Серіктестер",dPres:"Скримидж презентациясы: «STEM-білімге AI енгізу»"});
-Object.assign(T.en,{reg:"Partners",dPres:"Scrimmage presentation: AI in STEM education (in Kazakh)"});
-/* FIRST Global Challenge 2025: в новости gov.kz – фото команды из самой публикации; в «Достижениях» – официальное фото церемонии закрытия
- * FGC 2025 в Панаме с first.global (пресс-релиз об итогах и наградах), чтобы фото на сайте не повторялись */
-WI["2025"]="assets/img/w-fgc-2025.webp";
+/* ================= документы сезона ================= */
+/* правила сезона по языкам (на en показывается казахская версия); вкладка «Сайт» таблицы может их заменить */
+const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
 
-/* ---- Сверка с Положением / Ережесі FIRST CANOPY 2026–2027 (ред. 19–20.10.2026), 20.10.2026 ----
- * приказ № 514 – МОН РК от 7 декабря 2011 года (п. 2.2); этапы – как в п. 5.2 (Тренировочный этап (Scrimmage),
- * Региональный (Regional), Отборочный этап по областям (Qualifiers), Национальный / Центральная Азия);
- * квоты: в каждой категории – в начале 2027 года (п. 5.8), для FTC – в декабре 2026 года (прил. 6, п. 6.8);
- * FIRST Championship 28.04–01.05.2027 (п. 5.1.4, firstinspires.org); FRC – 2 совершеннолетних Lead Coach (п. 4.1.3.7);
- * казахские названия ценностей FIRST – как в Ережесі (п. 4.2, 4.3). BIOBUZZ и BIOCORE – firstinspires.org/first-canopy. */
-(function(){
-  const rep=(l,k,a,b)=>{if(T[l]&&typeof T[l][k]==="string"&&T[l][k].includes(a))T[l][k]=T[l][k].replace(a,b)};
-  rep("kk","proofp","(ҚР Оқу-ағарту министрлігінің № 514 бұйрығы)","(ҚР БҒМ 2011 жылғы 7 желтоқсандағы № 514 бұйрығы)");
-  rep("ru","proofp","(приказ Министерства просвещения РК № 514)","(приказ МОН РК № 514 от 7 декабря 2011 года)");
-  rep("en","proofp"," approved by the Ministry of Education of Kazakhstan (Order No. 514)"," (Order No. 514 of the Ministry of Education and Science of Kazakhstan, 7 December 2011)");
-  T.kk.dStages="Кезеңдер: жаттығу кезеңі (Scrimmage), аймақтық (Regional), өңірлік (Qualifier) және ұлттық (Орталық Азия). Ұлттық кезең жеңімпаздары Хьюстондағы әлемдік финалға квота алады: әр санаттағы квота саны 2027 жылдың басында жарияланады (FTC бойынша – 2026 жылғы желтоқсанда). FIRST Robotics Competition: Алматыдағы кик-офф – Хьюстондағы финал (28.04–01.05.2027).";
-  T.ru.dStages="Этапы: тренировочный (Scrimmage), региональный (Regional), отборочный по областям (Qualifier) и национальный (Центральная Азия). Победители национального этапа получают квоты на мировой финал в Хьюстоне: число квот в каждой категории опубликуют в начале 2027 года (для FTC – в декабре 2026 года). FIRST Robotics Competition: кик-офф в Алматы – финал в Хьюстоне (28.04–01.05.2027).";
-  T.en.dStages="Stages: scrimmage, regional, qualifier and the national stage (Central Asia). National-stage winners earn places at the world final in Houston; the number per category will be announced in early 2027 (for FTC, in December 2026). FIRST Robotics Competition: kick-off in Almaty, final in Houston (28 April – 1 May 2027).";
-  T.kk.dIntro="Маусымның ресми ережесі: санаттар, жас шектеулері, команда құрамы және тіркелу тәртібі.";
-  T.ru.dIntro="Официальное положение сезона: категории, возраст и состав команд, порядок регистрации.";
-  T.ru.s_qual="Отборочный этап (Qualifier)";
-  T.kk.valp="Біздің негізгі құндылықтарымыз игі кәсіпқойлық пен ынтымақтастық қағидаттарына негізделген.";
-  const VK={"Ашылым":"Жаңалық ашу","Ықпал":"Әсер ету","Қуаныш":"Көңіл көтеру","Инклюзивтілік":"Инклюзия"};
-  V.forEach(v=>{if(VK[v[1]])v[1]=VK[v[1]]});
-  const frc=PROG.find(p=>/Robotics Competition/.test(p.name));
-  if(frc)frc.team=["состав без ограничений, 2 совершеннолетних тренера (Lead Coach)","құрам шектеусіз, 2 кәмелетке толған жаттықтырушы (Lead Coach)","no team-size limit, 2 adult Lead Coaches"];
-})();
-/* официальное английское название Оқу-ағарту министрлігі – Ministry of Education (gov.kz, primeminister.kz), как и в новостях */
-PNAMES_L.en.edu="Ministry of Education of Kazakhstan";
-/* официальные ценности FIRST® Core Values: порядок, названия и тексты – как в материалах FIRST (RU/KK), иконки – assets/img/cv-*.svg */
-V.length=0;V.push(
+/* ================= цифры Казахстана =================
+ * [число, суффикс, префикс, подписи [ru,kk,en], ссылки [ru,kk,en] (необязательно)]; число растёт с нуля при появлении на экране */
+const KS=[
+ [
+  514,
+  "",
+  "№ ",
+  ["Приказ МОН РК (2011): FIRST – в перечне республиканских олимпиад и конкурсов. Перечень сейчас ведёт Министерство просвещения РК.","ҚР БҒМ бұйрығы (2011): FIRST республикалық олимпиадалар мен конкурстар тізімінде. Тізімді қазір ҚР Оқу-ағарту министрлігі жүргізеді.","Order of the Ministry of Education and Science (2011): FIRST is on the national list of olympiads and contests. The list is now maintained by the Ministry of Enlightenment."],
+  ["https://adilet.zan.kz/rus/docs/V1100007355","https://adilet.zan.kz/kaz/docs/V1100007355","https://adilet.zan.kz/rus/docs/V1100007355"]
+ ],
+ [
+  20000,
+  "+",
+  "",
+  ["участников FIRST® в Центральной Азии – Казахстан, Узбекистан, Кыргызстан","Орталық Азиядағы FIRST® қатысушысы – Қазақстан, Өзбекстан, Қырғызстан","FIRST® participants across Central Asia – Kazakhstan, Uzbekistan, Kyrgyzstan"]
+ ],
+ [
+  500,
+  "+",
+  "",
+  ["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]
+ ]
+];
+
+/* ================= ценности FIRST =================
+ * V: [название ru,kk,en, описание ru,kk,en]; CV: иконка assets/img/cv-<имя>.svg и цвет плитки */
+const V=[
  ["Командная работа","Топтық жұмыс","Teamwork","Мы сильнее, когда работаем сообща.","Біз бірігіп жұмыс істегенде күштіміз.","We are stronger when we work together."],
  ["Инклюзия","Инклюзия","Inclusion","Мы уважаем друг друга и принимаем наши различия.","Бір-бірімізді құрметтейміз және ерекшеліктерімізді қабылдаймыз.","We respect each other and embrace our differences."],
  ["Влияние","Әсер ету","Impact","Мы применяем знания, чтобы сделать мир лучше.","Біз білімімізді әлемді жақсарту үшін қолданамыз.","We apply what we learn to improve our world."],
  ["Веселье","Көңіл көтеру","Fun","Мы наслаждаемся и радуемся тому, что мы делаем!","Біз істеп жатқан ісімізден ләззат аламыз және қуанамыз!","We enjoy and celebrate what we do!"],
  ["Открытие","Жаңалық ашу","Discovery","Мы изучаем новые навыки и идеи.","Біз жаңа дағдылар үйренеміз және идеяларды зерттейміз.","We explore new skills and ideas."],
- ["Инновация","Инновация","Innovation","Мы используем креативность и настойчивость для решения проблем.","Біз мәселелерді шешу үшін шығармашылық пен табандылықты қолданамыз.","We use creativity and persistence to solve problems."]);
-/* иконка и фирменный цвет плитки для каждой ценности (красный, фиолетовый, зелёный FIRST) */
-const CV=[["teamwork","#ed1c24"],["inclusion","#5c2490"],["impact","#00a05a"],["fun","#00a05a"],["discovery","#5c2490"],["innovation","#ed1c24"]];
+ ["Инновация","Инновация","Innovation","Мы используем креативность и настойчивость для решения проблем.","Біз мәселелерді шешу үшін шығармашылық пен табандылықты қолданамыз.","We use creativity and persistence to solve problems."]
+];
+const CV=[
+ ["teamwork","#ed1c24"],
+ ["inclusion","#5c2490"],
+ ["impact","#00a05a"],
+ ["fun","#00a05a"],
+ ["discovery","#5c2490"],
+ ["innovation","#ed1c24"]
+];
 
-/* ---- 21.10.2026 ---- */
-/* FIRST4ALL – карточка в «Событиях» без ссылки, пока нет формы регистрации.
- * Когда появится форма: впишите её адрес в url (Google Форма: https://forms.gle/… или docs.google.com/forms/…).
- * По регламенту FIRST4ALL 2026–2027 (п. 3.1–3.2) это инициатива без площадки: команды-наставники подают список новых команд
- * до 25.12.2026 23:59 по времени Астаны, поэтому строки «место проведения» в карточке нет, а дата – срок подачи списка (dateTxt: ru, kk, en). */
-const F4A={name:"FIRST4ALL",url:"",date:"25.12.2026",dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026 дейін","Team lists due by 25.12.2026"],noLoc:true,img:"assets/img/x-nw-first-table.webp"};
-Object.assign(T.ru,{regsoon:"регистрация скоро"});
-Object.assign(T.kk,{regsoon:"тіркелу жақында ашылады"});
-Object.assign(T.en,{regsoon:"registration opens soon"});
+/* ================= достижения (карусель «Наши достижения») =================
+ * поля: 0–2 результат, 3 год, 4–6 место, 7–9 примечание (не показывается), 10–12 соревнование (пусто – FIRST Global Challenge),
+ * 13 фото (пусто – из WI по году), 14 дата ГГГГ-ММ-ДД для сортировки (новые сверху) */
+const WI={
+ "2017":"assets/img/x-2017.webp",
+ "2019":"assets/img/x-2019.webp",
+ "2022":"assets/img/x-2022.webp",
+ "2023":"assets/img/x-2023.webp",
+ "2024":"assets/img/x-2024.webp",
+ "2025":"assets/img/w-fgc-2025.webp",
+ "2026":"assets/img/w-fgc-2026.webp"
+};
+const W=[
+ ["4-е место из 185 стран","185 елден 4-орын","4th of 185 countries","2026","Инчхон, Корея","Инчхон, Корея","Incheon, Korea","11 побед из 11 в отборочном раунде, выход в плей-офф","Іріктеу кезеңіндегі 11 матчтың бәрінде жеңіс, плей-офф","Won all 11 qualification matches, reached the playoffs","","","","","2026-10-10"],
+ ["Финалист Champions Award, топ-5 мира","Champions Award финалисі, әлемдік топ-5","Champions Award finalist, world top 5","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Tolebi Daryn · FIRST® LEGO® League Challenge","Tolebi Daryn · FIRST® LEGO® League Challenge","Tolebi Daryn · FIRST® LEGO® League Challenge","assets/img/w-hou26-tolebi.webp","2026-05-02"],
+ ["Победители Sustain Award и Reach Award","Sustain Award және Reach Award жеңімпаздары","Sustain Award and Reach Award winners","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","assets/img/w-hou26-ftc-gold.webp","2026-05-02"],
+ ["3-е место: Think Award и Reach Award","Think Award және Reach Award, 3-орын","3rd place: Think Award and Reach Award","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","assets/img/w-hou26-ftc-3rd.webp","2026-05-02"],
+ ["Впервые в топ-8: капитаны альянсов","Алғаш рет топ-8: альянс капитандары","First time in the top 8: alliance captains","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Panheya, Celestial · FIRST® Tech Challenge","Panheya, Celestial · FIRST® Tech Challenge","Panheya, Celestial · FIRST® Tech Challenge","assets/img/w-hou26-alliance.webp","2026-05-02"],
+ ["Gracious Professionalism Award и топ-6 игры роботов","Gracious Professionalism Award және робот-ойында ТОП-6","Gracious Professionalism Award and top 6 in the robot game","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","assets/img/w-hou26-fllc.webp","2026-05-02"],
+ ["Core Values Award и Team Model Award","Core Values Award және Team Model Award","Core Values Award and Team Model Award","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","assets/img/w-hou26-flle.webp","2026-05-02"],
+ ["1-е место из 191 страны","191 елден 1-орын","1st of 191 countries","2025","Панама-Сити, Панама","Панама-Сити, Панама","Panama City, Panama","Grand Challenge Award · Albert Einstein Award (золотая медаль)","Grand Challenge Award · Albert Einstein Award (алтын медаль)","Grand Challenge Award · Albert Einstein Award (gold medal)","","","","","2025-11-01"],
+ ["6 наград","6 марапат","6 awards","2025","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","FIRST® Championship","FIRST® Championship","FIRST® Championship","assets/img/w-hou25.webp","2025-04-19"],
+ ["1-е место из 193 стран","193 елден 1-орын","1st of 193 countries","2024","Афины, Греция","Афина, Грекия","Athens, Greece","Grand Challenge Award (золотая медаль)","Grand Challenge Award (алтын медаль)","Grand Challenge Award (gold medal)","","","","","2024-09-29"],
+ ["1-е место из 191 страны","191 елден 1-орын","1st of 191 countries","2023","Сингапур","Сингапур","Singapore","","","","","","","","2023-10-10"],
+ ["1-е место из 180 стран","180 елден 1-орын","1st of 180 countries","2022","Женева, Швейцария","Женева, Швейцария","Geneva, Switzerland","","","","","","","","2022-10-16"],
+ ["3-е место из 190 стран","190 елден 3-орын","3rd of 190 countries","2019","Дубай, ОАЭ","Дубай, БАӘ","Dubai, UAE","","","","","","","","2019-10-27"],
+ ["8-е место из 157 стран","157 елден 8-орын","8th of 157 countries","2017","Вашингтон, США","Вашингтон, АҚШ","Washington, D.C., USA","","","","","","","","2017-07-18"]
+];
 
-/* 21.10.2026, 19:05 (просьба USTEM): подпись к приказу № 514 одинакова на трёх языках – издатель МОН РК (2011), перечень сейчас ведёт Минпросвещения РК.
-/* 21.10.2026, 16:40 (просьба USTEM): «4× чемпионы мира» ушло в заголовок hero, поэтому в статистике вместо него снова приказ № 514
- * (ссылка на официальный текст в «Әділет»), а предложение про приказ убрано из текста «Доказанная польза», чтобы не повторяться. */
-KS[0]=[514,"","№ ",["Приказ МОН РК (2011): FIRST – в перечне республиканских олимпиад и конкурсов. Перечень сейчас ведёт Министерство просвещения РК.","ҚР БҒМ бұйрығы (2011): FIRST республикалық олимпиадалар мен конкурстар тізімінде. Тізімді қазір ҚР Оқу-ағарту министрлігі жүргізеді.","Order of the Ministry of Education and Science (2011): FIRST is on the national list of olympiads and contests. The list is now maintained by the Ministry of Enlightenment."],
-  ["https://adilet.zan.kz/rus/docs/V1100007355","https://adilet.zan.kz/kaz/docs/V1100007355","https://adilet.zan.kz/rus/docs/V1100007355"]];
-for(const l in T)if(typeof T[l].proofp==="string")T[l].proofp=T[l].proofp.replace(/\s*(FIRST жарыстары республикалық|Соревнования FIRST включены|FIRST competitions are included)[\s\S]*$/,"");
+/* ================= главные новости-результаты (вручную) ================= */
+const N=[
+ {
+  src:"zhaikpress.kz",
+  date:"2026-10-12",
+  url:"https://zhaikpress.kz/ru/news/kazaxstan-voshyol-v-chetvyorku-silnejshix-na-first-global-challenge-2026/",
+  img:"assets/img/n-fgc26.webp",
+  pos:"50% 50%",
+  t:["FIRST Global Challenge 2026, Инчхон: Казахстан в четвёрке сильнейших","FIRST Global Challenge 2026, Инчхон: Қазақстан үздік төрттікте","FIRST Global Challenge 2026, Incheon: Kazakhstan in the top four"],
+  p:["Сборная Казахстана выиграла все 11 матчей отборочного раунда, вышла в плей-офф и заняла 4-е место среди команд из 185 стран.","Қазақстан құрамасы іріктеу кезеңіндегі 11 матчтың бәрінде жеңіп, плей-оффқа шықты және 185 елдің командалары арасында 4-орын алды.","Team Kazakhstan won all 11 qualification matches, reached the playoffs and finished 4th among teams from 185 countries."]
+ },
+ {
+  src:"Kazinform",
+  date:"2026-08-19",
+  url:"https://qazinform.com/news/kazakhstan-wins-23-awards-first-lego-league-asia-open-championship-in-beijing-9edca2",
+  img:"assets/img/n-asia26.webp",
+  pos:"50% 40%",
+  t:["FIRST LEGO League Asia Open 2026, Пекин: команды Казахстана завоевали 23 награды","FIRST LEGO League Asia Open 2026, Бейжің: Қазақстан командалары 23 марапат алды","FIRST LEGO League Asia Open 2026, Beijing: Kazakhstan's teams win 23 awards"],
+  p:["13–16 августа в Пекине соревновались 375 команд из 25 стран и регионов. Команды Казахстана получили 3 серебряные, 5 бронзовых и 15 специальных наград.","13–16 тамызда Бейжіңде 25 ел мен өңірден 375 команда бақ сынады. Қазақстан командалары 3 күміс, 5 қола және 15 арнайы марапат алды.","On 13–16 August, 375 teams from 25 countries and regions competed in Beijing. Kazakhstan's teams won 3 silver, 5 bronze and 15 special awards."]
+ },
+ {
+  src:"Kazinform",
+  date:"2026-05-13",
+  url:"https://inform.kz/ru/kazahstanskie-shkolniki-stali-prizerami-chempionata-po-robototehnike-v-gretsii-904311b9",
+  img:"assets/img/n-gr26.webp",
+  pos:"50% 45%",
+  t:["Команда Qazygurt стала призёром международного чемпионата в Греции","Qazygurt командасы Грекиядағы халықаралық чемпионатта жүлдегер атанды","Team Qazygurt wins an award at an international championship in Greece"],
+  p:["Команда Qazygurt из Туркестанской области заняла 2-е место в номинации Champions Award на Open International Championship 2026 в Коринфе. Путёвку она получила по итогам Alem Tech Fest.","Түркістан облысының Qazygurt командасы Коринфте өткен Open International Championship 2026-да Champions Award номинациясында екінші орын алды. Жолдаманы Alem Tech Fest қорытындысы бойынша алды.","Team Qazygurt from Turkistan Region took second place in the Champions Award category at the Open International Championship 2026 in Corinth. The team qualified through Alem Tech Fest."]
+ },
+ {
+  src:"Kazinform",
+  date:"2026-05-04",
+  url:"https://www.inform.kz/ru/sbornaya-kazahstana-zavoevala-12-nagrad-na-chempionate-mira-po-robototehnike-v-h-abe020c1",
+  img:"assets/img/n-hou26.webp",
+  pos:"50% 50%",
+  t:["FIRST Championship 2026, Хьюстон: команды Казахстана завоевали 12 наград","FIRST Championship 2026, Хьюстон: Қазақстан командалары 12 марапат алды","FIRST Championship 2026, Houston: Kazakhstan teams win 12 awards"],
+  p:["В чемпионате мира в Хьюстоне участвовали 17 команд\u00a0– рекордная делегация из 225 школьников. Результаты стали возможны при поддержке Министерства просвещения РК, USTEM Foundation и РНПЦ «Дарын».","Хьюстондағы әлем чемпионатына 17 команда\u00a0– 225 оқушыдан тұратын рекордтық делегация барды. Бұл нәтижеге ҚР Оқу-ағарту министрлігінің, USTEM Foundation-ның және «Дарын» РҒПО-ның қолдауымен қол жеткізілді.","A record delegation of 17 teams and 225 students took part in the world championship in Houston. The results were made possible with support from the Ministry of Education of Kazakhstan, USTEM Foundation and the Daryn National Center."]
+ },
+ {
+  src:"The Astana Times",
+  date:"2026-02-12",
+  url:"https://astanatimes.com/2026/02/alem-tech-fest-brings-central-asias-young-innovators-to-astana/",
+  img:"assets/img/n-alem26.webp",
+  pos:"50% 55%",
+  t:["Alem Tech Fest 2026: 5 000 школьников из 7 стран в Астане","Alem Tech Fest 2026: Астанада 7 елден 5 000 оқушы","Alem Tech Fest 2026: 5,000 school students from 7 countries in Astana"],
+  p:["11–13 февраля на площадке EXPO прошёл крупнейший в Центральной Азии фестиваль робототехники и STEM. 50 лучших команд получили путёвки на международные турниры FIRST, в том числе на чемпионат мира в Хьюстоне.","11–13 ақпанда EXPO алаңында Орталық Азиядағы ең ірі робототехника және STEM фестивалі өтті. 50 үздік команда FIRST халықаралық турнирлеріне, соның ішінде Хьюстондағы әлем чемпионатына жолдама алды.","On 11–13 February, Central Asia's largest robotics and STEM festival took place at EXPO. The top 50 teams qualified for international FIRST competitions, including the world championship in Houston."]
+ },
+ {
+  src:"gov.kz",
+  date:"2025-11-02",
+  url:"https://www.gov.kz/memleket/entities/edu/press/news/details/1097414?lang=ru",
+  img:"assets/img/n-fgc25.webp",
+  pos:"50% 40%",
+  t:["Четвёртая победа. Казахстан\u00a0– снова чемпион мира","Төртінші жеңіс. Қазақстан\u00a0– тағы да әлем чемпионы","A fourth victory: Kazakhstan is world champion again"],
+  p:["В Панама-Сити сборная Казахстана победила на FIRST Global Challenge 2025 и получила золотые награды Grand Challenge Award и Albert Einstein Award.","Панама-Ситиде Қазақстан құрамасы FIRST Global Challenge 2025-те жеңіп, Grand Challenge Award және Albert Einstein Award алтын марапаттарын иеленді.","In Panama City, Team Kazakhstan won the FIRST Global Challenge 2025, taking gold with the Grand Challenge Award and the Albert Einstein Award."]
+ }
+];
 
-/* 21.10.2026, 17:00 (просьба USTEM): в блоке «Наши результаты» остаются только цифры Казахстана (4 шт.),
- * «20 регионов» заменено на обучение педагогов (данные презентации USTEM «STEM-біліміндегі AI», стр. 16),
- * а мировые цифры FIRST сжаты в одну строку под текстом вместо второго блока цифр. */
-KS[3]=[1000,"+","",["Педагогов и менторов ежегодно повышают квалификацию","Мұғалім мен тәлімгер жыл сайын біліктілігін арттырады","Teachers and mentors upgrade their skills every year"]];
-Object.assign(T.ru,{gline:"853 000+ школьников в 114 странах · 83% выпускников FIRST® выбирают STEM-специальности в университете"});
-Object.assign(T.kk,{gline:"114 елде 853 000+ оқушы · FIRST® түлектерінің 83%-ы университетте STEM мамандығын таңдайды"});
-Object.assign(T.en,{gline:"853,000+ students in 114 countries · 83% of FIRST® alumni major in STEM at university"});
+/* ================= программы =================
+ * cat – строка или [ru,kk,en]; logo – картинка-логотип, иначе wordmark [две строки]; photo/ppos – фото карточки и его положение;
+ * teaser – ролик; wide – широкая карточка */
+const PROG=[
+ {
+  name:"LEGO® League Discover",
+  cat:"FLL-D",
+  age:"4–6",
+  color:"#b536f0",
+  logo:"assets/img/x-lg0.webp",
+  photo:"assets/img/img-pd0.webp",
+  intro:["первое знакомство со STEM: дети играют и строят модели из LEGO DUPLO.","STEM әлеміне алғашқы қадам: балалар LEGO DUPLO-дан модельдер құрастырып ойнайды.","a first step into STEM: children play and build models with LEGO DUPLO."],
+  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"]
+ },
+ {
+  name:"LEGO® League Explore",
+  cat:"FLL-E · BIOGLOW",
+  age:"6–10",
+  color:"#4fb047",
+  logo:"assets/img/x-lg1.webp",
+  photo:"assets/img/x-pd1.webp",
+  teaser:"https://www.youtube.com/watch?v=BayY9b0uX8A",
+  intro:["команда исследует тему сезона и собирает движущуюся модель LEGO.","командалар маусым тақырыбын зерттеп, қозғалмалы LEGO моделін құрастырады.","teams explore the season theme and build a moving LEGO model."],
+  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"]
+ },
+ {
+  name:"LEGO® League Challenge",
+  cat:"FLL-C · BIOGLOW",
+  age:"10–16",
+  color:"#e8504e",
+  logo:"assets/img/x-lg2.webp",
+  photo:"assets/img/x-pd2.webp",
+  teaser:"https://www.youtube.com/watch?v=MkpSgkw8A7I",
+  intro:["команда программирует автономного робота LEGO и готовит инновационный проект.","команда автономды LEGO роботын бағдарламалап, инновациялық жоба дайындайды.","teams program an autonomous LEGO robot and develop an innovation project."],
+  team:["2–8 участников, до 2 тренеров","2–8 қатысушы, 2 тренерге дейін","2–8 members, up to 2 coaches"]
+ },
+ {
+  name:"LEGO® League Future Edition",
+  cat:"FLL Future Edition · BIOGLOW",
+  age:"5–16",
+  color:"#0ea5e9",
+  wordmark:["LEGO® LEAGUE","FUTURE EDITION"],
+  photo:"assets/img/x-nw-first-table.webp",
+  intro:["новый формат на базе LEGO Education Computer Science & AI для двух групп: K–2 (5–7 лет) и 3–8 классы (8–16 лет).","LEGO Education Computer Science & AI негізіндегі жаңа формат: K–2 тобы (5–7 жас) және 3–8-сыныптар (8–16 жас).","a new format based on LEGO Education Computer Science & AI: grades K–2 (ages 5–7) and 3–8 (ages 8–16)."],
+  team:["4–8 участников, до 2 тренеров; для K–2 состав уточняется","4–8 қатысушы, 2 тренерге дейін; K–2 үшін құрамы нақтыланады","4–8 members, up to 2 coaches; K–2 team size to be confirmed"]
+ },
+ {
+  name:"Tech Challenge",
+  cat:"FTC · BIOBUZZ",
+  age:"12–18",
+  color:"#ec7f2c",
+  logo:"assets/img/x-lg3.webp",
+  photo:"assets/img/p-ftc-2026.webp",
+  ppos:"50% 45%",
+  teaser:"https://www.youtube.com/watch?v=sUH3z5a5S9I",
+  intro:["команда проектирует, собирает и программирует робота для матчей на поле.","команда алаңдағы матчтарға арналған роботты жобалап, құрастырып, бағдарламалайды.","teams design, build and program a robot for matches on the field."],
+  team:["2–15 участников, до 2 тренеров","2–15 қатысушы, 2 тренерге дейін","2–15 members, up to 2 coaches"]
+ },
+ {
+  name:"Robotics Competition",
+  cat:"FRC · BIOCORE",
+  age:"14–18",
+  color:"#1d4ed8",
+  wordmark:["ROBOTICS","COMPETITION"],
+  photo:"assets/img/p-frc-2026.webp",
+  ppos:"50% 50%",
+  intro:["старшая программа FIRST: команда с наставниками строит робота промышленного масштаба.","FIRST-тің жоғары сатыдағы бағдарламасы: команда тәлімгерлермен бірге өнеркәсіптік деңгейдегі робот жасайды.","the senior FIRST program: teams build an industrial-scale robot with their mentors."],
+  team:["состав без ограничений, 2 совершеннолетних тренера (Lead Coach)","құрам шектеусіз, 2 кәмелетке толған жаттықтырушы (Lead Coach)","no team-size limit, 2 adult Lead Coaches"]
+ },
+ {
+  name:"Global Challenge",
+  cat:["FGC · сборная Казахстана","FGC · Қазақстан құрамасы","FGC · Team Kazakhstan"],
+  age:"14–18",
+  color:"#ec7f2c",
+  logo:"assets/img/x-lg4.webp",
+  photo:"assets/img/p-fgc-2026.webp",
+  ppos:"50% 50%",
+  teaser:"https://www.youtube.com/watch?v=Sl9oSw5MRpk",
+  intro:["международная олимпиада по робототехнике среди национальных сборных.","ұлттық құрамалар арасындағы халықаралық робототехника олимпиадасы.","the international robotics olympiad for national teams."],
+  team:["по итогам национального отбора","ұлттық іріктеу қорытындысы бойынша","chosen through national selection"],
+  wide:true
+ }
+];
 
-/* 21.10.2026, 17:10 (просьба USTEM): на телефоне блок программ был длиной в 10 экранов –
- * показываем три программы, остальные открываются кнопкой. */
-Object.assign(T.ru,{allProg:"Показать все программы"});
-Object.assign(T.kk,{allProg:"Барлық бағдарламаларды көру"});
-Object.assign(T.en,{allProg:"Show all programs"});
+/* ================= партнёры =================
+ * RP – порядок логотипов в бегущей строке, LG – файлы, PNAMES / PNAMES_L – названия для alt-текста (ru / по языкам) */
+const RP=[
+ ["edu"],
+ ["digital"],
+ ["daryn"],
+ ["astana"],
+ ["star"],
+ ["adaryny"],
+ ["kerneu"],
+ ["p_samruk-kazyna"],
+ ["p_exxonmobil"],
+ ["p_stemshop"],
+ ["lego"]
+];
+const LG={
+ lego:"assets/img/x-lego.webp",
+ daryn:"assets/img/x-daryn.webp",
+ star:"assets/img/x-star.webp",
+ adaryny:"assets/img/x-adaryny.webp",
+ digital:"assets/img/x-ai-digital.webp",
+ edu:"assets/img/lg-min-enlightenment.webp",
+ astana:"assets/img/lg-astana.webp",
+ kerneu:"assets/img/x-kerneu.webp",
+ "p_samruk-kazyna":"assets/img/x-p_samruk-kazyna.webp",
+ p_exxonmobil:"assets/img/x-p_exxonmobil.webp",
+ p_stemshop:"assets/img/x-p_stemshop.webp"
+};
+const PNAMES={
+ lego:"LEGO Education",
+ daryn:"РНПЦ «Дарын»",
+ "p_samruk-kazyna":"Samruk-Kazyna",
+ p_exxonmobil:"ExxonMobil",
+ p_stemshop:"STEM Shop",
+ edu:"Министерство просвещения РК",
+ digital:"Министерство искусственного интеллекта и цифрового развития РК",
+ astana:"Astana Hub",
+ adaryny:"Астана дарыны",
+ kerneu:"Kerneu Group",
+ star:"Qazaq Army"
+};
+const PNAMES_L={
+ kk:{daryn:"«Дарын» РҒПО",edu:"ҚР Оқу-ағарту министрлігі",digital:"ҚР Жасанды интеллект және цифрлық даму министрлігі"},
+ en:{daryn:"Daryn National Center",edu:"Ministry of Education of Kazakhstan",digital:"Ministry of Artificial Intelligence and Digital Development of Kazakhstan",adaryny:"Astana Daryny"}
+};
 
-/* 21.10.2026, 17:35 (просьба USTEM): в блоке только три главные цифры Казахстана из презентации USTEM
- * («STEM-біліміндегі AI», стр. 2 и 18): приказ № 514, 20 000+ участников FIRST в Центральной Азии,
- * 500+ команд из 30+ стран на чемпионате Центральной Азии; мировые цифры FIRST – строкой текста под блоком. */
-KS.length=1; /* остаётся только № 514 со ссылкой на «Әділет» */
-KS.push([20000,"+","",["участников FIRST® в Центральной Азии – Казахстан, Узбекистан, Кыргызстан","Орталық Азиядағы FIRST® қатысушысы – Қазақстан, Өзбекстан, Қырғызстан","FIRST® participants across Central Asia – Kazakhstan, Uzbekistan, Kyrgyzstan"]]);
-KS.push([500,"+","",["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]]);
+/* ================= встроенные карточки событий =================
+ * SMC – Social Media Challenge (4-й этап сезона): показывается до даты end, пока в таблице нет своей строки; url – папка с условиями или форма.
+ * F4A – FIRST4ALL: без площадки (noLoc), дата – срок подачи списков; url пустой – пометка «регистрация скоро» (впишите Google Форму) */
+const SMC={
+ name:"Social Media Challenge (SMC)",
+ start:"23.09.2026",
+ end:"25.01.2027",
+ url:"https://drive.google.com/drive/folders/1Sk4qLMkO3AX-cTWk9B3sXjKQB-fm5bfm",
+ img:"assets/img/x-nw-hero.webp"
+};
+const F4A={
+ name:"FIRST4ALL",
+ url:"",
+ date:"25.12.2026",
+ dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026 дейін","Team lists due by 25.12.2026"],
+ noLoc:true,
+ img:"assets/img/x-nw-first-table.webp"
+};
 
-/* 21.10.2026, 18:25 (просьба USTEM): блок «Қалай бастау керек» – три коротких шага перед программами, прежние размеры шрифтов */
-Object.assign(T.ru,{sth:"С чего начать",st1:"Выберите программу",st1a:"Программы",st2:"Соберите команду и зарегистрируйтесь",st2a:"Расписание событий",st3:"Изучите правила сезона",st3a:"Правила и документы"});
-Object.assign(T.kk,{sth:"Қалай бастау керек",st1:"Бағдарламаны таңдаңыз",st1a:"Бағдарламалар",st2:"Команда құрып, тіркеліңіз",st2a:"Іс-шаралар кестесі",st3:"Маусым ережесімен танысыңыз",st3a:"Ереже мен құжаттар"});
-Object.assign(T.en,{sth:"How to start",st1:"Choose a program",st1a:"Programs",st2:"Form a team and register",st2a:"Event schedule",st3:"Read the season rules",st3a:"Rules and documents"});
+/* ================= справочники для расписания из таблицы =================
+ * CITY – названия городов по языкам (ключ – как в таблице), BASE – базовый город для «Город + Онлайн», CITY_ALIAS – написания из таблицы,
+ * RGN / REG_ALIAS – области, PHRASE – устойчивые фразы в колонке «кто может участвовать», VENUE – площадки по языкам (ключ в нижнем регистре) */
+const CITY={
+ "Астана+":["Астана + Онлайн","Астана + Онлайн","Astana + Online"],
+ "Алматы+":["Алматы + Онлайн","Алматы + Онлайн","Almaty + Online"],
+ "Аягөз":["Аягоз","Аягөз","Ayagoz"],
+ "Лепсі":["Лепсы","Лепсі","Lepsi"],
+ "Ош":["Ош","Ош","Osh"],
+ "Бурабай":["Бурабай","Бурабай","Burabay"],
+ "Қызылорда":["Кызылорда","Қызылорда","Kyzylorda"],
+ "Тараз":["Тараз","Тараз","Taraz"],
+ "Павлодар":["Павлодар","Павлодар","Pavlodar"],
+ "Орал":["Уральск","Орал","Oral"],
+ "Астана":["Астана","Астана","Astana"],
+ "Қонаев":["Конаев","Қонаев","Qonaev"],
+ "Алматы":["Алматы","Алматы","Almaty"],
+ "Ақтөбе":["Актобе","Ақтөбе","Aktobe"],
+ "Талдықорған":["Талдыкорган","Талдықорған","Taldykorgan"],
+ "Өскемен":["Усть-Каменогорск","Өскемен","Oskemen"],
+ "Жезқазған":["Жезказган","Жезқазған","Zhezkazgan"],
+ "Атырау":["Атырау","Атырау","Atyrau"],
+ "Шымкент":["Шымкент","Шымкент","Shymkent"],
+ "Семей":["Семей","Семей","Semey"],
+ "Түркістан":["Туркестан","Түркістан","Turkistan"],
+ "Қостанай":["Костанай","Қостанай","Kostanay"],
+ "Көкшетау":["Кокшетау","Көкшетау","Kokshetau"],
+ "Қарағанды":["Караганда","Қарағанды","Karaganda"],
+ "Ақтау":["Актау","Ақтау","Aktau"],
+ "Бішкек":["Бишкек","Бішкек","Bishkek"],
+ "Петропавл":["Петропавловск","Петропавл","Petropavl"],
+ "Ташкент":["Ташкент","Ташкент","Tashkent"],
+ "Жыланды":["Жыланды","Жыланды","Zhylandy"],
+ online:["Онлайн","Онлайн","Online"]
+};
+const BASE={"Астана+":"Астана","Алматы+":"Алматы"};
+const CITY_ALIAS={
+ online:"online",
+ "онлайн":"online",
+ "астана + online":"Астана+",
+ "астана + онлайн":"Астана+",
+ "алматы + online":"Алматы+",
+ "алматы + онлайн":"Алматы+",
+ "бишкек":"Бішкек",
+ "петропавловск":"Петропавл",
+ "актау":"Ақтау",
+ "актобе":"Ақтөбе",
+ "караганда":"Қарағанды",
+ "костанай":"Қостанай",
+ "кокшетау":"Көкшетау",
+ "кызылорда":"Қызылорда",
+ "конаев":"Қонаев",
+ "талдыкорган":"Талдықорған",
+ "туркестан":"Түркістан",
+ "жезказган":"Жезқазған",
+ "уральск":"Орал",
+ "усть-каменогорск":"Өскемен"
+};
+const RGN={
+ mng:["Мангистауская область","Маңғыстау облысы","Mangystau Region"],
+ pvl:["Павлодарская область","Павлодар облысы","Pavlodar Region"],
+ trk:["Туркестанская область","Түркістан облысы","Turkistan Region"],
+ nko:["Северо-Казахстанская область","Солтүстік Қазақстан облысы","North Kazakhstan Region"],
+ atr:["Атырауская область","Атырау облысы","Atyrau Region"],
+ kst:["Костанайская область","Қостанай облысы","Kostanay Region"],
+ jmb:["Жамбылская область","Жамбыл облысы","Jambyl Region"],
+ alo:["Алматинская область","Алматы облысы","Almaty Region"],
+ kzo:["Кызылординская область","Қызылорда облысы","Kyzylorda Region"],
+ akm:["Акмолинская область","Ақмола облысы","Akmola Region"],
+ krg:["Карагандинская область","Қарағанды облысы","Karaganda Region"],
+ uly:["область Улытау","Ұлытау облысы","Ulytau Region"],
+ aba:["область Абай","Абай облысы","Abai Region"],
+ akt:["Актюбинская область","Ақтөбе облысы","Aktobe Region"],
+ vko:["Восточно-Казахстанская область","Шығыс Қазақстан облысы","East Kazakhstan Region"],
+ zko:["Западно-Казахстанская область","Батыс Қазақстан облысы","West Kazakhstan Region"],
+ jet:["область Жетысу","Жетісу облысы","Jetisu Region"]
+};
+const REG_ALIAS={
+ "сқо":"nko",
+ "шқо":"vko",
+ "бқо":"zko",
+ "қарағанды":"krg",
+ "жетісу":"jet",
+ "абай":"aba",
+ "ұлытау":"uly"
+};
+const PHRASE={
+ "«дарын» рғпо жүйесіне қарасты білім беру ұйымдары":["организации образования системы РНПЦ «Дарын»","«Дарын» РҒПО жүйесіне қарасты білім беру ұйымдары","schools of the Daryn National Center network"]
+};
+const VENUE={
+ "ақтөбе білім-инновация лицей-интернаты":["Лицей-интернат «Білім-инновация»","Ақтөбе «Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum"],
+ "дарынды ер балаларға арналған білім-инновация лицей-интернаты":["Лицей-интернат «Білім-инновация» для одарённых мальчиков","Дарынды ер балаларға арналған «Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum for Gifted Boys"],
+ "\"білім-инновация\" лицей интернаты":["Лицей-интернат «Білім-инновация»","«Білім-инновация» лицей-интернаты","Bilim-Innovation Lyceum"],
+ "сыр жұлдыздары":["«Сыр жұлдыздары»","«Сыр жұлдыздары»","Syr Zhuldyzdary"],
+ "шәкәрім атындағы гимназия":["Гимназия имени Шакарима","Шәкәрім атындағы гимназия","Shakarim Gymnasium"],
+ "№221 мектеп":["Школа № 221","№ 221 мектеп","School No. 221"],
+ "№9 орта мектеп-гимназиясы":["Школа-гимназия № 9","№ 9 орта мектеп-гимназиясы","School-Gymnasium No. 9"],
+ "№ 51 жалпы орта білім беретін мектеп":["Школа № 51","№ 51 жалпы орта білім беретін мектеп","School No. 51"],
+ "жалпы білім беретін №33 мектеп":["Школа № 33","№ 33 жалпы білім беретін мектеп","School No. 33"],
+ "жалпы білім беретін №35 мектеп":["Школа № 35","№ 35 жалпы білім беретін мектеп","School No. 35"],
+ "нұрорда мектеп-лицейі":["Школа-лицей «Нұрорда»","Нұрорда мектеп-лицейі","Nurorda School-Lyceum"],
+ "оқушылар сарайы":["Дворец школьников","Оқушылар сарайы","Palace of Schoolchildren"],
+ "әл-фараби атындағы binom school мектеп-лицейі":["Школа-лицей BINOM SCHOOL им. аль-Фараби","Әл-Фараби атындағы BINOM SCHOOL мектеп-лицейі","Al-Farabi BINOM SCHOOL Lyceum"]
+};
+
+/* ---- картинки карточек событий: по бренду из названия (BRD → EVI), по городу (IMK/EIK → EI, CITY_EVI → EVI), иначе общие ---- */
+const EI={
+ Astana:"assets/img/ei-astana.webp",
+ Qonaev:"assets/img/x-qonaev.webp",
+ Almaty:"assets/img/x-almaty.webp",
+ Aktobe:"assets/img/x-aktobe.webp",
+ Jetisu:"assets/img/x-jetisu.webp",
+ Oskemen:"assets/img/x-oskemen.webp",
+ Qyzylorda:"assets/img/x-qyzylorda.webp",
+ Burabay:"assets/img/x-burabay.webp"
+};
+const EIK={
+ "Астана":"Astana",
+ "Қонаев":"Qonaev",
+ "Алматы":"Almaty",
+ "Ақтөбе":"Aktobe",
+ "Талдықорған":"Jetisu",
+ "Өскемен":"Oskemen",
+ "Қызылорда":"Qyzylorda",
+ "Бурабай":"Burabay"
+};
+const IMK={
+ Qyzylorda:"Qyzylorda",
+ Aktobe:"Aktobe",
+ Oskemen:"Oskemen",
+ Jetisu:"Jetisu",
+ Astana:"Astana",
+ Almaty:"Almaty",
+ Qonaev:"Qonaev",
+ IQanat:"Burabay"
+};
+const BRD={
+ Mangystau:"Маңғыстау",
+ Ertis:"Ертіс",
+ Turkistan:"Түркістан",
+ Qyzylzhar:"Қызылжар",
+ Taraz:"Тараз",
+ Kokshetau:"Көкшетау",
+ Saryarqa:"Сарыарқа",
+ Bishkek:"Бішкек",
+ Ulytau:"ұлытау",
+ Abay:"Абай",
+ Shymkent:"Шымкент",
+ Jaiyq:"Жайық",
+ Tashkent:"Ташкент-Өзбекстан",
+ Ontustik:"Оңтүстік",
+ Batys:"Батыс",
+ Atyrau:"Атырау",
+ Qostanay:"Қостанай"
+};
+const EVI={
+ "Ташкент-Өзбекстан":"assets/img/evi-kd2d15.webp",
+ "Декан":"assets/img/x-kfd6d2.jpg",
+ "Жыланды":"assets/img/x-ke987d.webp",
+ "Батыс":"assets/img/x-kfcf5b.webp",
+ "Оңтүстік":"assets/img/x-k0be78.webp",
+ "Қызылжар":"assets/img/x-ke00fd.webp",
+ "Бішкек":"assets/img/x-k07b6b.webp",
+ "Маңғыстау":"assets/img/x-kfcf5b.webp",
+ "Сарыарқа":"assets/img/x-ka5740.webp",
+ "Көкшетау":"assets/img/x-k84c3e.webp",
+ "Қостанай":"assets/img/x-kb3f4e.webp",
+ "Түркістан":"assets/img/x-ked8c9.webp",
+ "Абай":"assets/img/x-k0319c.webp",
+ "Шымкент":"assets/img/x-k0be78.webp",
+ "Атырау":"assets/img/x-k19ca6.webp",
+ "ұлытау":"assets/img/x-k5acbb.webp",
+ "Жайық":"assets/img/x-kf6800.webp",
+ "Ертіс":"assets/img/x-kd675f.webp",
+ "Тараз":"assets/img/x-kb4f41.webp",
+ "Ош":"assets/img/x-k99dfe.jpg"
+};
+const CITY_EVI={"Ташкент":"Ташкент-Өзбекстан","Жыланды":"Жыланды","Бішкек":"Бішкек"};
+const ONLINE_IMG="assets/img/x-forbes.webp",FTC_IMG="assets/img/x-pd3.webp",GEN_IMG="assets/img/x-nw-first-table.webp";
+const evim=(t,ck,codes)=>{if(ck==="online")return ONLINE_IMG;const b=String(t).split(" ")[0];return EVI[BRD[b]]||EI[IMK[b]]||EI[EIK[ck]]||EVI[ck]||EVI[CITY_EVI[ck]]||(codes&&codes.length===1&&codes[0]==="FTC"?FTC_IMG:GEN_IMG)};
+/* этап события по названию (когда вкладка таблицы его не определяет) */
+const stg=t=>/Kick-/i.test(t)?"kick":/Scrimmage/.test(t)?"scrim":/Qualifier/.test(t)?"qual":/Regional|Digital Bridge/.test(t)?"reg":/Kazakhstan.*Championship/.test(t)?"rep":/Off-Season|Tech Cup/i.test(t)?"off":"big";
