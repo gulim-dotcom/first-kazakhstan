@@ -201,11 +201,12 @@ function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";
   const n=GEO.cnt[k]||0,cities=n?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
   c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
 /* выбранный регион: подсветка на карте, список на телефоне, строка над картой и видимость списка событий.
- * Пока регион не выбран, фильтры и список скрыты – на странице только карта с подсказкой и ссылка «Показать все события» */
+ * Пока регион не выбран, список скрыт – на странице только карта с подсказкой, ссылка «Показать все события» и последние прошедшие события */
 function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
-  ["#events .flt","#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
+  ["#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
+  const f=$("#events .flt");if(f)f.hidden=!open||!!k; /* строка поиска – только в полном списке */
   if(!pk)return;
   const btn=(act,key)=>`<button type="button" class="gcl" data-act="${act}">${esc(tt(key))}</button>`;
   if(k&&GEO.cnt&&GEO.cnt[k]){const n=GEO.cnt[k];pk.innerHTML=`<b>${esc(unitName(k,i))}</b><span>${n} ${esc(pl("geoEv",n))}</span>${btn("all","geoAllE")}`}
@@ -214,11 +215,14 @@ function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
 }
 /* этап события словами (Скримидж, Региональный этап…) – по ключам s_* в data.js */
 const stageTxt=e=>{const k="s_"+e.stage;return T[L]&&T[L][k]?tt(k):""};
-/* прошедшие события выбранного региона – короткой строкой под списком: название, этап, город, дата */
-function geoPastHtml(){const i=I[L],k=GEO.sel;if(!k||!GEO.evs||!GEO.evs[k])return"";
-  const past=GEO.evs[k].filter(e=>!e.vis.length);if(!past.length)return"";
-  const dts=e=>[...new Set((e.sessions||[]).map(s=>dTxt(s.d,i)))].join(", ");
-  return `<div class="gpast"><h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([stageTxt(e),e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul></div>`}
+/* последние прошедшие события – короткой строкой под картой и списком (#past): название, этап, город, дата.
+ * Выбран регион – его прошедшие события, иначе по всей стране; не больше трёх, самые свежие сверху */
+function pastHtml(){const i=I[L],k=GEO.sel;
+  const end=e=>Math.max(0,...e.sessions.map(s=>s.d.end?+s.d.end:0));
+  const past=EVENTS.filter(e=>!e.vis.length&&(!k||unitOf(e)===k)).sort((a,b)=>end(b)-end(a)).slice(0,3);
+  if(!past.length)return"";
+  const dts=e=>[...new Set(e.sessions.map(s=>dTxt(s.d,i)))].join(", ");
+  return `<h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([stageTxt(e),e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul>`}
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
@@ -298,12 +302,11 @@ function renderNews(){const i=I[L];
 const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
-function evCard(e,t){const i=I[L],online=e.city.key==="online";
-  /* при выбранной категории в карточке остаются только её сессии, метки и кнопка */
-  const vis=t?e.vis.filter(s=>s.cats.some(c=>c.code===t)):e.vis,multi=vis.length>1;
+function evCard(e){const i=I[L],online=e.city.key==="online";
+  const vis=e.vis,multi=vis.length>1;
   /* порядок строк как на firstrobotics.kz: город → площадка → дата → категории → кнопка «Участвовать» */
   const ses=s=>{
-    const cats=t?s.cats.filter(c=>c.code===t):s.cats;
+    const cats=s.cats;
     const btn=cats.filter(c=>c.url);
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);
     const one=cats.length===1&&btn.length===1;
@@ -328,27 +331,19 @@ function evCard(e,t){const i=I[L],online=e.city.key==="online";
 const sameStem=(city,region)=>{const a=String(city||"").toLowerCase().slice(0,4),b=String(region||"").toLowerCase().slice(0,4);return a.length>=4&&a===b};
 function stamp(iso){const d=new Date(iso);if(isNaN(d))return"";try{return d.toLocaleDateString("ru-RU",{timeZone:"Asia/Almaty",day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return `${p2(d.getDate())}.${p2(d.getMonth()+1)}.${d.getFullYear()}`}}
 function renderEvents(){
-  const c=$("#fc").value,t=$("#ft").value,sg=$("#fst").value,q=$("#fs").value.trim().toLowerCase();
-  const ok=e=>(!c||e.cc===c)&&(!GEO.sel||unitOf(e)===GEO.sel)&&(!sg||e.stage===sg)&&(!t||e.codes.includes(t))&&
+  const q=$("#fs").value.trim().toLowerCase();
+  const ok=e=>(!GEO.sel||unitOf(e)===GEO.sel)&&
     (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...e.vis.flatMap(s=>s.cats.map(catLabel)),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
   const u=UPC.filter(ok);
   /* все события в одной прокручиваемой сетке, как на firstrobotics.kz; стрелка внизу листает её */
   const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
-  $("#evs").innerHTML=(u.length?`<div class="eg">${u.map(e=>evCard(e,t)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`)+geoPastHtml();
+  $("#evs").innerHTML=u.length?`<div class="eg">${u.map(e=>evCard(e)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`;
+  $("#past").innerHTML=pastHtml();
   const eg=$("#evs .eg"),mw=$("#evs .morew");
   if(eg){const upd=()=>mw.classList.toggle("end",eg.scrollHeight-eg.clientHeight-eg.scrollTop<8);eg.addEventListener("scroll",upd,{passive:true});upd();setTimeout(upd,400)}
   const up=(window.FK_STATUS&&window.FK_STATUS.checked)||SHEET.updated,s=up?stamp(up):"";
   $("#evsrc").textContent=s?`${tt("evupd")} ${s}`:"";
 }
-function fillFilters(){const i=I[L];
-  const sel=(id,h,arr)=>{const e=$(id),v=e.value;e.innerHTML=`<option value="">${esc(h)}</option>`+arr.map(a=>`<option value="${esc(a[0])}">${esc(a[1])}</option>`).join("");e.value=arr.some(a=>a[0]===v)?v:""};
-  const cities={};UPC.forEach(e=>{if(e.cn)cities[e.cc]=e.cn});
-  sel("#fc",tt("fa"),Object.values(cities).sort((a,b)=>a[i].localeCompare(b[i],L)).map(n=>[n[1],n[i]]));
-  sel("#ft",tt("fc"),CAT_ORDER.filter(k=>UPC.some(e=>e.codes.includes(k))).map(k=>[k,k==="SEM"?tt("semSel"):k==="FE"?tt("fe0"):k]));
-  sel("#fst",tt("fstg"),["kick","scrim","reg","qual","rep","big","off"].filter(s=>UPC.some(e=>e.stage===s)).map(k=>[k,tt("s_"+k)]));
-  $("#fs").placeholder=tt("fs");
-}
-
 /* --- вкладка «Сайт» таблицы (assets/data/site.js): сезон, тема, ссылки, названия тем программ --- */
 const okUrl=u=>/^https:\/\/[^\s"'<>]+$/.test(String(u||""));
 function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
@@ -374,7 +369,7 @@ function render(){
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
-  fillFilters();renderEvents();
+  $("#fs").placeholder=tt("fs");renderEvents();
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
@@ -402,13 +397,13 @@ L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
 /* карта в разделе событий: наведение – подсказка, клик/Enter или список на телефоне – выбор региона, список событий фильтруется;
- * «Все события» снимает выбор региона, «Скрыть список» прячет список; выбор города в фильтре снимает регион */
+ * «Все события» снимает выбор региона, «Скрыть список» прячет список */
 {const m=$("#kzmap");if(m){
   /* клик по контуру региона или по его кружку с подписью (кружки городов стоят поверх области) */
   const u=e=>{const p=e.target.closest(".rg.has, .mk:not(.no)");return p?p.dataset.u:""},any=e=>{const p=e.target.closest(".rg, .mk");return p?p.dataset.u:""};
   m.addEventListener("mouseover",e=>geoCap(any(e)));m.addEventListener("mouseout",()=>geoCap(""));
   m.addEventListener("focusin",e=>geoCap(u(e)));m.addEventListener("focusout",()=>geoCap(""));
-  const setReg=k=>{GEO.sel=k;GEO.open=true;if(k)$("#fc").value="";geoPanel();renderEvents();
+  const setReg=k=>{GEO.sel=k;GEO.open=true;geoPanel();renderEvents();
     /* если список оказался ниже экрана (телефон), страница подъезжает так, чтобы его начало было в середине экрана, а карта осталась видна */
     const r=$("#evs").getBoundingClientRect();if(k&&r.top>innerHeight*.75)scrollBy({top:Math.round(r.top-innerHeight*.45),behavior:RM?"auto":"smooth"})};
   const pick=e=>{const k=u(e);if(!k)return;setReg(GEO.sel===k?"":k)};
@@ -416,12 +411,9 @@ $("#lang").addEventListener("change",e=>setLang(e.target.value));
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
   const gsel=$("#gsel");if(gsel)gsel.addEventListener("change",e=>setReg(e.target.value));
   const pk=$("#gpick");if(pk)pk.addEventListener("click",e=>{const b=e.target.closest(".gcl");if(!b)return;if(b.dataset.act==="close"){GEO.sel="";GEO.open=false;geoPanel()}else setReg("")});
-  $("#fc").addEventListener("change",()=>{if($("#fc").value&&GEO.sel){GEO.sel="";geoPanel()}});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
-const refilter=()=>renderEvents();
-["#fc","#ft","#fst"].forEach(s=>$(s).addEventListener("change",refilter));
-$("#fs").addEventListener("input",refilter);
+$("#fs").addEventListener("input",renderEvents);
 $("#pmore").addEventListener("click",function(){$("#progs").classList.remove("cut");this.hidden=true});
 $("#evs").addEventListener("click",e=>{const rg=e.target.closest(".rgl span");if(rg)rg.classList.toggle("x");if(e.target.closest(".more")){const eg=$("#evs .eg");if(eg)eg.scrollBy({top:Math.round(eg.clientHeight*.85),behavior:RM?"auto":"smooth"})}});
 document.querySelectorAll("[data-sc]").forEach(b=>b.addEventListener("click",()=>{const r=$(b.dataset.sc),f=r.firstElementChild;if(f)r.scrollBy({left:(+b.dataset.d)*(f.offsetWidth+22),behavior:"smooth"})}));
