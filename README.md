@@ -72,7 +72,7 @@
    (GitHub принимает не больше 100 файлов за раз, при необходимости загрузите `assets/img` отдельно). Нажмите **Commit changes**.
 3. **Settings → Pages → Build and deployment → Source: GitHub Actions**. Этот шаг нужен до следующего, иначе первый запуск не сможет опубликовать сайт.
 4. Файл автообновления: **Add file → Create new file**. В поле имени впишите `.github/workflows/update-site.yml`,
-   вставьте весь текст из файла `tools/update-site.yml` (точная копия рабочего файла) и нажмите **Commit changes**. Обновление запустится само (вкладка **Actions**).
+   вставьте весь текст из файла `.github/workflows/update-site.yml` этого репозитория и нажмите **Commit changes**. Обновление запустится само (вкладка **Actions**).
 5. Через 1–2 минуты сайт откроется по адресу `https://ВАШ-ЛОГИН.github.io/first-kazakhstan/` (ссылка видна в Settings → Pages).
 6. Если адрес сайта изменился, поправьте в `index.html` строку `<meta property="og:image" content="https://firstrobotics.kz/assets/img/team-kz-fgc.jpg">`:
    предпросмотр ссылки в Telegram и WhatsApp показывает картинку только по полному адресу.
