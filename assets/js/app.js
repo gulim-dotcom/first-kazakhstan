@@ -50,7 +50,6 @@ function parseDate(raw){
 }
 const dTxt=(d,i)=>d.tba?tt("tba"):d.txt[i];
 /* категории и ссылки регистрации; закрытые формы и формы чужого события скрываются (их отмечает tools/update_data.py) */
-const CAT_ORDER=["FLL-D","FLL-E","FLL-C","FE","FTC","FRC","F4A","SMC","SEM"];
 function parseCat(text,url){
   const t=lo(text);let code="OTHER",label=text;
   if(/семинар|seminar/.test(t)){code="SEM";label=""}
@@ -244,14 +243,10 @@ function renderValues(){const i=I[L];
   $("#vals").innerHTML=V.map((v,k)=>{const c=CV[k];
     return `<div class="vl"><div class="ic" style="--c:${c[1]}"><img src="assets/img/cv-${c[0]}.svg" alt="" width="64" height="48"></div><div><h4>${esc(v[i])}</h4><p>${esc(v[3+i])}</p></div></div>`}).join("");
 }
-/* цитата: первая фраза — синим, как на firstrobotics.kz */
+/* цитата: первая фраза — синим */
 function renderQuote(){const q=tt("quote"),m=q.match(/^(.*?[.!?])\s+([\s\S]*)$/);
   $("#quote").innerHTML=m?`<span class="ql">${esc(m[1])}</span> ${esc(m[2])}`:esc(q)}
 /* программы: кратко — категория, возраст, состав, этапы; подробности — в правилах сезона */
-const PIC={cat:'<svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
-  age:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
-  team:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4a3.5 3.5 0 0 1 0 7M22 20a7 7 0 0 0-5-6.7"/></svg>',
-  stg:'<svg viewBox="0 0 24 24"><path d="M4 21V4M4 4h12l-2 4 2 4H4"/></svg>'};
 function renderPrograms(){const i=I[L];
   $("#progh").innerHTML=firstH(tt("prog"));
   $("#progs").innerHTML=PROG.map((p,k)=>{
@@ -304,7 +299,7 @@ const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
 function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
-  /* порядок строк как на firstrobotics.kz: город → площадка → дата → категории → кнопка «Участвовать» */
+  /* порядок строк: город → площадка → дата → категории → кнопка «Участвовать» */
   const ses=s=>{
     const cats=s.cats;
     const btn=cats.filter(c=>c.url);
@@ -335,7 +330,7 @@ function renderEvents(){
   const ok=e=>(!GEO.sel||unitOf(e)===GEO.sel)&&
     (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...e.vis.flatMap(s=>s.cats.map(catLabel)),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
   const u=UPC.filter(ok);
-  /* все события в одной прокручиваемой сетке, как на firstrobotics.kz; стрелка внизу листает её */
+  /* все события в одной прокручиваемой сетке; стрелка внизу листает её */
   const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
   $("#evs").innerHTML=u.length?`<div class="eg">${u.map(e=>evCard(e)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`;
   $("#past").innerHTML=pastHtml();
