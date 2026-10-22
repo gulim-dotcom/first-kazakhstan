@@ -67,7 +67,7 @@ html.nosplash .splash{display:none}
 @media(prefers-reduced-motion:reduce){.splash .sm,.splash .sx{animation:none}.splash{animation:spl-out .01s linear .5s both}}
 
 /* ---------- первый экран ---------- */
-.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 155px);min-height:calc(100svh - 155px);background:#0c1e36 url(../img/team-kz-fgc.webp) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: высота окна минус шапка, как до появления карты (по просьбе заказчика) */
+.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 135px);min-height:calc(100svh - 135px);background:#0c1e36 url(../img/team-kz-fgc.webp) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: высота окна минус шапка, как до появления карты (по просьбе заказчика) */
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.08) 0%,rgba(10,26,50,.18) 38%,rgba(10,26,50,.54) 68%,rgba(10,26,50,.76) 100%)} /* затемнение фото чуть слабее (по просьбе заказчика) */
 .hero h1{text-shadow:0 1px 14px rgba(8,20,40,.35);font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em;font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
@@ -77,7 +77,7 @@ html.nosplash .splash{display:none}
 @media(min-width:761px) and (max-height:780px){.hero{background-position:50% 50%}} /* невысокие экраны: лица на фото не уходят под текст */
 
 /* ---------- новый сезон ---------- */
-.season{padding:40px 0 8px}
+.season{padding:40px 0 36px} /* воздух между карточкой сезона и блоком «О нас» (по просьбе заказчика) */
 .sp{position:relative;display:grid;grid-template-columns:40% 1fr;overflow:visible;background:var(--cream);color:var(--brown2);padding:64px 60px 56px 72px;border-radius:12px;gap:32px 48px;align-items:center}
 .sp>*{position:relative}
 .sp>.sx{z-index:1}
@@ -476,7 +476,7 @@ footer .team+.cp{margin-top:32px}
   .wl .wtx{padding:0;border:0;font-size:15px}
   .sp{gap:24px 0;padding:72px 24px 36px}
   .sp:after{width:64px;height:160px;right:8px;opacity:.4}
-  .season{padding:40px 0 0}
+  .season{padding:40px 0 20px}
   .sl img{max-width:260px}
 }
 @media(max-width:760px){
