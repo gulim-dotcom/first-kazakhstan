@@ -170,7 +170,7 @@ function countUp(){
   io.observe(box);
 }
 /* карта «FIRST Қазақстанда» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
- * онлайн и зарубежные события на карту не попадают. Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
+ * считаются все события сезона из таблицы, в том числе уже прошедшие; онлайн и зарубежные события на карту не попадают. Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
 const GEO={sel:""};
 const RKEY=new Map(Object.keys(RGN).map(k=>[RGN[k],k]));
 const CITY_KEY={ast:"Астана",alm:"Алматы",shm:"Шымкент"};
@@ -180,8 +180,8 @@ const unitOf=e=>{if(!e.city||!e.city.key||e.city.key==="online")return"";const c
 function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)return;
   if(typeof KZMAP=="undefined"){sec.hidden=true;return}
   const cnt={},evs={},cities=new Set();
-  UPC.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e);cities.add(BASE[e.city.key]||e.city.key)});
-  const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]),total=has.reduce((s,k)=>s+cnt[k],0);
+  EVENTS.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e);cities.add(BASE[e.city.key]||e.city.key)});
+  const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]);
   if(!box.dataset.built){box.innerHTML=`<svg viewBox="0 0 ${KZMAP.w} ${KZMAP.h}" role="img">${units.map(k=>`<path class="rg" data-u="${k}" d="${KZMAP.units[k].d}" fill-rule="evenodd"/>`).join("")}</svg><div class="mks"></div>`;box.dataset.built="1"}
   box.querySelector("svg").setAttribute("aria-label",tt("a_map"));
   units.forEach(k=>{const p=box.querySelector(`.rg[data-u="${k}"]`),n=cnt[k]||0;p.classList.toggle("has",!!n);
@@ -192,7 +192,8 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
     return `<span class="mk${CITY_KEY[k]?" city":""}${n?"":" no"}" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${n?`<b>${n}</b>`:""}<i>${esc(u.n?u.n[i]:"")}</i></span>`}).join("");
   /* телефон: вместо подписей на карте – список регионов */
   const sel=$("#gsel");if(sel){sel.innerHTML=`<option value="">${esc(tt("geoSel"))}</option>`+has.slice().sort((a,b)=>unitName(a,i).localeCompare(unitName(b,i),L)).map(k=>`<option value="${k}">${esc(unitName(k,i))} · ${cnt[k]}</option>`).join("")}
-  $("#gn").innerHTML=[[has.length,"geoReg"],[cities.size,"geoCity"],[total,"geoEv"]].map(([n,k])=>`<div class="st"><b>${n}</b><span class="lb">${esc(pl(k,n))}</span></div>`).join("");
+  /* рядом с картой – число регионов и городов; общее число событий не показывается, счёт виден в кружках на карте */
+  $("#gn").innerHTML=[[has.length,"geoReg"],[cities.size,"geoCity"]].map(([n,k])=>`<div class="st"><b>${n}</b><span class="lb">${esc(pl(k,n))}</span></div>`).join("");
   if(GEO.sel&&!cnt[GEO.sel])GEO.sel="";
   GEO.evs=evs;GEO.cnt=cnt;geoPanel();geoCap("");
 }
@@ -205,8 +206,11 @@ function geoPanel(){const i=I[L],g=$("#gs"),k=GEO.sel;if(!g)return;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
   if(!k||!GEO.evs[k]){g.innerHTML="";return}
-  const n=GEO.evs[k].length;
-  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}<span>${n} ${esc(pl("geoEv",n))}</span></h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div><div class="gcards">${GEO.evs[k].map(e=>evCard(e,"")).join("")}</div><a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
+  const all=GEO.evs[k],n=all.length,up=all.filter(e=>e.vis.length).sort((a,b)=>(a.start?+a.start:9e15)-(b.start?+b.start:9e15)),past=all.filter(e=>!e.vis.length);
+  /* предстоящие – карточками; уже прошедшие события сезона – короткой строкой: название, город, дата */
+  const dts=e=>[...new Set((e.sessions||[]).map(s=>dTxt(s.d,i)))].join(", ");
+  const pastHtml=past.length?`<div class="gpast"><h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul></div>`:"";
+  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}<span>${n} ${esc(pl("geoEv",n))}</span></h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div>${up.length?`<div class="gcards">${up.map(e=>evCard(e,"")).join("")}</div>`:""}${pastHtml}<a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
   /* карточки появляются под картой: если они за краем экрана, страница подтягивает их в кадр */
   const r=g.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)g.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
 }
