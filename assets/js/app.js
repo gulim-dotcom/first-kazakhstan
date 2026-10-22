@@ -49,7 +49,8 @@ function parseDate(raw){
   return{start:null,end:null,txt:[s,s,s]};
 }
 const dTxt=(d,i)=>d.tba?tt("tba"):d.txt[i];
-/* категории и ссылки регистрации; закрытые формы и формы чужого события скрываются (их отмечает tools/update_data.py) */
+/* категории и ссылки регистрации. Закрытая форма (tools/update_data.py отмечает её как closed) остаётся ссылкой с пометкой
+ * «регистрация закрыта» – все формы таблицы есть на сайте; скрывается только форма чужого события (mismatch) */
 function parseCat(text,url){
   const t=lo(text);let code="OTHER",label=text;
   if(/семинар|seminar/.test(t)){code="SEM";label=""}
@@ -60,8 +61,8 @@ function parseCat(text,url){
   else if(/ftc/.test(t))code="FTC";
   else if(/frc/.test(t))code="FRC";
   url=formUrl(url);
-  const st=url&&FORMS[url]?FORMS[url].s:"",bad=st==="closed"||st==="mismatch";
-  return{code:code,label:label,url:url&&!bad?url:"",closed:st==="closed"};
+  const st=url&&FORMS[url]?FORMS[url].s:"";
+  return{code:code,label:label,url:st==="mismatch"?"":url,closed:st==="closed"};
 }
 const catLabel=c=>c.code==="SEM"?tt("sem"):c.label;
 const RGN_KK={};Object.keys(RGN).forEach(k=>{RGN_KK[lo(RGN[k][1])]=k});
@@ -169,18 +170,22 @@ function countUp(){
   io.observe(box);
 }
 /* карта регионов в разделе «События» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
- * в кружках все события сезона из таблицы, в том числе уже прошедшие; онлайн и зарубежные события на карту не попадают.
- * Выбранный регион (GEO.sel) фильтрует список событий раздела (renderEvents). Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
+ * в кружках все события сезона из таблицы, в том числе уже прошедшие. Онлайн-события без города и события за рубежом (CITY_ABROAD)
+ * на карту не попадают – они в строке кнопок под картой (#gext) с ключами «x:online», «x:Ташкент»…; «Город + Онлайн» остаётся в своём регионе.
+ * Выбранный регион или кнопка (GEO.sel) фильтрует список событий раздела (renderEvents). Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
 const GEO={sel:"",open:false}; /* sel – выбранный регион, open – список событий раскрыт (по клику на регион или «Показать все события») */
 const RKEY=new Map(Object.keys(RGN).map(k=>[RGN[k],k]));
 const CITY_KEY={ast:"Астана",alm:"Алматы",shm:"Шымкент"};
-const unitName=(k,i)=>(RGN[k]||CITY[CITY_KEY[k]]||["","",""])[i];
-const unitOf=e=>{if(!e.city||!e.city.key||e.city.key==="online")return"";const ck=BASE[e.city.key]||e.city.key;
-  if(typeof CITY_UNIT!="undefined"&&CITY_UNIT[ck])return CITY_UNIT[ck];return(e.region&&RKEY.get(e.region))||""};
+const isExt=k=>k.startsWith("x:");
+const unitName=(k,i)=>(isExt(k)?CITY[k.slice(2)]:RGN[k]||CITY[CITY_KEY[k]]||["","",""])[i];
+const unitOf=e=>{if(!e.city||!e.city.key)return"";if(e.city.key==="online")return"x:online";const ck=BASE[e.city.key]||e.city.key;
+  if(typeof CITY_UNIT!="undefined"&&CITY_UNIT[ck])return CITY_UNIT[ck];if(typeof CITY_ABROAD!="undefined"&&CITY_ABROAD[ck]&&CITY[ck])return"x:"+ck;
+  return(e.region&&RKEY.get(e.region))||""};
 function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)return;
   if(typeof KZMAP=="undefined"){sec.hidden=true;return}
   const cnt={},evs={};
-  EVENTS.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e)});
+  /* события таблицы и встроенные карточки (SMC, FIRST4ALL), которых в таблице нет */
+  EVENTS.concat(UPC.filter(e=>!EVENTS.includes(e))).forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e)});
   const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]);
   if(!box.dataset.built){box.innerHTML=`<svg viewBox="0 0 ${KZMAP.w} ${KZMAP.h}" role="img">${units.map(k=>`<path class="rg" data-u="${k}" d="${KZMAP.units[k].d}" fill-rule="evenodd"/>`).join("")}</svg><div class="mks"></div>`;box.dataset.built="1"}
   box.querySelector("svg").setAttribute("aria-label",tt("a_map"));
@@ -190,19 +195,23 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
   /* подпись у каждого региона; кружок с числом – только там, где есть события; у городов подпись справа от кружка */
   box.querySelector(".mks").innerHTML=units.map(k=>{const u=KZMAP.units[k],c=u.c,n=cnt[k]||0;
     return `<span class="mk${CITY_KEY[k]?" city":""}${n?"":" no"}" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${n?`<b>${n}</b>`:""}<i>${esc(u.n?u.n[i]:"")}</i></span>`}).join("");
-  /* телефон: вместо подписей на карте – список регионов */
-  const sel=$("#gsel");if(sel){sel.innerHTML=`<option value="">${esc(tt("geoSel"))}</option>`+has.slice().sort((a,b)=>unitName(a,i).localeCompare(unitName(b,i),L)).map(k=>`<option value="${k}">${esc(unitName(k,i))} · ${cnt[k]}</option>`).join("")}
+  /* онлайн и зарубежные события – кнопки под картой: сначала «Онлайн», затем города по алфавиту */
+  const ext=Object.keys(cnt).filter(isExt).sort((a,b)=>(a==="x:online"?-1:b==="x:online"?1:unitName(a,i).localeCompare(unitName(b,i),L)));
+  const gx=$("#gext");if(gx)gx.innerHTML=ext.length?`<span class="gxl">${esc(tt("geoExt"))}</span>`+ext.map(k=>`<button type="button" class="gch" data-u="${esc(k)}"><span>${esc(unitName(k,i))}</span><b>${cnt[k]}</b></button>`).join(""):"";
+  /* телефон: вместо подписей на карте – список регионов (в конце – онлайн и зарубежные) */
+  const opt=k=>`<option value="${esc(k)}">${esc(unitName(k,i))} · ${cnt[k]}</option>`;
+  const sel=$("#gsel");if(sel){sel.innerHTML=`<option value="">${esc(tt("geoSel"))}</option>`+has.slice().sort((a,b)=>unitName(a,i).localeCompare(unitName(b,i),L)).map(opt).join("")+ext.map(opt).join("")}
   if(GEO.sel&&!cnt[GEO.sel])GEO.sel="";
   GEO.evs=evs;GEO.cnt=cnt;geoPanel();geoCap("");
 }
 /* подпись под картой: регион под курсором, число событий и города */
 function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";return}
-  const n=GEO.cnt[k]||0,cities=n?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
+  const n=GEO.cnt[k]||0,cities=n&&!isExt(k)?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
   c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
 /* выбранный регион: подсветка на карте, список на телефоне, строка над картой и видимость списка событий.
  * Пока регион не выбран, список скрыт – на странице только карта с подсказкой, ссылка «Показать все события» и последние прошедшие события */
 function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
-  document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
+  document.querySelectorAll("#kzmap .rg, #kzmap .mk, #gext .gch").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
   ["#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
   const f=$("#events .flt");if(f)f.hidden=!open||!!k; /* строка поиска – только в полном списке */
@@ -305,14 +314,14 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
     const btn=cats.filter(c=>c.url);
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);
     const one=cats.length===1&&btn.length===1;
-    const bl=c=>c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
+    const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
       <p class="dt">${ICO.cal}<span>${esc(dTxt(s.d,i))}</span></p>
       ${s.chg?`<p class="chg"><b>${esc(tt("chg"))}:</b> ${esc(s.chg)}</p>`:""}
       ${s.st?`<p class="chg"><b>${esc(tt("stt"))}:</b> ${esc(s.st)}</p>`:""}
-      ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed?' class="closed"':""}>${esc(catLabel(c))}${c.closed?` · ${esc(tt("regclosed"))}`:c.soon?` · ${esc(tt("regsoon"))}`:""}</span>`).join("")}</div>`:""}
-      ${btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:""}
+      ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed&&!c.url?' class="closed"':""}>${esc(catLabel(c))}${c.closed&&!c.url?` · ${esc(tt("regclosed"))}`:c.soon?` · ${esc(tt("regsoon"))}`:""}</span>`).join("")}</div>`:""}
+      ${btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:""}
     </div>`};
   return `<div class="cell"><div class="ec"><div>
     <h4>${esc(e.name)}</h4>
@@ -405,6 +414,11 @@ $("#lang").addEventListener("change",e=>setLang(e.target.value));
   m.addEventListener("click",pick);
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
   const gsel=$("#gsel");if(gsel)gsel.addEventListener("change",e=>setReg(e.target.value));
+  /* кнопки «Онлайн», «Ташкент»… под картой работают как регионы: наведение – подсказка, клик – выбор или снятие выбора */
+  const gx=$("#gext");if(gx){const ch=e=>{const b=e.target.closest(".gch");return b?b.dataset.u:""};
+    gx.addEventListener("mouseover",e=>geoCap(ch(e)));gx.addEventListener("mouseout",()=>geoCap(""));
+    gx.addEventListener("focusin",e=>geoCap(ch(e)));gx.addEventListener("focusout",()=>geoCap(""));
+    gx.addEventListener("click",e=>{const k=ch(e);if(k)setReg(GEO.sel===k?"":k)})}
   const pk=$("#gpick");if(pk)pk.addEventListener("click",e=>{const b=e.target.closest(".gcl");if(!b)return;if(b.dataset.act==="close"){GEO.sel="";GEO.open=false;geoPanel()}else setReg("")});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
