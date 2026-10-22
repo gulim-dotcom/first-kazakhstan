@@ -6,6 +6,8 @@
 const $=s=>document.querySelector(s);
 const tt=k=>(T[L]&&T[L][k]!=null)?T[L][k]:(T.ru[k]!=null?T.ru[k]:"");
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* число + слово: в data.js подпись либо строка (kk), либо формы по числу (ru: 1, 2–4, 5+; en: 1, 2+) */
+const pl=(k,n)=>{const v=tt(k);if(!Array.isArray(v))return v;if(L==="en")return v[n===1?0:1];const a=n%10,b=n%100;return v[(a===1&&b!==11)?0:(a>=2&&a<=4&&(b<12||b>14))?1:2]};
 const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
 let TODAY=new Date();TODAY.setHours(0,0,0,0);
 try{const p=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Almaty",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()).split("-");TODAY=new Date(+p[0],+p[1]-1,+p[2])}catch(e){}
@@ -167,6 +169,40 @@ function countUp(){
   const io=countUp.io=new IntersectionObserver(ens=>{if(ens.some(en=>en.isIntersecting)){io.disconnect();run()}},{threshold:.3});
   io.observe(box);
 }
+/* карта «FIRST Қазақстанда» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
+ * онлайн и зарубежные события на карту не попадают. Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
+const GEO={sel:""};
+const RKEY=new Map(Object.keys(RGN).map(k=>[RGN[k],k]));
+const CITY_KEY={ast:"Астана",alm:"Алматы",shm:"Шымкент"};
+const unitName=(k,i)=>(RGN[k]||CITY[CITY_KEY[k]]||["","",""])[i];
+const unitOf=e=>{if(!e.city||!e.city.key||e.city.key==="online")return"";const ck=BASE[e.city.key]||e.city.key;
+  if(typeof CITY_UNIT!="undefined"&&CITY_UNIT[ck])return CITY_UNIT[ck];return(e.region&&RKEY.get(e.region))||""};
+function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)return;
+  if(typeof KZMAP=="undefined"){sec.hidden=true;return}
+  const cnt={},evs={},cities=new Set();
+  UPC.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e);cities.add(BASE[e.city.key]||e.city.key)});
+  const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]),total=has.reduce((s,k)=>s+cnt[k],0);
+  if(!box.dataset.built){box.innerHTML=`<svg viewBox="0 0 ${KZMAP.w} ${KZMAP.h}" role="img">${units.map(k=>`<path class="rg" data-u="${k}" d="${KZMAP.units[k].d}" fill-rule="evenodd"/>`).join("")}</svg><div class="mks"></div>`;box.dataset.built="1"}
+  box.querySelector("svg").setAttribute("aria-label",tt("a_map"));
+  units.forEach(k=>{const p=box.querySelector(`.rg[data-u="${k}"]`),n=cnt[k]||0;p.classList.toggle("has",!!n);
+    if(n){p.setAttribute("role","button");p.setAttribute("tabindex","0");p.setAttribute("aria-label",`${unitName(k,i)}: ${n} ${pl("geoEv",n)}`)}
+    else{p.removeAttribute("role");p.removeAttribute("tabindex");p.setAttribute("aria-label",unitName(k,i))}});
+  box.querySelector(".mks").innerHTML=has.map(k=>{const c=KZMAP.units[k].c;return `<span class="mk" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${cnt[k]}</span>`}).join("");
+  $("#gn").innerHTML=[[has.length,"geoReg"],[cities.size,"geoCity"],[total,"geoEv"]].map(([n,k])=>`<div class="st"><b>${n}</b><span class="lb">${esc(pl(k,n))}</span></div>`).join("");
+  if(GEO.sel&&!cnt[GEO.sel])GEO.sel="";
+  GEO.evs=evs;GEO.cnt=cnt;geoPanel();geoCap("");
+}
+/* подпись под картой: регион под курсором */
+function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;c.innerHTML=k&&GEO.cnt[k]?`<b>${esc(unitName(k,i))}</b> · ${GEO.cnt[k]} ${esc(pl("geoEv",GEO.cnt[k]))}`:""}
+/* панель выбранного региона: его события, переход к списку с фильтром по городу */
+function geoPanel(){const i=I[L],g=$("#gs"),k=GEO.sel;if(!g)return;
+  document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
+  if(!k||!GEO.evs[k]){g.innerHTML=`<p class="ghint">${esc(tt("geoHint"))}</p>`;return}
+  const li=e=>{const s=e.vis[0];return `<li><a class="gi" href="#events" data-city="${esc(e.cc)}"><span class="d">${esc(dTxt(s.d,i))}</span><span class="n">${esc(e.name)}<span class="c">${esc(e.cn?e.cn[i]:"")}${s.v?` · ${esc(vname(s.v.n))}`:""}</span></span></a></li>`};
+  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}</h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div><ul>${GEO.evs[k].map(li).join("")}</ul><a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
+  /* на телефоне панель стоит под картой: после выбора подтягивается в кадр */
+  if(innerWidth<=1060&&g.getBoundingClientRect().bottom>innerHeight)g.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
+}
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
@@ -320,7 +356,7 @@ function render(){
   const md=document.querySelector("meta[name=description]");if(md&&tt("metaDesc"))md.content=tt("metaDesc");
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
-  renderStats();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
+  renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
   fillFilters();renderEvents();
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
@@ -348,6 +384,19 @@ try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStor
 L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
+/* карта: наведение – подпись, клик или Enter – выбор региона; ссылки панели ставят фильтр города и ведут к списку */
+{const m=$("#kzmap");if(m){
+  const u=e=>{const p=e.target.closest(".rg.has");return p?p.dataset.u:""};
+  m.addEventListener("mouseover",e=>geoCap(u(e)));m.addEventListener("mouseout",()=>geoCap(""));
+  m.addEventListener("focusin",e=>geoCap(u(e)));m.addEventListener("focusout",()=>geoCap(""));
+  const pick=e=>{const k=u(e);if(!k)return;GEO.sel=GEO.sel===k?"":k;geoPanel()};
+  m.addEventListener("click",pick);
+  m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
+  $("#gs").addEventListener("click",e=>{
+    if(e.target.closest(".gcl")){GEO.sel="";geoPanel();return}
+    const a=e.target.closest("a[data-city]");if(!a)return;
+    const fc=$("#fc"),c=a.dataset.city;fc.value=[...fc.options].some(o=>o.value===c)?c:"";$("#ft").value="";$("#fst").value="";$("#fs").value="";renderEvents()});
+}}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
 const refilter=()=>renderEvents();
 ["#fc","#ft","#fst"].forEach(s=>$(s).addEventListener("change",refilter));
