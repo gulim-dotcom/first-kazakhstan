@@ -277,6 +277,9 @@ const PNAMES={mmm:"3M",apple:"Apple",boeing:"Boeing",cat:"Caterpillar",fedex:"Fe
 Object.assign(T.ru,{n8:"Контакты",allNews:"Все новости",newsTitle:"Новости",newsSub:"Результаты команд и события сезона"});
 Object.assign(T.kk,{n8:"Байланыс",allNews:"Барлық жаңалықтар",newsTitle:"Жаңалықтар",newsSub:"Команда нәтижелері мен маусым оқиғалары"});
 Object.assign(T.en,{n8:"Contact",allNews:"All news",newsTitle:"News",newsSub:"Team results and season events"});
+Object.assign(T.ru,{tmH:"Связаться с командой",tm1:"Program Delivery Partner",tm2:"Руководитель программ FLL",tm3:"Менеджер по мероприятиям и медиа"});
+Object.assign(T.kk,{tmH:"Командамен байланыс",tm1:"Program Delivery Partner",tm2:"FLL бағдарламаларының жетекшісі",tm3:"Іс-шаралар және медиа менеджері"});
+Object.assign(T.en,{tmH:"Contact our team",tm1:"Program Delivery Partner",tm2:"FLL Program Lead",tm3:"Events & Media Manager"});
 /* подпись фото цитаты, описание страницы для поисковиков, названия партнёров по языкам */
 Object.assign(T.ru,{qname:"Касым-Жомарт Токаев",metaDesc:"FIRST® Kazakhstan – глобальное сообщество робототехники и STEM. Программы FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition и FIRST® Global Challenge, календарь соревнований и регистрация. Оператор в Казахстане – USTEM Foundation.",newsMeta:"Новости FIRST® Kazakhstan: результаты команд и события сезона."});
 Object.assign(T.kk,{qname:"Қасым-Жомарт Тоқаев",metaDesc:"FIRST® Kazakhstan – робототехника және STEM жаһандық қауымдастығы. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition және FIRST® Global Challenge бағдарламалары, жарыс күнтізбесі және тіркелу. Қазақстандағы операторы – USTEM Foundation.",newsMeta:"FIRST® Kazakhstan жаңалықтары: команда нәтижелері мен маусым оқиғалары."});
