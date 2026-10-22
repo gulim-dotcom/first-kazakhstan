@@ -653,6 +653,8 @@ const CITY={
  online:["Онлайн","Онлайн","Online"]
 };
 const BASE={"Астана+":"Астана","Алматы+":"Алматы"};
+/* город события, пока в таблице колонка «Қала» у него пустая (ключ – название события в нижнем регистре) */
+const CITY_DEFAULT={"digital qazaqstan 2027":"Астана"};
 const CITY_ALIAS={
  online:"online",
  "онлайн":"online",
