@@ -143,30 +143,12 @@ const firstH=(word)=>L=="ru"?`${esc(word)} <span class="fi">FIRST</span>®`:`<sp
 const fmt=n=>Math.round(n).toLocaleString(L=="en"?"en-US":"ru-RU");
 const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 
-/* статистика: цифры Казахстана растут с нуля, когда блок появляется на экране; цифры FIRST в мире стоят сразу */
+/* статистика: цифры Казахстана и строка «FIRST в мире», без анимации */
 function renderStats(){const i=I[L];
-  const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
+  const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):fmt(n)}${suf}`;
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
-  $("#stats").classList.toggle("three",KS.length===3); /* три цифры – одной колонкой */
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`; /* мировые цифры FIRST – одной строкой текста, без анимации */
-  countUp();
-}
-function countUp(){
-  const box=$("#stats");if(!box)return;
-  const els=[...box.querySelectorAll(".num")];
-  if(countUp.io)countUp.io.disconnect();
-  /* уже показали один раз, reduced-motion или старый браузер — сразу итоговые цифры */
-  if(box.dataset.done||RM||!("IntersectionObserver" in window))return;
-  /* ширина числа фиксируется заранее, чтобы подпись рядом не сдвигалась во время счёта */
-  els.forEach(e=>{const b=e.parentElement;b.style.minWidth=b.getBoundingClientRect().width+"px";e.textContent=fmt(0)});
-  const run=()=>{box.dataset.done="1";const t0=performance.now(),D=1600;
-    const step=now=>{const p=Math.min(1,(now-t0)/D),k=1-Math.pow(1-p,3);
-      els.forEach(x=>{x.textContent=fmt(+x.dataset.n*k)});
-      if(p<1)requestAnimationFrame(step);else els.forEach(x=>{x.parentElement.style.minWidth=""})};
-    requestAnimationFrame(step)};
-  const io=countUp.io=new IntersectionObserver(ens=>{if(ens.some(en=>en.isIntersecting)){io.disconnect();run()}},{threshold:.3});
-  io.observe(box);
 }
 /* карта регионов в разделе «События» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
  * в кружках все события сезона из таблицы, в том числе уже прошедшие; онлайн и зарубежные события на карту не попадают.
