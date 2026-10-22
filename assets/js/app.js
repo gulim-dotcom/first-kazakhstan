@@ -194,14 +194,14 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
 }
 /* подпись под картой: регион под курсором */
 function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;c.innerHTML=k&&GEO.cnt[k]?`<b>${esc(unitName(k,i))}</b> · ${GEO.cnt[k]} ${esc(pl("geoEv",GEO.cnt[k]))}`:""}
-/* панель выбранного региона: его события, переход к списку с фильтром по городу */
+/* под картой – соревнования выбранного региона в обычных карточках событий (evCard); пока регион не выбран, блок пуст */
 function geoPanel(){const i=I[L],g=$("#gs"),k=GEO.sel;if(!g)return;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
-  if(!k||!GEO.evs[k]){g.innerHTML=`<p class="ghint">${esc(tt("geoHint"))}</p>`;return}
-  const li=e=>{const s=e.vis[0];return `<li><a class="gi" href="#events" data-city="${esc(e.cc)}"><span class="d">${esc(dTxt(s.d,i))}</span><span class="n">${esc(e.name)}<span class="c">${esc(e.cn?e.cn[i]:"")}${s.v?` · ${esc(vname(s.v.n))}`:""}</span></span></a></li>`};
-  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}</h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div><ul>${GEO.evs[k].map(li).join("")}</ul><a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
-  /* на телефоне панель стоит под картой: после выбора подтягивается в кадр */
-  if(innerWidth<=1060&&g.getBoundingClientRect().bottom>innerHeight)g.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
+  if(!k||!GEO.evs[k]){g.innerHTML="";return}
+  const n=GEO.evs[k].length;
+  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}<span>${n} ${esc(pl("geoEv",n))}</span></h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div><div class="gcards">${GEO.evs[k].map(e=>evCard(e,"")).join("")}</div><a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
+  /* карточки появляются под картой: если они за краем экрана, страница подтягивает их в кадр */
+  const r=g.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)g.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
 }
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
@@ -394,6 +394,7 @@ $("#lang").addEventListener("change",e=>setLang(e.target.value));
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
   $("#gs").addEventListener("click",e=>{
     if(e.target.closest(".gcl")){GEO.sel="";geoPanel();return}
+    const rg=e.target.closest(".rgl span");if(rg){rg.classList.toggle("x");return}
     const a=e.target.closest("a[data-city]");if(!a)return;
     const fc=$("#fc"),c=a.dataset.city;fc.value=[...fc.options].some(o=>o.value===c)?c:"";$("#ft").value="";$("#fst").value="";$("#fs").value="";renderEvents()});
 }}
