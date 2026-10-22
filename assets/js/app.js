@@ -187,16 +187,23 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
   units.forEach(k=>{const p=box.querySelector(`.rg[data-u="${k}"]`),n=cnt[k]||0;p.classList.toggle("has",!!n);
     if(n){p.setAttribute("role","button");p.setAttribute("tabindex","0");p.setAttribute("aria-label",`${unitName(k,i)}: ${n} ${pl("geoEv",n)}`)}
     else{p.removeAttribute("role");p.removeAttribute("tabindex");p.setAttribute("aria-label",unitName(k,i))}});
-  box.querySelector(".mks").innerHTML=has.map(k=>{const c=KZMAP.units[k].c;return `<span class="mk" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${cnt[k]}</span>`}).join("");
+  /* подпись у каждого региона; кружок с числом – только там, где есть события; у городов подпись справа от кружка */
+  box.querySelector(".mks").innerHTML=units.map(k=>{const u=KZMAP.units[k],c=u.c,n=cnt[k]||0;
+    return `<span class="mk${CITY_KEY[k]?" city":""}${n?"":" no"}" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${n?`<b>${n}</b>`:""}<i>${esc(u.n?u.n[i]:"")}</i></span>`}).join("");
+  /* телефон: вместо подписей на карте – список регионов */
+  const sel=$("#gsel");if(sel){sel.innerHTML=`<option value="">${esc(tt("geoSel"))}</option>`+has.slice().sort((a,b)=>unitName(a,i).localeCompare(unitName(b,i),L)).map(k=>`<option value="${k}">${esc(unitName(k,i))} · ${cnt[k]}</option>`).join("")}
   $("#gn").innerHTML=[[has.length,"geoReg"],[cities.size,"geoCity"],[total,"geoEv"]].map(([n,k])=>`<div class="st"><b>${n}</b><span class="lb">${esc(pl(k,n))}</span></div>`).join("");
   if(GEO.sel&&!cnt[GEO.sel])GEO.sel="";
   GEO.evs=evs;GEO.cnt=cnt;geoPanel();geoCap("");
 }
-/* подпись под картой: регион под курсором */
-function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;c.innerHTML=k&&GEO.cnt[k]?`<b>${esc(unitName(k,i))}</b> · ${GEO.cnt[k]} ${esc(pl("geoEv",GEO.cnt[k]))}`:""}
+/* подпись под картой: регион под курсором, число событий и города */
+function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";return}
+  const n=GEO.cnt[k]||0,cities=n?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
+  c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
 /* под картой – соревнования выбранного региона в обычных карточках событий (evCard); пока регион не выбран, блок пуст */
 function geoPanel(){const i=I[L],g=$("#gs"),k=GEO.sel;if(!g)return;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
+  const sel=$("#gsel");if(sel)sel.value=k||"";
   if(!k||!GEO.evs[k]){g.innerHTML="";return}
   const n=GEO.evs[k].length;
   g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}<span>${n} ${esc(pl("geoEv",n))}</span></h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div><div class="gcards">${GEO.evs[k].map(e=>evCard(e,"")).join("")}</div><a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
@@ -386,12 +393,13 @@ L=start;render();
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
 /* карта: наведение – подпись, клик или Enter – выбор региона; ссылки панели ставят фильтр города и ведут к списку */
 {const m=$("#kzmap");if(m){
-  const u=e=>{const p=e.target.closest(".rg.has");return p?p.dataset.u:""};
-  m.addEventListener("mouseover",e=>geoCap(u(e)));m.addEventListener("mouseout",()=>geoCap(""));
+  const u=e=>{const p=e.target.closest(".rg.has");return p?p.dataset.u:""},any=e=>{const p=e.target.closest(".rg");return p?p.dataset.u:""};
+  m.addEventListener("mouseover",e=>geoCap(any(e)));m.addEventListener("mouseout",()=>geoCap(""));
   m.addEventListener("focusin",e=>geoCap(u(e)));m.addEventListener("focusout",()=>geoCap(""));
   const pick=e=>{const k=u(e);if(!k)return;GEO.sel=GEO.sel===k?"":k;geoPanel()};
   m.addEventListener("click",pick);
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
+  const gsel=$("#gsel");if(gsel)gsel.addEventListener("change",e=>{GEO.sel=e.target.value;geoPanel()});
   $("#gs").addEventListener("click",e=>{
     if(e.target.closest(".gcl")){GEO.sel="";geoPanel();return}
     const rg=e.target.closest(".rgl span");if(rg){rg.classList.toggle("x");return}
