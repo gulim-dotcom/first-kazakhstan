@@ -108,7 +108,7 @@ const T={
   ptCta:"Хотите поддержать программы FIRST в Казахстане? Напишите нам:",
   partner:"Партнёр FIRST Kazakhstan",
   tmH:"Связаться с командой",
-  tm1:"Program Delivery Partner",
+  tm1:"Партнёр FIRST по реализации программ · Руководитель программ FTC",
   tm2:"Руководитель программ FLL",
   tm3:"Менеджер по мероприятиям и медиа"
  },
@@ -212,7 +212,7 @@ const T={
   ptCta:"FIRST бағдарламаларын қолдағыңыз келе ме? Бізге жазыңыз:",
   partner:"FIRST Kazakhstan серіктесі",
   tmH:"Командамен байланыс",
-  tm1:"Program Delivery Partner",
+  tm1:"FIRST бағдарламаларын іске асыру серіктесі · FTC бағдарламаларының жетекшісі",
   tm2:"FLL бағдарламаларының жетекшісі",
   tm3:"Іс-шаралар және медиа менеджері"
  },
@@ -316,7 +316,7 @@ const T={
   ptCta:"Want to support FIRST programs in Kazakhstan? Write to us:",
   partner:"FIRST Kazakhstan partner",
   tmH:"Contact our team",
-  tm1:"Program Delivery Partner",
+  tm1:"Program Delivery Partner · FTC Program Lead",
   tm2:"FLL Program Lead",
   tm3:"Events & Media Manager"
  }
@@ -520,8 +520,8 @@ const PROG=[
   age:"14–18",
   color:"#1d4ed8",
   wordmark:["ROBOTICS","COMPETITION"],
-  photo:"assets/img/im2-hero.webp",
-  ppos:"12% 55%",
+  photo:"assets/img/p-frc-2026.webp",
+  ppos:"50% 50%",
   intro:["старшая программа FIRST: команда с наставниками строит робота промышленного масштаба.","FIRST-тің жоғары сатыдағы бағдарламасы: команда тәлімгерлермен бірге өнеркәсіптік деңгейдегі робот жасайды.","the senior FIRST program: teams build an industrial-scale robot with their mentors."],
   team:["состав без ограничений, 2 совершеннолетних тренера (Lead Coach)","құрам шектеусіз, 2 кәмелетке толған жаттықтырушы (Lead Coach)","no team-size limit, 2 adult Lead Coaches"]
  },
