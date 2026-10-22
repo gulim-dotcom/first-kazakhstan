@@ -156,6 +156,16 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .mk.on b{background:#cf6634;border-color:#cf6634;color:#fff}
 .mk.on i{color:#fff;text-shadow:0 0 3px rgba(12,30,54,.7),0 0 2px rgba(12,30,54,.7)}
 .gsel{display:none} /* список регионов – только на телефоне (ниже, в адаптиве) */
+/* онлайн и зарубежные события – кнопки под картой (#gext), выбранная – синяя, как регион на карте */
+.gext{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.gext:empty{display:none}
+.gext .gxl{margin-right:4px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lt)}
+.gch{display:inline-flex;align-items:center;gap:8px;min-height:34px;padding:0 6px 0 12px;border:1px solid #d9dee5;border-radius:999px;background:#fff;color:var(--tx);font:inherit;font-size:14px;font-weight:600;line-height:1;cursor:pointer;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.gch b{display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;border:1.5px solid var(--blue);font-size:12px;font-weight:700;color:var(--blue)}
+.gch:hover{border-color:var(--blue)}
+.gch:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.gch.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.gch.on b{background:#cf6634;border-color:#cf6634;color:#fff}
 .gcap{min-height:24px;margin-top:10px;font-size:15px;line-height:1.5;color:var(--mu)}
 .gcap b{color:var(--tx);font-weight:600}
 .gsrc{margin-top:2px;font-size:12px;color:#9ca3af}
@@ -300,6 +310,8 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .fb{display:inline-flex;align-items:center;justify-content:center;min-height:40px;min-width:0;width:100%;max-width:280px;padding:0 10px;font-size:14px;font-weight:600;border-radius:var(--rc);background:#fff;border:1px solid #e5e7eb;color:#000;line-height:1.2;text-align:center;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
 .fb:hover{background:#0c1e36;border-color:#0c1e36;color:#fff}
 .fb.sem{font-weight:600}
+.fb.off{border-style:dashed;color:var(--lt);font-weight:500} /* закрытая форма: ссылка остаётся, вид приглушённый */
+.fb.off:hover{background:#f3f4f6;border-color:#9ca3af;color:var(--tx)}
 .ses{border-top:1px dashed #e5e7eb;margin-top:10px;padding-top:10px}
 .ec p.dt{margin-bottom:8px}
 .empty{color:var(--mu);padding:40px 0;text-align:center;font-size:18px}
@@ -564,6 +576,7 @@ footer .team+.cp{margin-top:32px}
   .geo .gx h3{font-size:24px}
   .mk,.mk.city{transform:translate(-50%,-50%)}
   .mk b{min-width:24px;height:24px;padding:0 5px;font-size:12px}
+  .gext{margin:14px 0 10px}.gext .gxl{flex-basis:100%;margin:0 0 2px} /* подпись строкой над кнопками */
   .mk i,.mk.no,.gcap{display:none} /* подписи на телефоне не читаются: вместо них список регионов и заголовок с карточками */
   .gsel{display:block;width:100%;height:44px;margin-top:14px;padding:0 34px 0 12px;border:1px solid #d9dee5;border-radius:var(--rc);background:#fff var(--chev3) no-repeat right 12px center;font-size:15px;font-weight:500;color:var(--tx);appearance:none;-webkit-appearance:none}
   .gsel:focus{outline:none;border-color:#9aa3b2}
@@ -591,4 +604,4 @@ footer .team+.cp{margin-top:32px}
 @media(prefers-reduced-motion:reduce){.lgs{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.lg[aria-hidden]{display:none}}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* уважение к настройке «меньше движения»: без переходов и подъёмов */
-@media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.gch,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
