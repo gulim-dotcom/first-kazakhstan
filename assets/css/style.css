@@ -68,7 +68,7 @@ html.nosplash .splash{display:none}
 
 /* ---------- первый экран ---------- */
 .hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 155px);min-height:calc(100svh - 155px);background:#0c1e36 url(../img/team-kz-fgc.webp) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: высота окна минус шапка, как до появления карты (по просьбе заказчика) */
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.10) 0%,rgba(10,26,50,.22) 38%,rgba(10,26,50,.62) 68%,rgba(10,26,50,.84) 100%)}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.08) 0%,rgba(10,26,50,.18) 38%,rgba(10,26,50,.54) 68%,rgba(10,26,50,.76) 100%)} /* затемнение фото чуть слабее (по просьбе заказчика) */
 .hero h1{text-shadow:0 1px 14px rgba(8,20,40,.35);font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em;font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:120px 48px 64px 32px}
