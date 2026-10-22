@@ -169,9 +169,10 @@ function countUp(){
   const io=countUp.io=new IntersectionObserver(ens=>{if(ens.some(en=>en.isIntersecting)){io.disconnect();run()}},{threshold:.3});
   io.observe(box);
 }
-/* карта «FIRST Қазақстанда» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
- * считаются все события сезона из таблицы, в том числе уже прошедшие; онлайн и зарубежные события на карту не попадают. Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
-const GEO={sel:""};
+/* карта регионов в разделе «События» (assets/js/kzmap.js): регион события – по городу (CITY_UNIT), иначе по колонке «Облыс»;
+ * в кружках все события сезона из таблицы, в том числе уже прошедшие; онлайн и зарубежные события на карту не попадают.
+ * Выбранный регион (GEO.sel) фильтрует список событий раздела (renderEvents). Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
+const GEO={sel:"",open:false}; /* sel – выбранный регион, open – список событий раскрыт (по клику на регион или «Показать все события») */
 const RKEY=new Map(Object.keys(RGN).map(k=>[RGN[k],k]));
 const CITY_KEY={ast:"Астана",alm:"Алматы",shm:"Шымкент"};
 const unitName=(k,i)=>(RGN[k]||CITY[CITY_KEY[k]]||["","",""])[i];
@@ -179,8 +180,8 @@ const unitOf=e=>{if(!e.city||!e.city.key||e.city.key==="online")return"";const c
   if(typeof CITY_UNIT!="undefined"&&CITY_UNIT[ck])return CITY_UNIT[ck];return(e.region&&RKEY.get(e.region))||""};
 function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)return;
   if(typeof KZMAP=="undefined"){sec.hidden=true;return}
-  const cnt={},evs={},cities=new Set();
-  EVENTS.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e);cities.add(BASE[e.city.key]||e.city.key)});
+  const cnt={},evs={};
+  EVENTS.forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e)});
   const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]);
   if(!box.dataset.built){box.innerHTML=`<svg viewBox="0 0 ${KZMAP.w} ${KZMAP.h}" role="img">${units.map(k=>`<path class="rg" data-u="${k}" d="${KZMAP.units[k].d}" fill-rule="evenodd"/>`).join("")}</svg><div class="mks"></div>`;box.dataset.built="1"}
   box.querySelector("svg").setAttribute("aria-label",tt("a_map"));
@@ -192,8 +193,6 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
     return `<span class="mk${CITY_KEY[k]?" city":""}${n?"":" no"}" data-u="${k}" style="left:${(c[0]/KZMAP.w*100).toFixed(2)}%;top:${(c[1]/KZMAP.h*100).toFixed(2)}%">${n?`<b>${n}</b>`:""}<i>${esc(u.n?u.n[i]:"")}</i></span>`}).join("");
   /* телефон: вместо подписей на карте – список регионов */
   const sel=$("#gsel");if(sel){sel.innerHTML=`<option value="">${esc(tt("geoSel"))}</option>`+has.slice().sort((a,b)=>unitName(a,i).localeCompare(unitName(b,i),L)).map(k=>`<option value="${k}">${esc(unitName(k,i))} · ${cnt[k]}</option>`).join("")}
-  /* рядом с картой – число регионов и городов; общее число событий не показывается, счёт виден в кружках на карте */
-  $("#gn").innerHTML=[[has.length,"geoReg"],[cities.size,"geoCity"]].map(([n,k])=>`<div class="st"><b>${n}</b><span class="lb">${esc(pl(k,n))}</span></div>`).join("");
   if(GEO.sel&&!cnt[GEO.sel])GEO.sel="";
   GEO.evs=evs;GEO.cnt=cnt;geoPanel();geoCap("");
 }
@@ -201,19 +200,25 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
 function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";return}
   const n=GEO.cnt[k]||0,cities=n?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
   c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
-/* под картой – соревнования выбранного региона в обычных карточках событий (evCard); пока регион не выбран, блок пуст */
-function geoPanel(){const i=I[L],g=$("#gs"),k=GEO.sel;if(!g)return;
+/* выбранный регион: подсветка на карте, список на телефоне, строка над картой и видимость списка событий.
+ * Пока регион не выбран, фильтры и список скрыты – на странице только карта с подсказкой и ссылка «Показать все события» */
+function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
-  if(!k||!GEO.evs[k]){g.innerHTML="";return}
-  const all=GEO.evs[k],n=all.length,up=all.filter(e=>e.vis.length).sort((a,b)=>(a.start?+a.start:9e15)-(b.start?+b.start:9e15)),past=all.filter(e=>!e.vis.length);
-  /* предстоящие – карточками; уже прошедшие события сезона – короткой строкой: название, город, дата */
-  const dts=e=>[...new Set((e.sessions||[]).map(s=>dTxt(s.d,i)))].join(", ");
-  const pastHtml=past.length?`<div class="gpast"><h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul></div>`:"";
-  g.innerHTML=`<div class="gh"><h4>${esc(unitName(k,i))}<span>${n} ${esc(pl("geoEv",n))}</span></h4><button type="button" class="gcl">${esc(tt("geoClr"))}</button></div>${up.length?`<div class="gcards">${up.map(e=>evCard(e,"")).join("")}</div>`:""}${pastHtml}<a class="gall" href="#events" data-city="">${esc(tt("geoAll"))}</a>`;
-  /* карточки появляются под картой: если они за краем экрана, страница подтягивает их в кадр */
-  const r=g.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)g.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
+  ["#events .flt","#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
+  if(!pk)return;
+  const btn=(act,key)=>`<button type="button" class="gcl" data-act="${act}">${esc(tt(key))}</button>`;
+  if(k&&GEO.cnt&&GEO.cnt[k]){const n=GEO.cnt[k];pk.innerHTML=`<b>${esc(unitName(k,i))}</b><span>${n} ${esc(pl("geoEv",n))}</span>${btn("all","geoAllE")}`}
+  else if(open)pk.innerHTML=`<b>${esc(tt("geoAllE"))}</b>${btn("close","geoHide")}`;
+  else pk.innerHTML=btn("all","geoShow");
 }
+/* этап события словами (Скримидж, Региональный этап…) – по ключам s_* в data.js */
+const stageTxt=e=>{const k="s_"+e.stage;return T[L]&&T[L][k]?tt(k):""};
+/* прошедшие события выбранного региона – короткой строкой под списком: название, этап, город, дата */
+function geoPastHtml(){const i=I[L],k=GEO.sel;if(!k||!GEO.evs||!GEO.evs[k])return"";
+  const past=GEO.evs[k].filter(e=>!e.vis.length);if(!past.length)return"";
+  const dts=e=>[...new Set((e.sessions||[]).map(s=>dTxt(s.d,i)))].join(", ");
+  return `<div class="gpast"><h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([stageTxt(e),e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul></div>`}
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
@@ -313,6 +318,7 @@ function evCard(e,t){const i=I[L],online=e.city.key==="online";
     </div>`};
   return `<div class="cell"><div class="ec"><div>
     <h4>${esc(e.name)}</h4>
+    ${stageTxt(e)?`<span class="stg">${esc(stageTxt(e))}</span>`:""}
     ${e.noLoc?"":`<p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>`}
     ${e.allowed?`<p class="rgl">${ICO.pin}<span title="${esc(e.allowed[i])}"><b>${esc(tt("regs"))}:</b> ${esc(e.allowed[i])}</span></p>`:""}
     ${vis.map(ses).join("")}
@@ -323,12 +329,12 @@ const sameStem=(city,region)=>{const a=String(city||"").toLowerCase().slice(0,4)
 function stamp(iso){const d=new Date(iso);if(isNaN(d))return"";try{return d.toLocaleDateString("ru-RU",{timeZone:"Asia/Almaty",day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return `${p2(d.getDate())}.${p2(d.getMonth()+1)}.${d.getFullYear()}`}}
 function renderEvents(){
   const c=$("#fc").value,t=$("#ft").value,sg=$("#fst").value,q=$("#fs").value.trim().toLowerCase();
-  const ok=e=>(!c||e.cc===c)&&(!sg||e.stage===sg)&&(!t||e.codes.includes(t))&&
+  const ok=e=>(!c||e.cc===c)&&(!GEO.sel||unitOf(e)===GEO.sel)&&(!sg||e.stage===sg)&&(!t||e.codes.includes(t))&&
     (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...e.vis.flatMap(s=>s.cats.map(catLabel)),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
   const u=UPC.filter(ok);
   /* все события в одной прокручиваемой сетке, как на firstrobotics.kz; стрелка внизу листает её */
   const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
-  $("#evs").innerHTML=u.length?`<div class="eg">${u.map(e=>evCard(e,t)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`;
+  $("#evs").innerHTML=(u.length?`<div class="eg">${u.map(e=>evCard(e,t)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`)+geoPastHtml();
   const eg=$("#evs .eg"),mw=$("#evs .morew");
   if(eg){const upd=()=>mw.classList.toggle("end",eg.scrollHeight-eg.clientHeight-eg.scrollTop<8);eg.addEventListener("scroll",upd,{passive:true});upd();setTimeout(upd,400)}
   const up=(window.FK_STATUS&&window.FK_STATUS.checked)||SHEET.updated,s=up?stamp(up):"";
@@ -395,20 +401,22 @@ try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStor
 L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
-/* карта: наведение – подпись, клик или Enter – выбор региона; ссылки панели ставят фильтр города и ведут к списку */
+/* карта в разделе событий: наведение – подсказка, клик/Enter или список на телефоне – выбор региона, список событий фильтруется;
+ * «Все события» снимает выбор региона, «Скрыть список» прячет список; выбор города в фильтре снимает регион */
 {const m=$("#kzmap");if(m){
-  const u=e=>{const p=e.target.closest(".rg.has");return p?p.dataset.u:""},any=e=>{const p=e.target.closest(".rg");return p?p.dataset.u:""};
+  /* клик по контуру региона или по его кружку с подписью (кружки городов стоят поверх области) */
+  const u=e=>{const p=e.target.closest(".rg.has, .mk:not(.no)");return p?p.dataset.u:""},any=e=>{const p=e.target.closest(".rg, .mk");return p?p.dataset.u:""};
   m.addEventListener("mouseover",e=>geoCap(any(e)));m.addEventListener("mouseout",()=>geoCap(""));
   m.addEventListener("focusin",e=>geoCap(u(e)));m.addEventListener("focusout",()=>geoCap(""));
-  const pick=e=>{const k=u(e);if(!k)return;GEO.sel=GEO.sel===k?"":k;geoPanel()};
+  const setReg=k=>{GEO.sel=k;GEO.open=true;if(k)$("#fc").value="";geoPanel();renderEvents();
+    /* если список оказался ниже экрана (телефон), страница подъезжает так, чтобы его начало было в середине экрана, а карта осталась видна */
+    const r=$("#evs").getBoundingClientRect();if(k&&r.top>innerHeight*.75)scrollBy({top:Math.round(r.top-innerHeight*.45),behavior:RM?"auto":"smooth"})};
+  const pick=e=>{const k=u(e);if(!k)return;setReg(GEO.sel===k?"":k)};
   m.addEventListener("click",pick);
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
-  const gsel=$("#gsel");if(gsel)gsel.addEventListener("change",e=>{GEO.sel=e.target.value;geoPanel()});
-  $("#gs").addEventListener("click",e=>{
-    if(e.target.closest(".gcl")){GEO.sel="";geoPanel();return}
-    const rg=e.target.closest(".rgl span");if(rg){rg.classList.toggle("x");return}
-    const a=e.target.closest("a[data-city]");if(!a)return;
-    const fc=$("#fc"),c=a.dataset.city;fc.value=[...fc.options].some(o=>o.value===c)?c:"";$("#ft").value="";$("#fst").value="";$("#fs").value="";renderEvents()});
+  const gsel=$("#gsel");if(gsel)gsel.addEventListener("change",e=>setReg(e.target.value));
+  const pk=$("#gpick");if(pk)pk.addEventListener("click",e=>{const b=e.target.closest(".gcl");if(!b)return;if(b.dataset.act==="close"){GEO.sel="";GEO.open=false;geoPanel()}else setReg("")});
+  $("#fc").addEventListener("change",()=>{if($("#fc").value&&GEO.sel){GEO.sel="";geoPanel()}});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
 const refilter=()=>renderEvents();

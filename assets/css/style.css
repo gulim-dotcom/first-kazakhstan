@@ -57,12 +57,12 @@ button,select,input{font:inherit;color:inherit}
    Тёмно-синий экран поверх страницы: сначала эмблема, затем надпись FIRST Kazakhstan; через ~1,15 с плавно исчезает.
    Всё на CSS-анимациях, поэтому заставка пропадает даже без JS (top.js лишь убирает её из разметки).
    Длительность: задержка в spl-out. При возврате «назад/вперёд» не показывается (html.nosplash, top.js). */
-.splash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#fff;animation:spl-out .4s ease 1.15s both}
+.splash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#fff;animation:spl-out .45s ease 1.5s both}
 html.nosplash .splash{display:none}
 .splash .sw{display:flex;flex-direction:column;align-items:center;width:min(64vw,300px)}
-.splash .sm{width:72%;height:auto;animation:spl-mark .5s cubic-bezier(.2,.7,.2,1) both}
-.splash .sx{width:100%;height:auto;margin-top:8px;animation:spl-word .45s ease .38s both}
-@keyframes spl-mark{from{opacity:0;transform:translateY(12px) scale(.94)}to{opacity:1;transform:none}}
+.splash .sm{width:50%;height:auto;animation:spl-mark 1.1s ease both}
+.splash .sx{width:100%;height:auto;margin-top:10px;animation:spl-word .5s ease .6s both}
+@keyframes spl-mark{0%{opacity:0;transform:scale(.9)}35%{opacity:1;transform:scale(1)}62%{opacity:.4}100%{opacity:1;transform:none}} /* появляется, слегка гаснет и снова проявляется */
 @keyframes spl-word{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes spl-out{to{opacity:0;visibility:hidden}}
 @media(prefers-reduced-motion:reduce){.splash .sm,.splash .sx{animation:none}.splash{animation:spl-out .01s linear .8s both}}
@@ -144,17 +144,14 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 /* «FIRST Қазақстанда»: карта охвата под цифрами (index.html → #geo, контуры – assets/js/kzmap.js, отрисовка – app.js → renderGeo).
    Слева заголовок и цифры, справа карта; под ними – соревнования выбранного региона в обычных карточках событий.
    Регионы с событиями голубые, выбранный – синий, кружки с числом событий – HTML поверх SVG, чтобы не мельчать на телефоне. */
-.geo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px 56px;align-items:center;margin-top:72px;padding-top:56px;border-top:1px solid var(--line)}
+.geo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 56px;align-items:center;margin-top:36px}
 .geo .gx{grid-column:1;min-width:0}
 .geo .gm{grid-column:2;min-width:0}
-.geo .gs{grid-column:1/-1;min-width:0}
-.geo .gs:empty{display:none}
-.geo .gx h3{font-size:clamp(26px,2.4vw,34px);font-weight:700;line-height:1.15;color:#1f2937;letter-spacing:-.01em}
+.geo .gx h3{font-size:clamp(22px,2vw,28px);font-weight:700;line-height:1.15;color:#1f2937;letter-spacing:-.01em}
 .geo .gp{color:var(--mu);font-size:16px;line-height:1.6;margin-top:12px;max-width:520px}
-.gn{display:flex;flex-wrap:wrap;gap:16px 36px;margin-top:26px}
-.gn .st{display:block;padding:2px 0 2px 16px;min-width:0}
-.gn .st b{font-size:clamp(30px,2.6vw,38px);min-width:0}
-.gn .st .lb{margin-top:6px;font-size:14px;line-height:1.3;color:var(--mu)}
+.gpick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:16px;font-size:15px;color:var(--mu)}.gpick:empty{display:none}
+.gpick b{font-size:17px;font-weight:600;color:var(--tx)}
+.gpick .gcl{font:inherit;font-size:14px;color:var(--blue);background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.gpick .gcl:hover{color:#0c1e36}
 .gmap{position:relative}
 .gmap svg{display:block;width:100%;height:auto}
 .gmap .rg{fill:#e8edf4;stroke:#fff;stroke-width:1.2;transition:fill .18s ease}
@@ -164,7 +161,8 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .gmap .rg.has:focus-visible{fill:#a9c7f3;stroke:#0c1e36;stroke-width:2}
 .gmap .rg.has.on{fill:var(--blue)}
 .gmap .mks{position:absolute;inset:0;pointer-events:none}
-.mk{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none}
+.mk{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:auto;cursor:pointer} /* кружок с подписью кликабелен сам, иначе клик по кружку города попадал в область вокруг */
+.mk.no{pointer-events:none}
 .mk b{display:grid;place-items:center;min-width:28px;height:28px;padding:0 7px;border-radius:999px;background:#fff;border:1.5px solid var(--blue);color:var(--tx);font-weight:600;font-size:13px;line-height:1;font-variant-numeric:tabular-nums;box-shadow:0 1px 2px rgba(16,24,40,.12);transition:background-color .18s,border-color .18s,color .18s}
 .mk i{font-style:normal;font-weight:600;font-size:11px;line-height:1.1;letter-spacing:.01em;color:#1f2937;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff;transition:color .18s} /* подпись региона, с белым ореолом для читаемости */
 .mk.no i{color:var(--lt);font-weight:500}
@@ -177,18 +175,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .gsrc{margin-top:2px;font-size:12px;color:#9ca3af}
 .gsrc a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#d1d5db}
 .gsrc a:hover{color:var(--mu)}
-.gs{padding-top:28px;border-top:1px solid var(--line)}
-.gs .gh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
-.gs h4{font-size:22px;font-weight:600;color:#1f2937;line-height:1.3}
-.gs h4 span{margin-left:10px;font-size:16px;font-weight:500;color:var(--mu);white-space:nowrap}
-.gcards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.gcards>.cell{min-width:0}
-.gs .gcl{font:inherit;font-size:14px;color:var(--lt);background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.gs .gcl:hover{color:var(--tx)}
-.gs .gall{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:16px;font-weight:600;font-size:15px;color:var(--blue)}
-.gs .gall:after{content:"";width:8px;height:8px;border-right:2px solid var(--blue);border-top:2px solid var(--blue);transform:rotate(45deg);transition:transform .2s ease}
-.gs .gall:hover:after{transform:translateX(3px) rotate(45deg)}
-.gpast{margin-top:22px}.gpast h5{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lt)}
+#evs .gpast{margin-top:20px}.gpast{margin-top:22px}.gpast h5{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lt)}
 .gpast ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}.gpast li{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:14px;line-height:1.45;color:var(--mu)}.gpast li b{font-weight:600;color:#1f2937}
 
 /* достижения */
@@ -300,7 +287,7 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 /* события */
 #events{padding:64px 0 90px;background:var(--band)}
-.flt{display:flex;gap:16px;flex-wrap:wrap;margin:40px 0 24px}
+.flt{display:flex;gap:16px;flex-wrap:wrap;margin:28px 0 24px}.flt[hidden]{display:none}
 .flt select{border:1px solid #e5e7eb;border-radius:var(--rc);padding:0 14px;height:40px;font-size:14px;font-weight:500;color:var(--tx);appearance:none;-webkit-appearance:none;width:auto;min-width:180px;max-width:280px;padding-right:34px;background:#fff var(--chev3) no-repeat right 14px center;cursor:pointer;text-overflow:ellipsis}
 .flt input{border:1px solid #e5e7eb;border-radius:var(--rc);padding:0 14px;height:40px;font-size:14px;background:#fff;color:var(--tx);flex:1;min-width:220px;font-weight:400}
 .flt input::placeholder{color:#9ca3af}
@@ -316,6 +303,7 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .ec:hover{border-color:#d5dbe3;border-left-color:#e0b9a3;box-shadow:var(--sh)}
 .ec>div{min-width:0}
 .ec h4{font-size:18px;line-height:24px;margin-bottom:2px;color:#1f2937;font-weight:700}
+.ec .stg{display:block;margin:0 0 7px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--blue)}
 .ec p{font-size:14px;color:var(--mu);display:flex;align-items:flex-start;gap:8px;line-height:20px;margin-bottom:8px}
 .ec p svg{width:20px;height:20px;flex:none;margin-top:0;fill:none;stroke:#4b5563;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .ec p a{display:inline-block;padding:6px 0;margin:-6px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9d2df}
@@ -452,7 +440,6 @@ footer .team+.cp{margin-top:32px}
   .nl>a:after{display:none}
   .geo{grid-template-columns:1fr;gap:24px}
   .geo .gx,.geo .gm{grid-column:auto}
-  .gcards{grid-template-columns:repeat(2,1fr)}
   .nl .ml{display:flex;gap:24px;padding-top:12px;font-size:16px;color:var(--mu)}
   .nl .ml a{border:0;padding:10px 0}
   .nl .lm{display:flex;gap:10px;padding:14px 0 4px}
@@ -592,19 +579,13 @@ footer .team+.cp{margin-top:32px}
   footer p{font-size:18px;margin-top:20px}
   footer .fc svg{width:20px;height:20px}
   footer .cp{margin-top:30px}
-  .geo{margin-top:40px;padding-top:32px}
+  .geo{margin-top:24px}
   .geo .gx h3{font-size:24px}
-  .gn{gap:12px 24px;margin-top:18px}
-  .gn .st b{font-size:28px}
   .mk,.mk.city{transform:translate(-50%,-50%)}
   .mk b{min-width:24px;height:24px;padding:0 5px;font-size:12px}
   .mk i,.mk.no,.gcap{display:none} /* подписи на телефоне не читаются: вместо них список регионов и заголовок с карточками */
   .gsel{display:block;width:100%;height:44px;margin-top:14px;padding:0 34px 0 12px;border:1px solid #d9dee5;border-radius:var(--rc);background:#fff var(--chev3) no-repeat right 12px center;font-size:15px;font-weight:500;color:var(--tx);appearance:none;-webkit-appearance:none}
   .gsel:focus{outline:none;border-color:#9aa3b2}
-  .gs{padding-top:22px}
-  .gs h4{font-size:19px}
-  .gs h4 span{font-size:14px;margin-left:8px}
-  .gcards{grid-template-columns:1fr;gap:12px}
   #start{padding:48px 0 0}
   #start .dv{margin-bottom:22px}
   .steps{grid-template-columns:1fr;gap:16px}
@@ -631,4 +612,4 @@ footer .team+.cp{margin-top:32px}
 @media(prefers-reduced-motion:reduce){.lgs{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.lg[aria-hidden]{display:none}}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* уважение к настройке «меньше движения»: без переходов и подъёмов */
-@media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after,.gs .gall:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
