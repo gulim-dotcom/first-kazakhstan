@@ -63,7 +63,7 @@ button,select,input{font:inherit;color:inherit}
 @media(min-width:761px) and (max-height:780px){.hero{background-position:50% 50%}} /* невысокие экраны: лица на фото не уходят под текст */
 
 /* ---------- новый сезон ---------- */
-.season{padding:40px 0 48px} /* воздух над карточкой сезона и под ней до блока «О нас» */
+.season{padding:40px 0 56px} /* воздух над карточкой сезона и под ней до блока «О нас» */
 .sp{position:relative;display:grid;grid-template-columns:40% 1fr;overflow:visible;background:var(--cream);color:var(--brown2);padding:64px 60px 56px 72px;border-radius:12px;gap:32px 48px;align-items:center}
 .sp>*{position:relative}
 .sp>.sx{z-index:1}
@@ -87,7 +87,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .two>*{min-width:0}
 
 /* о нас */
-#about{padding:36px 0 20px}
+#about{padding:56px 0 50px}
 .ab .col{position:relative;height:410px;z-index:0}
 .ab figure{position:absolute;margin:0}
 .ab figure img{border-radius:16px;object-fit:cover;box-shadow:0 2px 10px rgba(16,24,40,.12);background:#e5e9f0}
