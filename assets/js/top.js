@@ -1,7 +1,4 @@
-/* Заставка при открытии главной (index.html → .splash): эмблема, затем надпись FIRST Kazakhstan, около секунды, потом страница.
-   Исчезает по CSS-анимации (style.css → .splash), поэтому пропадает даже без JS; здесь она лишь убирается из разметки после
-   анимации и не показывается при возврате кнопками «назад/вперёд».
-   Перезагрузка страницы всегда открывает сайт сверху (просьба USTEM, 21.10.2026).
+/* Перезагрузка страницы всегда открывает сайт сверху (просьба USTEM, 21.10.2026). Заставка при открытии убрана 23.10.2026 по решению USTEM.
    Выполняется в <head>, до первой отрисовки. Браузеру запрещено само восстановление позиции
    прокрутки (иначе перезагрузка возвращает к прежнему месту), «#раздел» из адреса при
    перезагрузке убирается. Кнопка «назад» по-прежнему возвращает на прежнее место: позиция
@@ -14,12 +11,6 @@
     var t=n?n.type:(performance.navigation&&performance.navigation.type===1?"reload":performance.navigation&&performance.navigation.type===2?"back_forward":"navigate");
     var key="fk-y:"+location.pathname;
     var go=function(y){try{scrollTo({top:y,left:0,behavior:"instant"})}catch(e){scrollTo(0,y)}};
-    if(t==="back_forward")document.documentElement.classList.add("nosplash");
-    addEventListener("DOMContentLoaded",function(){var s=document.getElementById("splash");if(!s)return;
-      var off=function(){if(s.parentNode)s.parentNode.removeChild(s)};
-      s.addEventListener("animationend",function(e){if(e.target===s)off()});
-      setTimeout(off,2000);
-    });
     if(t==="reload"){
       if(location.hash)history.replaceState(null,"",location.pathname+location.search);
       addEventListener("DOMContentLoaded",function(){go(0)});
