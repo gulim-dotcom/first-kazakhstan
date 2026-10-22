@@ -328,6 +328,18 @@ footer .fc a{display:flex;align-items:center;gap:10px;padding:12px 0;min-height:
 footer .fc a:hover{color:#fff}
 footer .fc svg{width:24px;height:24px;flex:none;color:#8a8a8a}
 footer .cp{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;font-size:14px;color:#8b8f97}
+/* контакты команды (22.10.2026): карточки «должность + почта» внутри блока «Контакты», над строкой © */
+footer .team{margin-top:40px;padding-top:32px;border-top:1px solid rgba(255,255,255,.1)}
+footer .tmh{font-size:15px;font-weight:700;color:#fff;margin:0 0 16px}
+footer .tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+footer .tm{display:flex;flex-direction:column;gap:8px;padding:18px 20px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.04);color:#fff;transition:border-color .18s,background .18s}
+footer .tm:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)}
+footer .tm:focus-visible{outline:2px solid #fff;outline-offset:2px}
+footer .tmr{font-size:13px;color:#a7abb2;line-height:1.3}
+footer .tme{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;overflow-wrap:anywhere}
+footer .tme svg{width:18px;height:18px;flex:none;color:#8a8a8a}
+footer .team+.cp{margin-top:32px}
+@media(max-width:900px){footer .tmg{grid-template-columns:1fr}}
 
 /* ---------- адаптив ---------- */
 @media(max-width:1280px){
@@ -646,3 +658,7 @@ a.alc:hover{transform:none;box-shadow:none;border-color:#c9d0da}
 .step a{display:inline-flex;align-items:center;min-height:40px;font-weight:600;font-size:15px;color:var(--tx);text-decoration:underline;text-underline-offset:4px;text-decoration-color:#d9a183}
 .step a:hover{text-decoration-color:var(--tx)}
 @media(max-width:760px){#start{padding:48px 0 0}#start .dv{margin-bottom:22px}.steps{grid-template-columns:1fr;gap:16px}.step{grid-template-columns:34px 1fr;padding:2px 0 2px 14px}.step b{font-size:24px}.step h3{font-size:17px}.step a{min-height:36px}}
+/* блок CANOPY (22.10.2026): тонкие лианы с листьями свисают с верхнего правого края карточки, в тон фону; текст поверх */
+.sp:after{content:"";position:absolute;top:0;right:14px;width:96px;height:240px;background:url(../img/canopy-leaves.svg) right top/contain no-repeat;opacity:.5;pointer-events:none}
+.sp>.sx{z-index:1}
+@media(max-width:900px){.sp:after{width:64px;height:160px;right:8px;opacity:.4}}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 240" fill="none" stroke="#b9784f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M64.0 0 L64.4 4 L64.8 8 L65.2 12 L65.6 16 L66.0 20 L66.4 24 L66.7 28 L67.0 32 L67.2 36 L67.5 40 L67.7 44 L67.8 48 L67.9 52 L68.0 56 L68.0 60 L68.0 64 L67.9 68 L67.8 72 L67.6 76 L67.4 80 L67.2 84 L66.9 88 L66.6 92 L66.3 96 L66.0 100 L65.6 104 L65.2 108 L64.8 112 L64.4 116 L63.9 120 L63.5 124 L63.1 128 L62.7 132 L62.3 136 L61.9 140 L61.6 144 L61.3 148 L61.0 152 L60.7 156 L60.5 160 L60.3 164 L60.2 168 L60.1 172 L60.0 176 L60.0 180 L60.0 184 L60.1 188 L60.2 192 L60.4 196 L60.6 200 L60.8 204 L61.1 208 L61.4 212"/>
+<path transform="translate(67.1 33) rotate(140) scale(0.90)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(67.9 67) rotate(40) scale(0.84)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(65.9 101) rotate(140) scale(0.77)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(62.4 135) rotate(40) scale(0.71)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(60.1 169) rotate(140) scale(0.65)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(60.8 203) rotate(40) scale(0.58)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(61.6 214) rotate(90) scale(0.54)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path d="M29.0 0 L29.0 4 L29.0 8 L29.0 12 L28.9 16 L28.8 20 L28.7 24 L28.5 28 L28.3 32 L28.1 36 L27.9 40 L27.7 44 L27.4 48 L27.1 52 L26.8 56 L26.5 60 L26.2 64 L25.9 68 L25.5 72 L25.2 76 L24.9 80 L24.6 84 L24.4 88 L24.1 92 L23.9 96 L23.7 100 L23.5 104 L23.3 108 L23.2 112"/>
+<path transform="translate(28.3 33) rotate(140) scale(0.75)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(25.9 67) rotate(40) scale(0.70)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(23.6 101) rotate(140) scale(0.65)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+<path transform="translate(23.2 112) rotate(90) scale(0.45)" d="M0 0C6-8 21-9 30 0C21 9 6 8 0 0Z M3 0H25"/>
+</svg>
