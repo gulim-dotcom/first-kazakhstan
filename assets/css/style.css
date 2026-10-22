@@ -175,13 +175,12 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .cw{position:relative;min-width:0}
 .rail{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 0 16px;margin:0 52px}
 .rail::-webkit-scrollbar{display:none}
-.wc{position:relative;flex:0 0 calc((100% - 48px)/3);height:350px;scroll-snap-align:start;overflow:hidden;border-radius:12px;box-shadow:none}
-.wim{position:absolute;inset:0;background-size:cover;background-position:center 25%}
-.wim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.72) 100%)}
-.wt{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff}
-.wc .yr{position:absolute;right:20px;top:20px;z-index:2;padding:8px 18px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:20px;line-height:1.2}
-.wt b{display:block;font-size:24px;line-height:1.2;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.3)}
-.wt small{display:block;margin-top:8px;font-size:18px;font-weight:400;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.wc{position:relative;flex:0 0 calc((100% - 48px)/3);display:flex;flex-direction:column;scroll-snap-align:start;overflow:hidden;border-radius:12px;background:#fff;border:1px solid var(--line);box-shadow:none} /* фото 3:2 показывается без растягивания файла (720 px), подпись под фото (по решению заказчика) */
+.wim{position:relative;flex:none;aspect-ratio:3/2;background-size:cover;background-position:center 25%}
+.wt{padding:16px 20px 18px;color:var(--tx)}
+.wc .yr{position:absolute;right:14px;top:14px;z-index:2;padding:6px 14px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:16px;line-height:1.2}
+.wt b{display:block;font-size:19px;line-height:1.25;font-weight:800;color:#1f2937}
+.wt small{display:block;margin-top:6px;font-size:14px;line-height:1.45;font-weight:400;color:var(--mu)}
 .ar{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid #e5e7eb;cursor:pointer;z-index:3;display:grid;place-items:center;color:#000;transition:background-color .18s,border-color .18s,transform .18s}
 .ar svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ar.l{left:4px}.ar.r{right:4px}
