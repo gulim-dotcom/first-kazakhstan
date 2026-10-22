@@ -18,7 +18,7 @@
     addEventListener("DOMContentLoaded",function(){var s=document.getElementById("splash");if(!s)return;
       var off=function(){if(s.parentNode)s.parentNode.removeChild(s)};
       s.addEventListener("animationend",function(e){if(e.target===s)off()});
-      setTimeout(off,2600);
+      setTimeout(off,2000);
     });
     if(t==="reload"){
       if(location.hash)history.replaceState(null,"",location.pathname+location.search);
