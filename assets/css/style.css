@@ -73,7 +73,8 @@ html.nosplash .splash{display:none}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:96px 48px 60px 32px}
 .hero .btn{text-shadow:none;margin-top:40px}
-.hero.lt:before{background:linear-gradient(180deg,rgba(10,26,50,.03) 0%,rgba(10,26,50,.09) 38%,rgba(10,26,50,.44) 68%,rgba(10,26,50,.72) 100%)} /* вариант со светлее фото */
+/* .lt — фото первого экрана светлее (на телефоне фото и так без затемнения, там правило не нужно) */
+@media(min-width:761px){.hero.lt:before{background:linear-gradient(180deg,rgba(10,26,50,.03) 0%,rgba(10,26,50,.09) 38%,rgba(10,26,50,.44) 68%,rgba(10,26,50,.72) 100%)}}
 @media(min-width:761px) and (max-height:820px){.hero{background-position:50% 40%}.hero h1{font-size:clamp(24px,2.3vw,31px)}.hero p{font-size:clamp(17px,1.5vw,21px);margin-top:16px}.hero .btn{margin-top:26px}.hero .in{padding-bottom:48px}} /* невысокие экраны: текст компактнее, лица на фото не уходят под него */
 
 /* ---------- новый сезон ---------- */
