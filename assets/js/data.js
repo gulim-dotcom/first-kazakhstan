@@ -277,9 +277,9 @@ const PNAMES={mmm:"3M",apple:"Apple",boeing:"Boeing",cat:"Caterpillar",fedex:"Fe
 Object.assign(T.ru,{n8:"Контакты",allNews:"Все новости",newsTitle:"Новости",newsSub:"Результаты команд и события сезона"});
 Object.assign(T.kk,{n8:"Байланыс",allNews:"Барлық жаңалықтар",newsTitle:"Жаңалықтар",newsSub:"Команда нәтижелері мен маусым оқиғалары"});
 Object.assign(T.en,{n8:"Contact",allNews:"All news",newsTitle:"News",newsSub:"Team results and season events"});
-Object.assign(T.ru,{tmH:"Связаться с командой",tm1:"Program Delivery Partner",tm2:"Руководитель программ FLL",tm3:"Менеджер по мероприятиям и медиа"});
-Object.assign(T.kk,{tmH:"Командамен байланыс",tm1:"Program Delivery Partner",tm2:"FLL бағдарламаларының жетекшісі",tm3:"Іс-шаралар және медиа менеджері"});
-Object.assign(T.en,{tmH:"Contact our team",tm1:"Program Delivery Partner",tm2:"FLL Program Lead",tm3:"Events & Media Manager"});
+Object.assign(T.ru,{tmH:"Связаться с командой",tm1:"Партнёр FIRST по реализации программ · Руководитель программ FTC",tm2:"Руководитель программ FLL",tm3:"Менеджер по мероприятиям и медиа"});
+Object.assign(T.kk,{tmH:"Командамен байланыс",tm1:"FIRST бағдарламаларын іске асыру серіктесі · FTC бағдарламаларының жетекшісі",tm2:"FLL бағдарламаларының жетекшісі",tm3:"Іс-шаралар және медиа менеджері"});
+Object.assign(T.en,{tmH:"Contact our team",tm1:"Program Delivery Partner · FTC Program Lead",tm2:"FLL Program Lead",tm3:"Events & Media Manager"});
 /* подпись фото цитаты, описание страницы для поисковиков, названия партнёров по языкам */
 Object.assign(T.ru,{qname:"Касым-Жомарт Токаев",metaDesc:"FIRST® Kazakhstan – глобальное сообщество робототехники и STEM. Программы FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition и FIRST® Global Challenge, календарь соревнований и регистрация. Оператор в Казахстане – USTEM Foundation.",newsMeta:"Новости FIRST® Kazakhstan: результаты команд и события сезона."});
 Object.assign(T.kk,{qname:"Қасым-Жомарт Тоқаев",metaDesc:"FIRST® Kazakhstan – робототехника және STEM жаһандық қауымдастығы. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition және FIRST® Global Challenge бағдарламалары, жарыс күнтізбесі және тіркелу. Қазақстандағы операторы – USTEM Foundation.",newsMeta:"FIRST® Kazakhstan жаңалықтары: команда нәтижелері мен маусым оқиғалары."});
@@ -344,6 +344,7 @@ KS[3]=[20,"","",["Регионов Казахстана, где мы прово�
 PROG[0].cat="FLL-D";PROG[0].teaser=null;
 PROG[3].cat="FLL Future Edition · BIOGLOW";
 PROG[4].photo="assets/img/p-ftc-2026.webp";PROG[4].ppos="50% 45%";PROG[4].teaser="https://www.youtube.com/watch?v=sUH3z5a5S9I";
+PROG[5].photo="assets/img/p-frc-2026.webp";PROG[5].ppos="50% 50%"; /* FRC: фото робота с соревнований (22.10.2026) */
 PROG[6].photo="assets/img/p-fgc-2026.webp";PROG[6].ppos="50% 50%";
 /* достижения: только FIRST Global Challenge и FIRST Championship; Хьюстон 2026 – по итогам (Kazinform, gov.kz), фото команд с чемпионата */
 WI["2026"]="assets/img/w-fgc-2026.webp";
