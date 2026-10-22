@@ -148,9 +148,8 @@ function renderStats(){const i=I[L];
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
   $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
   $("#stats").classList.toggle("three",KS.length===3); /* три цифры – одной колонкой */
-  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`; /* мировые цифры FIRST – строкой текста */
-  /* мировые цифры FIRST – одна строка под текстом (21.10.2026), а не второй блок цифр */
-  countUp(); /* цифры Казахстана снова растут с нуля (вернули по просьбе USTEM 21.10.2026); цифры FIRST в мире статичные */
+  $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`; /* мировые цифры FIRST – одной строкой текста, без анимации */
+  countUp();
 }
 function countUp(){
   const box=$("#stats");if(!box)return;
@@ -211,7 +210,7 @@ function renderPrograms(){const i=I[L];
         <p class="meta">${esc(meta)}</p>
         ${p.teaser?`<div class="pl"><a class="lnk tz" href="${esc(p.teaser)}" target="_blank" rel="noopener noreferrer">${esc(tt("tz"))}</a></div>`:""}
       </div></article>`}).join("");
-  /* телефон: показываем первые три программы, остальные – по кнопке (21.10.2026) */
+  /* телефон: показываем первые три программы, остальные – по кнопке */
   const pg=$("#progs");pg.classList.add("cut");
   const pm=$("#pmore");if(pm){pm.textContent=tt("allProg");pm.hidden=false}
   const rb=$("#rulesBtn");rb.href=rulesUrl();
@@ -221,7 +220,7 @@ function renderPrograms(){const i=I[L];
 function renderPartners(){
   const lg=(x,h)=>`<div class="lg"${h?' aria-hidden="true"':""}><img src="${LG[x[0]]}" alt="${h?"":esc((typeof PNAMES_L!="undefined"&&PNAMES_L[L]&&PNAMES_L[L][x[0]])||(typeof PNAMES!="undefined"&&PNAMES[x[0]])||tt("partner"))}" loading="lazy"></div>`;
   const mq=a=>`<div class="lgs">${a.map(x=>lg(x,0)).join("")}${a.map(x=>lg(x,1)).join("")}</div>`;
-  $("#mr").innerHTML=mq(RP);const mi=$("#mi");if(mi)mi.innerHTML=mq(IP);
+  $("#mr").innerHTML=mq(RP);
 }
 
 /* --- новости: главные результаты (data.js) + посты Telegram с хэштегом #сайт (assets/data/news.js) --- */
@@ -370,6 +369,6 @@ const links=[...document.querySelectorAll("#nav a")].filter(a=>/^#./.test(a.getA
 const spy=()=>{let cur="";links.forEach(a=>{const el=document.querySelector(a.getAttribute("href"));if(el&&el.getBoundingClientRect().top<innerHeight*.35)cur=a.getAttribute("href")});links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==cur))};
 addEventListener("scroll",spy,{passive:true});spy();
 /* переход по меню или кнопке к разделу прокручивает страницу, но не оставляет «#раздел» в адресе,
-   поэтому перезагрузка не возвращает к разделу (просьба USTEM, 21.10.2026; сама перезагрузка – assets/js/top.js) */
+   поэтому перезагрузка не возвращает к разделу (сама перезагрузка – assets/js/top.js) */
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute("href").slice(1),el=id&&document.getElementById(id);if(!el)return;e.preventDefault();el.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
 })();
