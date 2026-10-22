@@ -106,7 +106,7 @@ Object.keys(SHEET.tabs||{}).forEach(tab=>{
     let v=null;for(const k of c.venue){const t=ctext(g(k));if(t){v={n:t,u:curl(g(k))};break}}
     const ses={d:parseDate(dRaw),v:v,cats:cats,st:ctext(g(c.status)),chg:ctext(g(c.chg))};
     if(!name){if(cur&&(dRaw||v||cats.length)){if(!dRaw){const f=cur.sessions[0];ses.d=f.d;if(!ses.st)ses.st=f.st}cur.sessions.push(ses)}return}
-    cur={tab:tab,name:name,city:cityOf(ctext(g(c.city))),region:c.region>=0?regionOf(ctext(g(c.region))):null,
+    cur={tab:tab,name:name,city:cityOf(ctext(g(c.city))||(typeof CITY_DEFAULT!="undefined"&&CITY_DEFAULT[lo(name)])||""),region:c.region>=0?regionOf(ctext(g(c.region))):null,
       allowed:c.allowed>=0?allowedOf(ctext(g(c.allowed))):null,sessions:[ses]};
     EVENTS.push(cur);
   });
