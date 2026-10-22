@@ -67,7 +67,7 @@ html.nosplash .splash{display:none}
 @media(prefers-reduced-motion:reduce){.splash .sm,.splash .sx{animation:none}.splash{animation:spl-out .01s linear .5s both}}
 
 /* ---------- первый экран ---------- */
-.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 118px);min-height:calc(100svh - 118px);background:#0c1e36 url(../img/team-kz-fgc.webp) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: почти вся высота окна; у сгиба виден только ярлык «Жаңа маусым» (по просьбе заказчика) */
+.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 118px);min-height:calc(100svh - 118px);background:#0c1e36 url(../img/team-kz-fgc.webp?v=20261023-0001) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: почти вся высота окна; у сгиба виден только ярлык «Жаңа маусым» (по просьбе заказчика) */
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.06) 0%,rgba(10,26,50,.14) 38%,rgba(10,26,50,.46) 68%,rgba(10,26,50,.68) 100%)} /* затемнение фото ещё чуть слабее (по просьбе заказчика) */
 .hero h1{text-shadow:0 1px 14px rgba(8,20,40,.35);font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em;font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
@@ -485,7 +485,7 @@ footer .team+.cp{margin-top:32px}
   body{font-size:16px}
   .w{padding-left:20px;padding-right:20px}
   /* телефон: фото сборной целиком по ширине экрана (высота = 2/3 ширины), под ним текст на тёмно-синем; граница фото и фона сведена градиентом */
-  .hero{min-height:0;align-items:flex-start;background:#0c1e36 url(../img/team-kz-fgc-m.webp) 50% 0/100% auto no-repeat}
+  .hero{min-height:0;align-items:flex-start;background:#0c1e36 url(../img/team-kz-fgc-m.webp?v=20261023-0001) 50% 0/100% auto no-repeat}
   .hero:before{background:linear-gradient(180deg,rgba(12,30,54,0) 0,rgba(12,30,54,0) calc(66.67vw - 70px),rgba(12,30,54,.6) calc(66.67vw - 22px),#0c1e36 calc(66.67vw + 1px))}
   .hero .in{padding:calc(66.67vw - 6px) 20px 44px}
   .hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}
