@@ -19,14 +19,14 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 /* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
  * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
-/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Ссылка на конкретное событие – любая гиперссылка
- * на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на общий список событий платформы */
+/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Платформа берёт события из той же таблицы:
+ * как только в строке турнира заполнено место проведения, он появляется в Connect – и кнопка на сайте становится активной.
+ * Ссылка на конкретное событие – любая гиперссылка на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на список событий платформы */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&typeof CONNECT!="undefined"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
 const viaConnect=e=>(/^(reg|qual|rep|off)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&!/^(SMC|F4A)$/.test(e.tab);
-const TG_URL="https://t.me/firstroboticskz";
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -321,20 +321,22 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
   /* порядок строк: город → площадка → дата → категории → регистрация.
    * Регистрация: скримидж (и кик-офф) – Google Формы из таблицы, по кнопке на категорию; официальный турнир (viaConnect) – одна кнопка uSTEM Connect:
-   * место подтверждено или в строке есть ссылка на событие Connect – «регистрация открыта», иначе над той же кнопкой пометка «откроется позже»
-   * и ссылка на Telegram. Google Формы в строках таких турниров кнопками не становятся – кроме семинаров для учителей */
+   * в строке заполнено место проведения (или есть ссылка на connect.ustem.kz) – «регистрация открыта», кнопка активна; иначе серая
+   * неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров кнопками
+   * не становятся – кроме семинаров для учителей */
   const ses=s=>{
     const cats=s.cats,conn=viaConnect(e);
     const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
-    const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);
+    const showV=!conn&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турниров с uSTEM Connect место не показываем – оно на странице турнира в Connect */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
     if(conn){const open=!!(s.conn||(s.v&&s.d.start)),url=s.conn||CONNECT.url;
-      reg=`<div class="rb ${open?"open":"wait"}"><span class="rs">${esc(tt(open?"rsOpen":"rsWait"))}</span><p class="rn">${esc(tt(open?"connNote":"connWait"))}</p>
-        <div class="fbs"><a class="fb cn${open?"":" soft"}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a></div>
-        ${open?"":`<a class="tgl" href="${TG_URL}" target="_blank" rel="noopener noreferrer">${ICO.tg}${esc(tt("tgBtn"))}</a>`}${fbs}</div>`}
+      reg=`<div class="rb ${open?"open":"wait"}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
+        <div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+          :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
+        <p class="rn">${esc(tt(open?"connNote":"connWait"))}</p>${fbs}</div>`}
     else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}

@@ -88,11 +88,9 @@ const T={
   regsoon:"регистрация скоро",
   rsForm:"Регистрация: Google Форма",
   rsOpen:"Регистрация открыта в uSTEM Connect",
-  rsWait:"Регистрация откроется позже",
   connBtn:"Регистрация в uSTEM Connect",
-  connNote:"Команды регистрируются на платформе uSTEM Connect: войдите в аккаунт тренера, выберите турнир и подайте заявку.",
-  connWait:"Место проведения и точные даты этого турнира ещё уточняются. Как только выйдет приказ РНПЦ «Дарын» и площадка будет подтверждена, регистрация откроется в uSTEM Connect. Следите за обновлениями здесь и в нашем Telegram.",
-  tgBtn:"Следить в Telegram",
+  connNote:"Войдите в аккаунт тренера и подайте заявку на турнир.",
+  connWait:"Регистрация ещё не открыта. Следите за обновлениями.",
   regs:"Регионы (для FLL)",
   tba:"Дата уточняется",
   vtba:"Площадка уточняется",
@@ -203,11 +201,9 @@ const T={
   regsoon:"тіркелу жақында ашылады",
   rsForm:"Тіркелу: Google Форма",
   rsOpen:"Тіркелу uSTEM Connect-те ашық",
-  rsWait:"Тіркелу кейінірек ашылады",
   connBtn:"uSTEM Connect-те тіркелу",
-  connNote:"Командалар uSTEM Connect платформасында тіркеледі: жаттықтырушы аккаунтына кіріп, жарысты таңдап, өтінім беріңіз.",
-  connWait:"Бұл жарыстың өтетін орны мен нақты күндері әлі нақтылануда. «Дарын» РҒПО бұйрығы шығып, алаң бекітілген бойда тіркелу uSTEM Connect-те ашылады. Жаңалықтарды осы жерден және Telegram арнамыздан қадағалаңыз.",
-  tgBtn:"Telegram-да қадағалау",
+  connNote:"Жаттықтырушы аккаунтына кіріп, жарысқа өтінім беріңіз.",
+  connWait:"Тіркелу әлі ашылмаған. Жаңалықтарды қадағалаңыз.",
   regs:"Қатысатын аймақтар (FLL үшін)",
   tba:"Күні нақтылануда",
   vtba:"Өтетін орны нақтылануда",
@@ -318,11 +314,9 @@ const T={
   regsoon:"registration opens soon",
   rsForm:"Registration: Google Form",
   rsOpen:"Registration open in uSTEM Connect",
-  rsWait:"Registration opens later",
   connBtn:"Register in uSTEM Connect",
-  connNote:"Teams register on the uSTEM Connect platform: sign in to your coach account, choose the tournament and submit an application.",
-  connWait:"The venue and exact dates of this tournament are still being confirmed. As soon as the Daryn RNPC order is issued and the venue is confirmed, registration will open in uSTEM Connect. Follow updates here and on our Telegram.",
-  tgBtn:"Follow on Telegram",
+  connNote:"Sign in to your coach account and submit the team's application.",
+  connWait:"Registration is not open yet. Follow the updates.",
   regs:"Regions (for FLL)",
   tba:"Date TBA",
   vtba:"Venue TBA",
@@ -359,6 +353,7 @@ const T={
 /* правила сезона по языкам (на en показывается казахская версия); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
 /* uSTEM Connect – платформа регистрации команд на официальные турниры (все этапы, кроме кик-оффа и скримиджа; скримиджи – Google Формы из таблицы).
+ * Платформа берёт события из той же таблицы: заполнили место проведения – турнир появился в Connect, кнопка на сайте стала активной.
  * url – куда ведёт кнопка, пока у события нет своей ссылки; своя ссылка – любая гиперссылка на connect.ustem.kz в строке события в таблице.
  * host – по нему такая ссылка узнаётся (app.js → connUrl). Переехала платформа – поменяйте обе строки. */
 const CONNECT={url:"https://connect.ustem.kz/events",host:"connect.ustem.kz"};

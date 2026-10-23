@@ -53,7 +53,7 @@ button,select,input{font:inherit;color:inherit}
 
 
 /* ---------- первый экран ---------- */
-.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 135px);min-height:calc(100svh - 135px);background:#0c1e36 url(../img/team-kz-fgc.webp?v=20261023-0009) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: высота окна минус шапка; у сгиба чуть виден край карточки сезона с меткой */
+.hero{position:relative;display:flex;color:#fff;min-height:calc(100vh - 135px);min-height:calc(100svh - 135px);background:#0c1e36 url(../img/team-kz-fgc.webp?v=20261023-1240) 50% 35%/cover no-repeat;align-items:flex-end} /* первый экран: высота окна минус шапка; у сгиба чуть виден край карточки сезона с меткой */
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,50,.06) 0%,rgba(10,26,50,.14) 38%,rgba(10,26,50,.46) 68%,rgba(10,26,50,.68) 100%)} /* затемнение фото: лёгкое сверху, сильнее у текста внизу */
 .hero h1{text-shadow:0 1px 14px rgba(8,20,40,.35);font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em;font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
@@ -326,16 +326,11 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .rb.form .rs{background:#fdecec;color:#b42318}
 .rb.open .rs{background:#e4edfc;color:#1e4fc2}
 .rb.wait .rs{background:#f1f3f6;color:#4b5563}
-.ec p.rn{display:block;margin:8px 0 0;font-size:13px;line-height:19px;color:var(--mu)}
-.rb.wait p.rn{background:#f8fafc;border-left:3px solid #cbd5e1;border-radius:0 6px 6px 0;padding:7px 10px;color:#374151}
+.ec p.rn{display:block;margin:6px 0 0;font-size:12.5px;line-height:18px;color:var(--mu)}
 .fb.cn{gap:7px;background:var(--blue);border-color:var(--blue);color:#fff}
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb.cn:hover{background:#0c1e36;border-color:#0c1e36}
-.fb.cn.soft{background:#fff;color:var(--blue)}
-.fb.cn.soft:hover{background:var(--blue);color:#fff}
-.tgl{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 0;font-size:13px;font-weight:600;color:var(--blue)}
-.tgl svg{width:16px;height:16px;flex:none;fill:currentColor}
-.tgl:hover{color:#0c1e36}
+.fb.cn.dis{background:#eef1f5;border-color:#e3e7ec;color:#8a94a3;cursor:default;pointer-events:none} /* турнира ещё нет в uSTEM Connect */
 .morew{position:relative;z-index:2;text-align:center;margin-top:-34px}
 .morew.end{visibility:hidden}
 .more{display:inline-flex;align-items:center;justify-content:center;border:1px solid #eceff3;background:#fff;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.14);cursor:pointer;color:#4b5563;padding:8px 14px;font-size:0;transition:transform .18s,box-shadow .18s}
@@ -500,7 +495,7 @@ footer .team+.cp{margin-top:32px}
   body{font-size:16px}
   .w{padding-left:20px;padding-right:20px}
   /* телефон: фото сборной целиком по ширине экрана (высота = 2/3 ширины), под ним текст на тёмно-синем; граница фото и фона сведена градиентом */
-  .hero{min-height:0;align-items:flex-start;background:#0c1e36 url(../img/team-kz-fgc-m.webp?v=20261023-0009) 50% 0/100% auto no-repeat}
+  .hero{min-height:0;align-items:flex-start;background:#0c1e36 url(../img/team-kz-fgc-m.webp?v=20261023-1240) 50% 0/100% auto no-repeat}
   .hero:before{background:linear-gradient(180deg,rgba(12,30,54,0) 0,rgba(12,30,54,0) calc(66.67vw - 70px),rgba(12,30,54,.6) calc(66.67vw - 22px),#0c1e36 calc(66.67vw + 1px))}
   .hero .in{padding:calc(66.67vw - 6px) 20px 44px}
   .hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}
