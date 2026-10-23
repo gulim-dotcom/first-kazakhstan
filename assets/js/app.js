@@ -19,6 +19,14 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 /* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
  * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
+/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Ссылка на конкретное событие – любая гиперссылка
+ * на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на общий список событий платформы */
+const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&typeof CONNECT!="undefined"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
+/* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
+ * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
+ * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
+const viaConnect=e=>(/^(reg|qual|rep|off)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&!/^(SMC|F4A)$/.test(e.tab);
+const TG_URL="https://t.me/firstroboticskz";
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -102,9 +110,10 @@ Object.keys(SHEET.tabs||{}).forEach(tab=>{
   rows.slice(1).forEach(r=>{
     const g=k=>k>=0&&k<r.length?r[k]:"";
     const name=ctext(g(c.name)),dRaw=ctext(g(c.date));
-    const cats=[];if(c.catStart>=0)for(let k=c.catStart;k<r.length&&k<c.catEnd;k++){const t=ctext(r[k]);if(t)cats.push(parseCat(t,curl(r[k])))}
+    const cats=[];if(c.catStart>=0)for(let k=c.catStart;k<r.length&&k<c.catEnd;k++){const t=ctext(r[k]);if(t&&!connUrl(curl(r[k])))cats.push(parseCat(t,curl(r[k])))}   /* ссылка на uSTEM Connect в ячейке категории – не категория */
     let v=null;for(const k of c.venue){const t=ctext(g(k));if(t){v={n:t,u:curl(g(k))};break}}
-    const ses={d:parseDate(dRaw),v:v,cats:cats,st:ctext(g(c.status)),chg:ctext(g(c.chg))};
+    const conn=r.map(x=>connUrl(curl(x))).find(Boolean)||"";   /* своя ссылка события в uSTEM Connect, если есть в строке */
+    const ses={d:parseDate(dRaw),v:v,cats:cats,st:ctext(g(c.status)),chg:ctext(g(c.chg)),conn:conn};
     if(!name){if(cur&&(dRaw||v||cats.length)){if(!dRaw){const f=cur.sessions[0];ses.d=f.d;if(!ses.st)ses.st=f.st}cur.sessions.push(ses)}return}
     cur={tab:tab,name:name,city:cityOf(ctext(g(c.city))||(typeof CITY_DEFAULT!="undefined"&&CITY_DEFAULT[lo(name)])||""),region:c.region>=0?regionOf(ctext(g(c.region))):null,
       allowed:c.allowed>=0?allowedOf(ctext(g(c.allowed))):null,sessions:[ses]};
@@ -303,25 +312,37 @@ function renderNews(){const i=I[L];
 }
 
 /* --- события --- */
-const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'};
+const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>',
+  tg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.8 15.2 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7L20.7 6.3c.3-1.1-.4-1.6-1.1-1.3L2.8 10.2c-1.1.4-1.1 1.1-.2 1.3l4.1 1.3 9.5-6c.4-.3.9-.1.5.2z"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
 function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
-  /* порядок строк: город → площадка → дата → категории → кнопка «Участвовать» */
+  /* порядок строк: город → площадка → дата → категории → регистрация.
+   * Регистрация: скримидж (и кик-офф) – Google Формы из таблицы, по кнопке на категорию; официальный турнир (viaConnect) – одна кнопка uSTEM Connect:
+   * место подтверждено или в строке есть ссылка на событие Connect – «регистрация открыта», иначе над той же кнопкой пометка «откроется позже»
+   * и ссылка на Telegram. Google Формы в строках таких турниров кнопками не становятся – кроме семинаров для учителей */
   const ses=s=>{
-    const cats=s.cats;
-    const btn=cats.filter(c=>c.url);
+    const cats=s.cats,conn=viaConnect(e);
+    const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
+    const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
+    let reg=fbs;
+    if(conn){const open=!!(s.conn||(s.v&&s.d.start)),url=s.conn||CONNECT.url;
+      reg=`<div class="rb ${open?"open":"wait"}"><span class="rs">${esc(tt(open?"rsOpen":"rsWait"))}</span><p class="rn">${esc(tt(open?"connNote":"connWait"))}</p>
+        <div class="fbs"><a class="fb cn${open?"":" soft"}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a></div>
+        ${open?"":`<a class="tgl" href="${TG_URL}" target="_blank" rel="noopener noreferrer">${ICO.tg}${esc(tt("tgBtn"))}</a>`}${fbs}</div>`}
+    else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
       <p class="dt">${ICO.cal}<span>${esc(dTxt(s.d,i))}</span></p>
       ${s.chg?`<p class="chg"><b>${esc(tt("chg"))}:</b> ${esc(s.chg)}</p>`:""}
       ${s.st?`<p class="chg"><b>${esc(tt("stt"))}:</b> ${esc(s.st)}</p>`:""}
       ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed&&!c.url?' class="closed"':""}>${esc(catLabel(c))}${c.closed&&!c.url?` · ${esc(tt("regclosed"))}`:c.soon?` · ${esc(tt("regsoon"))}`:""}</span>`).join("")}</div>`:""}
-      ${btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:""}
+      ${reg}
     </div>`};
   return `<div class="cell"><div class="ec"><div>
     <h4>${esc(e.name)}</h4>
