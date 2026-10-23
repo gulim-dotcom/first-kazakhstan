@@ -326,16 +326,11 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .rb.form .rs{background:#fdecec;color:#b42318}
 .rb.open .rs{background:#e4edfc;color:#1e4fc2}
 .rb.wait .rs{background:#f1f3f6;color:#4b5563}
-.ec p.rn{display:block;margin:8px 0 0;font-size:13px;line-height:19px;color:var(--mu)}
-.rb.wait p.rn{background:#f8fafc;border-left:3px solid #cbd5e1;border-radius:0 6px 6px 0;padding:7px 10px;color:#374151}
+.ec p.rn{display:block;margin:6px 0 0;font-size:12.5px;line-height:18px;color:var(--mu)}
 .fb.cn{gap:7px;background:var(--blue);border-color:var(--blue);color:#fff}
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb.cn:hover{background:#0c1e36;border-color:#0c1e36}
-.fb.cn.soft{background:#fff;color:var(--blue)}
-.fb.cn.soft:hover{background:var(--blue);color:#fff}
-.tgl{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 0;font-size:13px;font-weight:600;color:var(--blue)}
-.tgl svg{width:16px;height:16px;flex:none;fill:currentColor}
-.tgl:hover{color:#0c1e36}
+.fb.cn.dis{background:#eef1f5;border-color:#e3e7ec;color:#8a94a3;cursor:default;pointer-events:none} /* турнира ещё нет в uSTEM Connect */
 .morew{position:relative;z-index:2;text-align:center;margin-top:-34px}
 .morew.end{visibility:hidden}
 .more{display:inline-flex;align-items:center;justify-content:center;border:1px solid #eceff3;background:#fff;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.14);cursor:pointer;color:#4b5563;padding:8px 14px;font-size:0;transition:transform .18s,box-shadow .18s}
