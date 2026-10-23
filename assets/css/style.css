@@ -317,15 +317,15 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .ec p.dt{margin-bottom:8px}
 .empty{color:var(--mu);padding:40px 0;text-align:center;font-size:18px}
 .ec p.chg{display:block;background:#fdeee6;color:#8a3a1c;border-radius:6px;padding:4px 8px;font-size:13px}
-/* регистрация в карточке события (app.js → evCard): пометка-статус, пояснение, кнопка. Скримидж – Google Форма (.form);
- * официальный турнир – uSTEM Connect: место подтверждено (.open) или ещё уточняется (.wait – пометка над той же кнопкой и ссылка на Telegram) */
+/* регистрация в карточке события (app.js → evCard): пометка-статус, кнопка, пояснение. Скримидж – Google Форма (.form);
+ * официальный турнир – uSTEM Connect: место заполнено (.open – пометка «регистрация открыта», активная кнопка)
+ * или ещё нет (.wait – серая неактивная кнопка .fb.cn.dis и строка «следите за обновлениями») */
 .rb{margin-top:10px}
 .rb .fbs{margin-top:8px}
 .rs{display:inline-flex;align-items:center;gap:7px;padding:2px 10px 2px 8px;border-radius:999px;font-size:12px;font-weight:600;line-height:18px;letter-spacing:.01em}
 .rs:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
 .rb.form .rs{background:#fdecec;color:#b42318}
 .rb.open .rs{background:#e4edfc;color:#1e4fc2}
-.rb.wait .rs{background:#f1f3f6;color:#4b5563}
 .ec p.rn{display:block;margin:6px 0 0;font-size:12.5px;line-height:18px;color:var(--mu)}
 .fb.cn{gap:7px;background:var(--blue);border-color:var(--blue);color:#fff}
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}

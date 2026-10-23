@@ -22,7 +22,7 @@ const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostna
 /* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Платформа берёт события из той же таблицы:
  * как только в строке турнира заполнено место проведения, он появляется в Connect – и кнопка на сайте становится активной.
  * Ссылка на конкретное событие – любая гиперссылка на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на список событий платформы */
-const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&typeof CONNECT!="undefined"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
+const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
@@ -313,8 +313,7 @@ function renderNews(){const i=I[L];
 
 /* --- события --- */
 const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
-  ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>',
-  tg:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.8 15.2 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7L20.7 6.3c.3-1.1-.4-1.6-1.1-1.3L2.8 10.2c-1.1.4-1.1 1.1-.2 1.3l4.1 1.3 9.5-6c.4-.3.9-.1.5.2z"/></svg>'};
+  ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
 function evCard(e){const i=I[L],online=e.city.key==="online";
