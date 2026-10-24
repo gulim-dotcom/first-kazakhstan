@@ -686,3 +686,52 @@ footer .cp{border-top-color:rgba(255,255,255,.15);color:#9fb3c8}
 .pl .lnk:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230066b3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
 .pl .lnk:hover{background:var(--blue);color:#fff;transform:none;box-shadow:none}
 .pl .lnk:hover:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
+
+/* ---------- редизайн v3: экспертная версия ----------
+   Ритм страницы: тёмный первый экран → белая карточка сезона → тёмно-синяя полоса цифр → программы → ... → тёмный подвал.
+   Порядок блоков: сезон, цифры, программы, как начать, события, достижения, выпускники, о нас, ценности, СМИ, партнёры. */
+.top{border-top:3px solid var(--blue);height:66px}
+/* первый экран: выше, заголовок крупнее, две кнопки */
+.hero{min-height:calc(100vh - 66px);min-height:calc(100svh - 66px)}
+.hero:before{background:linear-gradient(180deg,rgba(6,20,40,.1) 0%,rgba(6,20,40,.3) 40%,rgba(6,20,40,.86) 100%)}
+.hero .in{padding:140px 48px 88px}
+.hero h1{font-size:clamp(32px,3.8vw,60px);line-height:1.08;max-width:1040px}
+.hero p{max-width:760px;margin-top:22px}
+.hbtns{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
+.hero .btn{margin-top:0}
+.hero .btn.o{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7);font-size:18px;font-weight:600}
+.hero .btn.o:hover{background:rgba(255,255,255,.12);border-color:#fff}
+/* карточка сезона: белая, с рамкой, накладывается на край первого экрана */
+.season{padding:0 0 0;position:relative;z-index:2;margin-top:-48px}
+.sp{background:#fff;color:var(--tx);border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 32px -16px rgba(11,42,74,.35);padding:56px 60px 48px 64px}
+.sp:after{display:none}
+.tag{background:var(--red);border-radius:6px 0 4px 0}
+.bk{color:var(--navy)}
+.sx p{color:var(--bd);font-weight:500}
+.blinks a{color:var(--blue);text-decoration-color:var(--blue2)}
+.blinks a:hover{text-decoration-color:var(--blue)}
+/* цифры: тёмно-синяя полоса сразу после сезона */
+#results{background:var(--navy);color:#fff;padding:120px 0 80px;margin-top:-64px}
+#results .dv{color:#9cc3e8}
+#results .proof h3{color:#fff}
+#results .proof p{color:#d6e2f0}
+#results .proof .rep{color:#9cc3e8}
+#results .proof .rep:hover{color:#fff}
+#results .st{border-left-color:var(--red)}
+#results .st b{color:#fff}
+#results .st .lb{color:#d6e2f0}
+#results .st b a.law{text-decoration-color:rgba(255,255,255,.35)}
+#results .wl{border-color:rgba(255,255,255,.15)}
+#results .wl .wlab{color:#9cc3e8}
+#results .wl .wtx{border-left-color:rgba(255,255,255,.15);color:#d6e2f0}
+/* ритм фонов */
+#programs{padding-top:110px}
+#start{padding:0 0 100px}
+#events{background:var(--band)}
+#winners{background:#fff;padding:100px 0 90px}
+#alumni{background:var(--band);padding:90px 0}
+#about{padding:100px 0 40px}
+#values{padding-top:60px}
+#media{background:var(--band)}
+/* программы: подпись-мета мельче и светлее, не спорит с описанием */
+.pc .meta{font-size:13px;color:#8a94a3}
