@@ -620,3 +620,81 @@ footer .team+.cp{margin-top:32px}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* уважение к настройке «меньше движения»: без переходов и подъёмов */
 @media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.gch,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
+
+/* ---------- редакционный стиль (2026-10-24) ----------
+   Принципы: белый фон и тонкие линии вместо цветных полос; один тёмный цвет текста и один акцент (синий FIRST);
+   пронумерованные разделы; крупная спокойная типографика; прямые углы; никаких теней, плашек и «наклеек».
+   Оранжевый остаётся только у главной кнопки «Тіркелу». Блок стоит в конце файла и переопределяет правила выше. */
+:root{--ink:#0f1b2d;--blue:#0a5fb4;--blue2:#c7dcf2;--line:#e3e6ea;--band:#f6f7f9;--rc:4px}
+body{color:var(--ink)}
+.top{height:66px;box-shadow:none;border-bottom:1px solid var(--line)}
+.nl{font-size:15px;letter-spacing:.01em}
+/* кнопки: главная – оранжевая (как была), прочие – тёмные; без подъёма и теней */
+.btn{border-radius:4px;font-weight:600;font-size:17px;min-height:50px}
+.btn:hover{transform:none;box-shadow:none}
+.btn.o{border-color:#c8ced6;border-radius:4px}
+.hero .btn{background:#fff;color:var(--ink);border:0}
+.hero .btn:hover{background:#eef2f7;color:var(--ink)}
+/* первый экран */
+.hero:before{background:linear-gradient(180deg,rgba(8,16,30,.1) 0%,rgba(8,16,30,.28) 42%,rgba(8,16,30,.8) 100%)}
+.hero h1{font-size:clamp(30px,3.4vw,54px);line-height:1.08;letter-spacing:-.015em}
+.hero p{font-size:clamp(18px,1.6vw,23px);font-weight:400}
+/* сезон: белая панель с тонкой линией и строгой меткой */
+.season{padding:0 0 24px}
+.sp{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:52px 56px 48px 64px}
+.sp:after{display:none}
+.tag{background:var(--ink);border-radius:4px 0 4px 0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px}
+.bk{color:var(--ink)}
+.sx p{color:#3b4350;font-weight:400}
+.blinks a{color:var(--blue);text-decoration-color:var(--blue2)}
+.blinks a:hover{text-decoration-color:var(--blue)}
+/* разделы: каждый начинается с тонкой линии и номера; один стиль заголовка */
+section{padding:80px 0}
+#about,#results,#winners,#alumni,#values,#start,#programs,#events,#media,.pt{background:#fff}
+#about>.w,#results>.w,#winners>.w,#alumni>.w,#values>.w,#start>.w,#programs>.w,#events>.w,#media>.w,.pt>.w{border-top:1px solid var(--line);padding-top:40px}
+body{counter-reset:sec}
+#about,#results,#winners,#alumni,#values,#start,#programs,#events,#media,.pt{counter-increment:sec}
+.dv,.wh,.dh,h2.t,.mh{display:block;margin:0 0 40px;color:var(--ink);white-space:normal}
+.dv:before,.dv:after,.wh:after,.dh:before,.dh:after,.wh svg,h2.t.ul:after,h1.t.ul:after{display:none}
+.dv,.wh h3,.dh h2,h2.t,.mh,.ab h2.t{font-size:clamp(32px,3.2vw,46px);font-weight:700;line-height:1.1;color:var(--ink);letter-spacing:-.02em}
+.dv:before,.wh h3:before,.dh h2:before,h2.t:before,.mh:before{content:counter(sec,decimal-leading-zero);display:block;font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--blue);margin-bottom:14px;font-variant-numeric:tabular-nums}
+#results .proof h3{font-size:clamp(28px,2.6vw,38px);color:var(--ink);letter-spacing:-.015em}
+.sub,.alsub,.ab .ax p,.proof p{color:#3b4350}
+/* цифры: крупные тёмные, тонкая линия сверху, синяя подпись-номер не нужна */
+.st,.step{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
+@media(min-width:901px){.stats.three .st{padding:18px 0 0}}
+.st b,.step b{color:var(--ink)}
+.st b a.law{text-decoration-color:var(--blue2)}
+.st .lb{color:#3b4350}
+.step h3{color:var(--ink)}
+.step a{color:var(--blue);text-decoration-color:var(--blue2)}
+/* о нас: два фото без наклеек и рамки */
+.ab figcaption,.ab .fr{display:none}
+.ab .p1{left:0;top:0;width:70%}
+.ab .p1 img,.ab .p2 img{border-radius:4px;box-shadow:none}
+.ab .p2{right:0;top:120px;width:38%;box-shadow:0 0 0 6px #fff}
+/* карточки: тонкая линия, прямые углы, без теней и подъёма */
+.pc,.alc,.wc,.nws .card,.ec,.q,.docs{border-radius:4px;box-shadow:none}
+.pc:hover,.nws .card:hover,a.alc:hover{transform:none;box-shadow:none;border-color:#c8ced6}
+.wc .yr{padding:0;background:none;color:#fff;font-size:14px;font-weight:600;letter-spacing:.06em;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.pc .pi:after{display:none}
+.cat,.alpa{border-radius:3px;background:#f1f3f6;color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.02em;padding:4px 10px}
+.pc .meta{color:#6b7280}
+.pl .lnk{background:#fff;color:var(--ink);border:1px solid #c8ced6;border-radius:4px;font-weight:600}
+.pl .lnk:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f1b2d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
+.pl .lnk:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:none;box-shadow:none}
+.pl .lnk:hover:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
+/* ценности: иконки в фирменных цветах, но компактнее */
+.vl .ic{width:48px;height:48px;border-radius:6px}
+.vl .ic img{width:30px;height:22px}
+.vl{grid-template-columns:48px 1fr}
+/* СМИ: цитата без голубой заливки */
+.mp{background:#fff;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:4px}
+.mh{margin-bottom:8px}
+/* события: карта на белом; фильтры-кнопки прямоугольные */
+.gch,.flt select{border-radius:4px}
+/* подвал */
+footer{background:var(--ink)}
+.pt .cta a{color:var(--blue)}
+@media(max-width:760px){.dv,.wh h3,.dh h2,h2.t,.mh{font-size:28px}section{padding:56px 0}.sp{padding:40px 24px 32px}}
+.dv:before,.wh h3:before,.dh h2:before,h2.t:before,.mh:before{width:auto;height:auto;background:none;margin-right:0;border-radius:0;flex:none}
