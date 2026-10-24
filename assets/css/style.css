@@ -622,10 +622,10 @@ footer .team+.cp{margin-top:32px}
 @media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.gch,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
 
 /* ---------- точечные правки (2026-10-24) ----------
-   1) карточка сезона – белая с рамкой вместо бежевой;
+   1) карточка сезона – светло-серая с рамкой вместо бежевой;
    2) цифры результатов и номера шагов – синие вместо оранжевых;
    3) «Тизерді көру» в карточках программ – контурная синяя кнопка. */
-.sp{background:#fff;color:var(--tx);border:1px solid var(--line)}
+.sp{background:var(--band);color:var(--tx);border:1px solid var(--line)}
 .sp:after{display:none}
 .bk{color:#1f2937}
 .sx p{color:var(--bd)}
