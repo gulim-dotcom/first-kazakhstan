@@ -621,38 +621,68 @@ footer .team+.cp{margin-top:32px}
 /* уважение к настройке «меньше движения»: без переходов и подъёмов */
 @media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.gch,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
 
-/* ---------- спокойный стиль (design refresh) ----------
-   Один стиль заголовков разделов, два цвета (синий – ссылки и акценты, оранжевый – только кнопки),
-   без лишних плашек, полосок и рамок. Стоит в конце файла, чтобы переопределять правила выше. */
-/* заголовки разделов: везде одинаковые – крупный тёмный текст без линий и иконок */
-.wh,.dh,#start .dv{display:block;margin:0 0 40px;color:#1f2937}
+/* ---------- официальный стиль (design refresh) ----------
+   Ориентир – firstinspires.org: фирменный синий FIRST (#0066b3) как единственный акцент, красный FIRST – только для
+   маленьких меток, один стиль заголовков разделов (короткая синяя черта сверху + крупный тёмный заголовок),
+   тёмно-синие панели сезона и подвала, прямоугольные формы. Блок стоит в конце файла и переопределяет правила выше. */
+:root{--blue:#0066b3;--blue2:#bcd6ee;--red:#ed1c24;--navy:#0b2a4a;--rc:4px}
+/* кнопки: главная – синяя FIRST, без «подпрыгивания» */
+.btn{background:var(--blue);border-radius:4px;font-weight:600;letter-spacing:.01em}
+.btn:hover{background:#004f8a;transform:none;box-shadow:none}
+.btn.o{border-color:#c8d0da;border-radius:4px}
+/* первый экран: плотнее затемнение, заголовок крупнее, кнопка сплошная белая */
+.hero:before{background:linear-gradient(180deg,rgba(6,20,40,.15) 0%,rgba(6,20,40,.35) 45%,rgba(6,20,40,.82) 100%)}
+.hero h1{font-size:clamp(30px,3.3vw,52px);letter-spacing:-.01em}
+.hero p{font-weight:400;font-size:clamp(18px,1.6vw,24px)}
+.hero .btn{background:#fff;color:var(--navy);border:0;padding:0 32px}
+.hero .btn:hover{background:#e6eef7;color:var(--navy)}
+/* заголовки разделов: единый стиль – короткая синяя черта сверху, крупный тёмный текст, без иконок и длинных линий */
+.wh,.dh,#start .dv,#results .dv{display:block;margin:0 0 36px;color:var(--navy)}
 .wh svg,.wh:after,.dh:before,.dh:after,.dv:before,.dv:after{display:none}
-.wh h3,.dh h2,#start .dv{font-size:clamp(28px,3vw,44px);font-weight:700;line-height:1.15;color:#1f2937;letter-spacing:-.015em;white-space:normal}
+.wh h3,.dh h2,#start .dv,h2.t,h1.t,.proof h3,.ab h2.t{font-size:clamp(30px,3vw,44px);font-weight:700;line-height:1.12;color:var(--navy);letter-spacing:-.015em;white-space:normal}
 h2.t.ul:after,h1.t.ul:after{display:none}
-/* «Біздің нәтижелеріміз» над крупным заголовком – маленькая надпись-рубрика */
-#results .dv{display:block;margin:0 0 20px;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
-/* цифры и шаги: синие, с нейтральной линией слева */
-.st,.step{border-left-color:var(--line)}
-.st b,.step b{color:var(--blue)}
+.wh:before,.dh:before,#start .dv:before,h2.t:before,.proof h3:before{content:"";display:block;width:48px;height:4px;background:var(--red);margin-bottom:18px;border-radius:0}
+.dh:before{width:48px;height:4px;margin:0 0 18px;flex:none}
+#results .dv{font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+#results .proof h3:before{display:none}
+.sub,.alsub{color:var(--bd)}
+/* цифры и шаги */
+.st,.step{border-left:3px solid var(--blue)}
+.st b,.step b{color:var(--navy)}
 .st b a.law{text-decoration-color:var(--blue2)}
-.step a{text-decoration-color:var(--blue2)}
-/* программы: возраст – одна нейтральная плашка, без цветных полосок под фото */
-.cat{background:#f1f3f6;color:#374151}
-.pc .pi:after{display:none}
-/* достижения: без плашки года */
-.wc .yr{display:none}
-/* ценности: все иконки одного цвета */
-.vl .ic{background:#1f2937}
-/* новый сезон: в общей светлой гамме сайта */
-.sp{background:var(--band);color:var(--tx)}
+.step h3{color:var(--tx)}
+.step a{color:var(--blue);text-decoration-color:var(--blue2)}
+/* новый сезон: тёмно-синяя панель, белый текст */
+.season{padding:0 0 56px}
+.sp{background:var(--navy);color:#fff;border-radius:6px}
 .sp:after{display:none}
-.tag{background:#1f2937}
-.bk{color:#1f2937}
-.sx p{color:var(--bd)}
-.blinks a{color:var(--blue);text-decoration-color:var(--blue2)}
-.blinks a:hover{text-decoration-color:var(--blue)}
-/* о нас: одно фото вместо коллажа с наклейками */
+.tag{background:var(--red);border-radius:6px 0 4px 0}
+.bk{color:#fff}
+.sx p{color:#d6e2f0;font-weight:500}
+.blinks a{color:#fff;text-decoration-color:rgba(255,255,255,.4)}
+.blinks a:hover{text-decoration-color:#fff}
+/* о нас: одно фото вместо коллажа */
 .ab .col{height:auto}
 .ab .p2,.ab .fr,.ab figcaption{display:none}
 .ab .p1{position:relative;left:0;top:0;width:100%}
-.ab .p1 img{aspect-ratio:4/3;box-shadow:none}
+.ab .p1 img{aspect-ratio:4/3;box-shadow:none;border-radius:6px}
+/* карточки: небольшой радиус, без подъёма при наведении */
+.pc,.wc,.alc,.nws .card,.ec{border-radius:6px}
+.pc:hover{transform:none}
+.cat{background:#eef3f8;color:var(--navy);border-radius:3px}
+.pc .pi:after{display:none}
+.wc .yr{display:none}
+.alpa{background:#eef3f8;color:var(--navy);border-radius:3px}
+/* подвал – тёмно-синий, как у FIRST */
+footer{background:var(--navy)}
+footer .cp{border-top-color:rgba(255,255,255,.15);color:#9fb3c8}
+/* новый порядок блоков: программы → как начать → события → результаты → достижения → выпускники → ценности */
+#programs{padding-top:90px}
+#start{padding:0 0 90px}
+#results{padding-top:90px}
+#values{padding-top:72px}
+/* ссылка «Тизерді көру» в карточке программы – второстепенная, контурная синяя */
+.pl .lnk{background:#fff;color:var(--blue);border:1px solid var(--blue);border-radius:4px;font-weight:600}
+.pl .lnk:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230066b3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
+.pl .lnk:hover{background:var(--blue);color:#fff;transform:none;box-shadow:none}
+.pl .lnk:hover:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>")}
