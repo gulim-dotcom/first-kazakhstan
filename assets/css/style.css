@@ -201,7 +201,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 #alumni .wh{margin-bottom:12px}
 .alsub{margin:0 0 36px}
 .alc{flex:0 0 calc((100% - 48px)/3);scroll-snap-align:start;display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:none;transition:border-color .2s,box-shadow .2s}
-.alim{aspect-ratio:4/3;background-size:cover;background-position:center;background-color:#eef3fc}
+.alim{aspect-ratio:720/655;background-size:cover;background-position:center;background-color:#eef3fc}
 .alim.ph{display:grid;place-items:center}
 .alim.ph svg{width:64px;height:64px;fill:none;stroke:var(--blue2);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .alb{display:flex;flex-direction:column;gap:8px;padding:22px 24px 24px;flex:1}
