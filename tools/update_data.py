@@ -674,7 +674,12 @@ def main():
         n = validate(tabs, prev.get('tabs') if same_sheet else None)
         print('   вкладок: %d, событий: %d' % (len(tabs), n))
         print('2. Формы регистрации…')
-        forms = check_forms(tabs, prev.get('forms') or {})
+        quick = os.environ.get('FK_QUICK') == '1' and same_sheet and tabs == prev.get('tabs') and prev.get('forms') is not None
+        if quick:   # быстрая проверка (каждые 5 минут): таблица не менялась — формы заново не открываем, их проверяет часовой запуск
+            forms = prev['forms']
+            print('   таблица не менялась — формы проверяются в часовом запуске')
+        else:
+            forms = check_forms(tabs, prev.get('forms') or {})
         bad = {u: f for u, f in forms.items() if f['s'] in ('closed', 'mismatch')}
         print('   форм: %d, скрыто: %d' % (len(forms), len(bad)))
         for u, f in bad.items():
