@@ -44,7 +44,7 @@ function fmtRange(a,b){const d=x=>p2(x.getDate()),m=x=>p2(x.getMonth()+1),y=x=>x
 function parseDate(raw){
   const s=String(raw||"").trim();
   if(!s)return{tba:1,start:null,end:null};
-  const full=[...s.matchAll(/(\d{1,2})\.(\d{1,2})\.(\d{4})/g)].map(m=>new Date(+m[3],+m[2]-1,+m[1]));
+  const full=[];for(let rx=/(\d{1,2})\.(\d{1,2})\.(\d{4})/g,m;(m=rx.exec(s));)full.push(new Date(+m[3],+m[2]-1,+m[1])); /* без matchAll – работает и на старых iPhone (iOS 12) */
   let a=null,b=null;
   if(full.length>=2){a=full[0];b=full[full.length-1]}
   else if(full.length===1){b=full[0];const m=s.match(/^\D*?(\d{1,2})\s*[-–—]\s*\d{1,2}\.\d{1,2}\.\d{4}/);a=m?new Date(b.getFullYear(),b.getMonth(),+m[1]):b}
@@ -241,7 +241,7 @@ function pastHtml(){const i=I[L],k=GEO.sel;
   const dts=e=>[...new Set(e.sessions.map(s=>dTxt(s.d,i)))].join(", ");
   return `<h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([stageTxt(e),e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul>`}
 function renderWinners(){const i=I[L];
-  $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" style="background-image:${cu(w[13]||WI[w[3]])}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
+  $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" data-bg="${esc(cu(w[13]||WI[w[3]]))}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
 /* FIRST түлектері: карточкалар — assets/js/alumni.js; бос мәтін басқа тілден алынады (қаз → рус → eng) */
 function renderAlumni(){const box=$("#alums");if(!box)return;
@@ -251,7 +251,7 @@ function renderAlumni(){const box=$("#alums");if(!box)return;
   const pick=a=>{a=a||[];return a[I[L]]||a[1]||a[0]||a[2]||""};
   const ig=/^https:\/\/(www\.)?instagram\.com\//;
   box.innerHTML=A.map(a=>{const n=pick(a.name),pa=pick(a.path),tx=pick(a.text),u=ig.test(a.url||"")?a.url:"";
-    const ph=a.photo?`<div class="alim" style="background-image:${cu(a.photo)};background-position:${esc(a.pos||"center")}"></div>`
+    const ph=a.photo?`<div class="alim" data-bg="${esc(cu(a.photo))}" style="background-position:${esc(a.pos||"center")}"></div>`
       :`<div class="alim ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/></svg></div>`;
     const body=`${ph}<div class="alb">${n?`<b>${esc(n)}</b>`:""}${pa?`<span class="alpa">${esc(pa)}</span>`:""}${tx||!(n||pa)?`<p>${esc(tx||tt("alsoon"))}</p>`:""}${u?`<span class="alig">${esc(tt("alig"))} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>`:""}</div>`;
     return u?`<a class="alc" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<article class="alc">${body}</article>`}).join("");
@@ -272,7 +272,7 @@ function renderPrograms(){const i=I[L];
     const head=p.logo?`<img src="${esc(p.logo)}" alt="FIRST ${esc(p.name)}">`:`<span class="wm"><i>FIRST<sup>®</sup></i><b>${esc(p.wordmark[0])}</b><b>${esc(p.wordmark[1])}</b></span>`;
     const meta=[cat,p.ageTxt?p.ageTxt[i]:"",p.team[i]].filter(Boolean).join(" · ");
     return `<article class="card pc${p.wide?" wide":""}" id="program-${k}" style="--c:${esc(p.color)}">
-      <div class="pi" style="background-image:${cu(p.photo)};background-position:${esc(p.ppos||"center")}">${head}</div>
+      <div class="pi" data-bg="${esc(cu(p.photo))}" style="background-position:${esc(p.ppos||"center")}">${head}</div>
       <div class="cb">
         <span class="cat">${esc(p.age+" "+tt("yrs"))}</span>
         <p class="intro"><span class="pn"><span class="fi">FIRST</span>® ${esc(p.name)}</span>&nbsp;– ${esc(p.intro[i])}</p>
@@ -307,7 +307,7 @@ function newsList(){
   return[...sh,...tg,...N].sort((a,b)=>nd(b).localeCompare(nd(a))).slice(0,8);
 }
 function renderNews(){const i=I[L];
-  $("#nws").innerHTML=newsList().map(x=>{const body=`<div class="im" style="background-image:${cu(x.img)};background-position:${esc(x.pos||"50% 50%")}"></div><div class="cb"><small>${esc(x.src)}${x.date?" · "+ndate(x.date):""}</small><b>${esc(x.t[i])}</b><p>${esc(x.p[i])}</p>${x.url?`<span class="rd">${esc(tt("read"))}</span>`:""}</div>`;
+  $("#nws").innerHTML=newsList().map(x=>{const body=`<div class="im" data-bg="${esc(cu(x.img))}" style="background-position:${esc(x.pos||"50% 50%")}"></div><div class="cb"><small>${esc(x.src)}${x.date?" · "+ndate(x.date):""}</small><b>${esc(x.t[i])}</b><p>${esc(x.p[i])}</p>${x.url?`<span class="rd">${esc(tt("read"))}</span>`:""}</div>`;
     return x.url?`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<div class="card">${body}</div>`}).join("");
 }
 
@@ -351,7 +351,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
     ${e.noLoc?"":`<p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>`}
     ${e.allowed?`<p class="rgl">${ICO.pin}<span title="${esc(e.allowed[i])}"><b>${esc(tt("regs"))}:</b> ${esc(e.allowed[i])}</span></p>`:""}
     ${vis.map(ses).join("")}
-  </div><div class="eim" style="background-image:${cu(e.im)}"></div></div></div>`;
+  </div><div class="eim" data-bg="${esc(cu(e.im))}"></div></div></div>`;
 }
 /* «Актобе, Актюбинская область» → область не повторяется, если она названа по городу */
 const sameStem=(city,region)=>{const a=String(city||"").toLowerCase().slice(0,4),b=String(region||"").toLowerCase().slice(0,4);return a.length>=4&&a===b};
@@ -359,7 +359,7 @@ function stamp(iso){const d=new Date(iso);if(isNaN(d))return"";try{return d.toLo
 function renderEvents(){
   const q=$("#fs").value.trim().toLowerCase();
   const ok=e=>(!GEO.sel||unitOf(e)===GEO.sel)&&
-    (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...e.vis.flatMap(s=>s.cats.map(catLabel)),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
+    (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...[].concat(...e.vis.map(s=>s.cats.map(catLabel))),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
   const u=UPC.filter(ok);
   /* все события в одной прокручиваемой сетке; стрелка внизу листает её */
   const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
@@ -412,7 +412,15 @@ function italicFirst(root){
     t.nodeValue.split(FW).forEach((s,i)=>{if(!s)return;if(i%2){const e=document.createElement("span");e.className="fir";e.textContent=s;if(fx)e.style.display="contents";f.appendChild(e)}else f.appendChild(document.createTextNode(s))});
     t.parentNode.replaceChild(f,t)});
 }
-const fwo=new MutationObserver(()=>{italicFirst(document.body);fwo.takeRecords()});
+/* --- фото в каруселях и карточках грузятся, когда до блока остаётся ~1 экран: первый экран открывается быстрее,
+ * телефон не тянет сразу 2 МБ картинок. Блок, который уже был на экране, после смены языка показывает фото сразу. --- */
+const LZ=new Set();let lzio=null;
+function bgNow(box){box.querySelectorAll("[data-bg]").forEach(e=>{e.style.backgroundImage=e.dataset.bg;e.removeAttribute("data-bg")})}
+function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws,#evs,#past").forEach(box=>{
+  if(LZ.has(box)||!("IntersectionObserver" in window)){bgNow(box);return}
+  if(!lzio)lzio=new IntersectionObserver(ens=>ens.forEach(en=>{if(en.isIntersecting){LZ.add(en.target);lzio.unobserve(en.target);bgNow(en.target)}}),{rootMargin:"900px 0px"});
+  lzio.observe(box)})}
+const fwo=new MutationObserver(()=>{italicFirst(document.body);lazyBg();fwo.takeRecords()});
 fwo.observe(document.body,{childList:true,subtree:true,characterData:true});
 italicFirst(document.body);
 /* --- старт --- */
