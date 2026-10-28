@@ -284,6 +284,7 @@ function renderPrograms(){const i=I[L];
   const pm=$("#pmore");if(pm){pm.textContent=tt("allProg");pm.hidden=false}
   const rb=$("#rulesBtn");rb.href=rulesUrl();
   if(L!="kk"&&!RULES.ru)rb.querySelector("span").textContent=tt("docKk");
+  else if(L=="en"&&RULES.ru)rb.querySelector("span").textContent=tt("docRu");
 }
 /* партнёры: бегущая строка — список повторён дважды, чтобы лента шла без разрыва (копия скрыта от экранных дикторов) */
 function renderPartners(){
@@ -296,7 +297,7 @@ function renderPartners(){
 const ndate=s=>{const m=String(s||"").match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);return m?(m[3]?`${m[3]}.${m[2]}.${m[1]}`:`${m[2]}.${m[1]}`):""};
 function newsList(){
   const nd=x=>String(x&&x.date||"");
-  /* не больше 4 постов Telegram, чтобы они не вытесняли главные результаты из data.js */
+  /* посты Telegram: не больше 8 последних (на главной всего 8 карточек) */
   const tg=(window.FK_TG_NEWS||[]).filter(x=>x&&x.title&&/^https:\/\//.test(x.url)).map(x=>({src:tt("tgsrc"),date:x.date||"",url:x.url,img:x.img||GEN_IMG,pos:"50% 50%",t:[x.title,x.title,x.title],p:[x.text||"",x.text||"",x.text||""]}))
     .sort((a,b)=>nd(b).localeCompare(nd(a))).slice(0,8);
   /* новости из вкладки «Новости» таблицы (assets/data/site.js): до 6 последних */
