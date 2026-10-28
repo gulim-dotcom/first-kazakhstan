@@ -19,10 +19,9 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 /* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
  * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
-/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Платформа берёт события из той же таблицы:
- * как только в строке турнира заполнено место проведения, он появляется в Connect – и кнопка на сайте становится активной.
- * Ссылка на конкретное событие находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы;
- * без неё кнопка ведёт на список событий платформы */
+/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Кнопка на сайте активна, только когда у турнира
+ * есть страница в Connect: она находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы.
+ * Нет страницы – кнопка серая, «регистрация ещё не открыта» */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
@@ -332,18 +331,18 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
   /* порядок строк: город → площадка → дата → категории → регистрация.
    * Регистрация: скримидж (и кик-офф) – Google Формы из таблицы, по кнопке на категорию; официальный турнир (viaConnect) – одна кнопка uSTEM Connect:
-   * в строке заполнено место проведения (или есть ссылка на connect.ustem.kz) – «регистрация открыта», кнопка активна; иначе серая
-   * неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров кнопками
-   * не становятся – кроме семинаров для учителей */
+   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
+   * иначе серая неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров
+   * кнопками не становятся – кроме семинаров для учителей */
   const ses=s=>{
     const cats=s.cats,conn=viaConnect(e);
     const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
-    const showV=!conn&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турниров с uSTEM Connect место не показываем – оно на странице турнира в Connect */
+    const showV=!(conn&&(s.conn||!s.v))&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турнира со страницей в uSTEM Connect место не показываем – оно там; пока страницы нет, место из таблицы показывается */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
-    if(conn){const open=!!(s.conn||(s.v&&s.d.start)),url=s.conn||CONNECT.url;
+    if(conn){const open=!!s.conn,url=s.conn;
       reg=`<div class="rb ${open?"open":"wait"}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
         <div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>

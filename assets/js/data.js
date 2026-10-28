@@ -353,10 +353,10 @@ const T={
 /* правила сезона по языкам (на en показывается казахская версия); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
 /* uSTEM Connect – платформа регистрации команд на официальные турниры (все этапы, кроме кик-оффа и скримиджа; скримиджи – Google Формы из таблицы).
- * Платформа берёт события из той же таблицы: заполнили место проведения – турнир появился в Connect, кнопка на сайте стала активной.
- * url – куда ведёт кнопка, пока у события нет своей ссылки; своя ссылка – любая гиперссылка на connect.ustem.kz в строке события в таблице.
- * host – по нему такая ссылка узнаётся (app.js → connUrl). Переехала платформа – поменяйте обе строки. */
-const CONNECT={url:"https://connect.ustem.kz/events",host:"connect.ustem.kz"};
+ * Кнопка на сайте активна, только когда у турнира есть страница в Connect: её находит по названию tools/update_data.py (sheet.js → connect),
+ * либо это гиперссылка на connect.ustem.kz в строке события в таблице. host – по нему такие ссылки узнаются (app.js → connUrl);
+ * переехала платформа – поменяйте его здесь и CONNECT_HOST в tools/update_data.py. */
+const CONNECT={host:"connect.ustem.kz"};
 
 /* ================= цифры Казахстана =================
  * [число, суффикс, префикс, подписи [ru,kk,en], ссылки [ru,kk,en] (необязательно)]; число растёт с нуля при появлении на экране */
