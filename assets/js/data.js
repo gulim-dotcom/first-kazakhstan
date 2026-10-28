@@ -311,6 +311,7 @@ const T={
   dReg:"To register, see the Events section below",
   dBtn:"Season rules",
   docKk:"Season rules (in Kazakh)",
+  docRu:"Season rules (in Russian)",
   dPres:"About FIRST: categories, opportunities, achievements (presentations in 3 languages)",
   dLetter:"Daryn National Center letter and season materials",
   dSched:"Season schedule",
@@ -374,7 +375,7 @@ const T={
 };
 
 /* ================= документы сезона ================= */
-/* правила сезона по языкам (на en показывается казахская версия); вкладка «Сайт» таблицы может их заменить */
+/* правила сезона по языкам (на en показывается русская версия – с пометкой docRu, если русской нет – казахская с пометкой docKk); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
 /* uSTEM Connect – платформа регистрации команд на официальные турниры (все этапы, кроме кик-оффа и скримиджа; скримиджи – Google Формы из таблицы).
  * Кнопка на сайте активна, только когда у турнира есть страница в Connect: её находит по названию tools/update_data.py (sheet.js → connect),
