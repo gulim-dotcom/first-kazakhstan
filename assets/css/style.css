@@ -630,3 +630,20 @@ footer .team+.cp{margin-top:32px}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 /* уважение к настройке «меньше движения»: без переходов и подъёмов */
 @media(prefers-reduced-motion:reduce){.btn,.btn.o,.pl .lnk,.fb,.gch,.pc,.ec,.ar,.more,.nws .card,.alc,.mk,.gmap .rg,.nl>a:after,.dl a:after,.alln:after{transition:none}.btn:hover,.pl .lnk:hover,.pc:hover,.more:hover{transform:none}}
+
+/* WhatsApp-сообщество: окно с описанием группы (assets/js/wa.js) */
+.wa-dlg{width:min(420px,calc(100% - 32px));max-height:calc(100% - 32px);margin:auto;padding:28px 24px 24px;border:0;border-radius:16px;background:#fff;color:var(--tx);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.wa-dlg::backdrop{background:rgba(17,24,39,.55)}
+.wa-dlg[open]{animation:waIn .18s ease-out}
+@keyframes waIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.wa-dlg[open]{animation:none}}
+.wa-x{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;border-radius:50%;background:none;color:var(--lt);font-size:26px;line-height:1;cursor:pointer}
+.wa-x:hover{background:var(--band);color:var(--tx)}
+.wa-ic{width:48px;height:48px;border-radius:50%;background:#e7f8ee;color:#1a8f4c;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.wa-ic svg{width:26px;height:26px}
+.wa-dlg h3{font-size:19px;font-weight:700;line-height:1.3;margin:0 32px 10px 0}
+.wa-dlg p{font-size:15px;line-height:1.5;color:var(--mu);margin:0 0 10px}
+.wa-dlg ul{margin:0 0 22px;padding-left:20px;font-size:15px;line-height:1.6;color:var(--bd)}
+.wa-join{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:10px;background:#1a8f4c;color:#fff;font-size:15px;font-weight:600;text-align:center;transition:background .18s}
+.wa-join:hover{background:#157a40;color:#fff}
+.wa-join:focus-visible,.wa-x:focus-visible{outline:2px solid var(--blue);outline-offset:2px}

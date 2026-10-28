@@ -119,7 +119,15 @@ const T={
   tmH:"Связаться с командой",
   tm1:"Партнёр FIRST по реализации программ · Руководитель программ FTC",
   tm2:"Руководитель программ FLL",
-  tm3:"Менеджер по мероприятиям и медиа"
+  tm3:"Менеджер по мероприятиям и медиа",
+  waL:"Сообщество в WhatsApp",
+  waH:"Сообщество FIRST® Kazakhstan в WhatsApp",
+  waP:"Официальное сообщество для команд, тренеров, учителей и родителей. Вступите, чтобы ничего не пропустить:",
+  waB1:"анонсы турниров и скримиджей",
+  waB2:"открытие регистрации и дедлайны",
+  waB3:"новости сезона и полезные материалы",
+  waJ:"Вступить в сообщество",
+  waX:"Закрыть"
  },
  kk:{
   n1:"Біз туралы",
@@ -232,7 +240,15 @@ const T={
   tmH:"Командамен байланыс",
   tm1:"FIRST бағдарламаларын іске асыру серіктесі · FTC бағдарламаларының жетекшісі",
   tm2:"FLL бағдарламаларының жетекшісі",
-  tm3:"Іс-шаралар және медиа менеджері"
+  tm3:"Іс-шаралар және медиа менеджері",
+  waL:"WhatsApp қауымдастығы",
+  waH:"FIRST® Kazakhstan WhatsApp қауымдастығы",
+  waP:"Командаларға, жаттықтырушыларға, мұғалімдер мен ата-аналарға арналған ресми қауымдастық. Ештеңені жіберіп алмау үшін қосылыңыз:",
+  waB1:"жарыстар мен скриммидждер туралы хабарландырулар",
+  waB2:"тіркеудің ашылуы және соңғы мерзімдер",
+  waB3:"маусым жаңалықтары мен пайдалы материалдар",
+  waJ:"Қауымдастыққа қосылу",
+  waX:"Жабу"
  },
  en:{
   n1:"About us",
@@ -345,7 +361,15 @@ const T={
   tmH:"Contact our team",
   tm1:"Program Delivery Partner · FTC Program Lead",
   tm2:"FLL Program Lead",
-  tm3:"Events & Media Manager"
+  tm3:"Events & Media Manager",
+  waL:"WhatsApp community",
+  waH:"FIRST® Kazakhstan on WhatsApp",
+  waP:"The official community for teams, coaches, teachers and parents. Join so you never miss:",
+  waB1:"tournament and scrimmage announcements",
+  waB2:"registration openings and deadlines",
+  waB3:"season news and useful materials",
+  waJ:"Join the community",
+  waX:"Close"
  }
 };
 
