@@ -21,12 +21,23 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
 /* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Платформа берёт события из той же таблицы:
  * как только в строке турнира заполнено место проведения, он появляется в Connect – и кнопка на сайте становится активной.
- * Ссылка на конкретное событие – любая гиперссылка на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на список событий платформы */
+ * Ссылка на конкретное событие находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы;
+ * без неё кнопка ведёт на список событий платформы */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
 const viaConnect=e=>(/^(reg|qual|rep|off)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&!/^(SMC|F4A)$/.test(e.tab);
+/* страница турнира в uSTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
+ * Адрес страницы повторяет название события («IQanat FIRST Regional 2026» → /events/iqanat-first-regional-2026), поэтому сначала
+ * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school).
+ * Ничего не нашлось – кнопка ведёт на список событий Connect, как раньше */
+const slugOf=t=>lo(t).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const CONN_EV=(SHEET.connect||[]).map(u=>connUrl(u)).filter(Boolean).map(u=>({u:u,k:(u.split("/events/")[1]||"").replace(/\/+$/,"")}));
+const connMatch=name=>{const k=slugOf(name);if(!k)return"";
+  const ex=CONN_EV.find(x=>x.k===k);if(ex)return ex.u;
+  if(!/\d{4}/.test(k))return"";   /* без года в названии – только точное совпадение, чтобы не попасть на прошлый сезон */
+  const pre=CONN_EV.filter(x=>x.k.startsWith(k+"-"));return pre.length===1?pre[0].u:""};
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -126,6 +137,7 @@ EVENTS.forEach(e=>{
     const w={reg:"Regional",scrim:"Scrimmage",qual:"Qualifier"}[e.stage],st=e.sessions[0].d.start;
     if(w&&e.city.n)e.name=`${e.city.n[2]} FIRST ${w}${st?" "+st.getFullYear():""}`;
   }
+  if(viaConnect(e)){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn)s.conn=m})}   /* своя гиперссылка из таблицы важнее */
   e.vis=e.sessions.filter(s=>!isDone(s)&&!(s.d.end&&s.d.end<TODAY));
   e.codes=[...new Set(e.vis.reduce((a,s)=>a.concat(s.cats.map(x=>x.code)),[]))];
   const ds=e.vis.map(s=>s.d.start).filter(Boolean).sort((a,b)=>a-b);e.start=ds.length?ds[0]:null;
