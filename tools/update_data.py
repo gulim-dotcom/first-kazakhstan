@@ -14,7 +14,7 @@
    логотип сезона -> assets/img/season.png|jpg|webp, фото новостей -> assets/img/news/sh-*.
 4. Берёт посты публичного Telegram-канала с хэштегом из tools/config.json (по умолчанию #сайт); telegram_max_news = 0 – хранить все
    -> assets/data/news.js, фото -> assets/img/news/.
-5. Время последней успешной проверки -> assets/data/status.js.
+5. Время последней успешной проверки -> assets/data/status.js (служебное; на сайте «Обновлено» = дата изменения таблицы из sheet.js).
 Если какой-то источник недоступен, прежние данные остаются как есть: сайт никогда не остаётся пустым.
 """
 import datetime, hashlib, html, io, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
@@ -684,13 +684,14 @@ def main():
         print('   форм: %d, скрыто: %d' % (len(forms), len(bad)))
         for u, f in bad.items():
             print('   [%s] %s — %s' % ('закрыта' if f['s'] == 'closed' else 'другое событие', u, f.get('t', '')))
+        # 'updated' — то, что сайт показывает как «Обновлено»: меняется только при настоящем изменении таблицы или статуса формы.
+        # (Раньше отметка ещё и переписывалась раз в месяц; репозиторий и без неё не «засыпает» — status.js коммитится каждый день.)
         changed = tabs != prev.get('tabs') or forms != prev.get('forms')
-        month_old = (prev.get('updated') or '')[:7] != stamp[:7]
-        if changed or month_old:
+        if changed:
             write_js('sheet.js', 'FK_SHEET', {'updated': stamp, 'source': 'https://docs.google.com/spreadsheets/d/%s/edit' % CFG['sheet_id'],
                                              'tabs': tabs, 'forms': forms},
                      'Снимок официальной таблицы расписания. Обновляется автоматически (tools/update_data.py), вручную не редактировать.')
-            print('   sheet.js обновлён' if changed else '   sheet.js без изменений (ежемесячная отметка)')
+            print('   sheet.js обновлён')
         else:
             print('   изменений нет')
         status['checked'] = stamp
