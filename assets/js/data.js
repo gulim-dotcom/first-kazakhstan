@@ -244,7 +244,7 @@ const T={
   waL:"WhatsApp қауымдастығы",
   waH:"FIRST® Kazakhstan WhatsApp қауымдастығы",
   waP:"Командаларға, жаттықтырушыларға, мұғалімдер мен ата-аналарға арналған ресми қауымдастық. Ештеңені жіберіп алмау үшін қосылыңыз:",
-  waB1:"жарыстар мен скриммидждер туралы хабарландырулар",
+  waB1:"жарыстар мен скримидждер туралы хабарландырулар",
   waB2:"тіркеудің ашылуы және соңғы мерзімдер",
   waB3:"маусым жаңалықтары мен пайдалы материалдар",
   waJ:"Қауымдастыққа қосылу",
@@ -390,7 +390,7 @@ const KS=[
   514,
   "",
   "№ ",
-  ["Приказ МОН РК (2011): FIRST – в перечне республиканских олимпиад и конкурсов. Перечень сейчас ведёт Министерство просвещения РК.","ҚР БҒМ бұйрығы (2011): FIRST республикалық олимпиадалар мен конкурстар тізімінде. Тізімді қазір ҚР Оқу-ағарту министрлігі жүргізеді.","Order of the Ministry of Education and Science (2011): FIRST is on the national list of olympiads and contests. The list is now maintained by the Ministry of Enlightenment."],
+  ["Приказ МОН РК (2011): FIRST – в перечне республиканских олимпиад и конкурсов. Перечень сейчас ведёт Министерство просвещения РК.","ҚР БҒМ бұйрығы (2011): FIRST республикалық олимпиадалар мен конкурстар тізімінде. Тізімді қазір ҚР Оқу-ағарту министрлігі жүргізеді.","Order of the Ministry of Education and Science (2011): FIRST is on the national list of olympiads and contests. The list is now maintained by the Ministry of Education."],
   ["https://adilet.zan.kz/rus/docs/V1100007355","https://adilet.zan.kz/kaz/docs/V1100007355","https://adilet.zan.kz/rus/docs/V1100007355"]
  ],
  [
@@ -444,7 +444,7 @@ const W=[
  ["Победители Sustain Award и Reach Award","Sustain Award және Reach Award жеңімпаздары","Sustain Award and Reach Award winners","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","JelToqSun, Fizmat Robotics, Overtime, KAP · FIRST® Tech Challenge","assets/img/w-hou26-ftc-gold.webp","2026-05-02"],
  ["3-е место: Think Award и Reach Award","Think Award және Reach Award, 3-орын","3rd place: Think Award and Reach Award","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","XCeption, Panheya, SANA, TGJ · FIRST® Tech Challenge","assets/img/w-hou26-ftc-3rd.webp","2026-05-02"],
  ["Впервые в топ-8: капитаны альянсов","Алғаш рет топ-8: альянс капитандары","First time in the top 8: alliance captains","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Panheya, Celestial · FIRST® Tech Challenge","Panheya, Celestial · FIRST® Tech Challenge","Panheya, Celestial · FIRST® Tech Challenge","assets/img/w-hou26-alliance.webp","2026-05-02"],
- ["Gracious Professionalism Award и топ-6 игры роботов","Gracious Professionalism Award және робот-ойында ТОП-6","Gracious Professionalism Award and top 6 in the robot game","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","assets/img/w-hou26-fllc.webp","2026-05-02"],
+ ["Gracious Professionalism Award и топ-6 игры роботов","Gracious Professionalism Award және робот ойынында топ-6","Gracious Professionalism Award and top 6 in the robot game","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","Fiztex, Tidal Tumble · FIRST® LEGO® League Challenge","assets/img/w-hou26-fllc.webp","2026-05-02"],
  ["Core Values Award и Team Model Award","Core Values Award және Team Model Award","Core Values Award and Team Model Award","2026","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","Alem Innovators, DeepSeekers · FIRST® LEGO® League Explore","assets/img/w-hou26-flle.webp","2026-05-02"],
  ["1-е место из 191 страны","191 елден 1-орын","1st of 191 countries","2025","Панама-Сити, Панама","Панама-Сити, Панама","Panama City, Panama","Grand Challenge Award · Albert Einstein Award (золотая медаль)","Grand Challenge Award · Albert Einstein Award (алтын медаль)","Grand Challenge Award · Albert Einstein Award (gold medal)","","","","","2025-11-01"],
  ["6 наград","6 марапат","6 awards","2025","Хьюстон, США","Хьюстон, АҚШ","Houston, USA","","","","FIRST® Championship","FIRST® Championship","FIRST® Championship","assets/img/w-hou25.webp","2025-04-19"],
@@ -525,7 +525,7 @@ const PROG=[
   logo:"assets/img/x-lg0.webp",
   photo:"assets/img/img-pd0.webp",
   intro:["первое знакомство со STEM: дети играют и строят модели из LEGO DUPLO.","STEM әлеміне алғашқы қадам: балалар LEGO DUPLO-дан модельдер құрастырып ойнайды.","a first step into STEM: children play and build models with LEGO DUPLO."],
-  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"]
+  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 жаттықтырушыға дейін","2–4 members, up to 2 coaches"]
  },
  {
   name:"LEGO® League Explore",
@@ -536,7 +536,7 @@ const PROG=[
   photo:"assets/img/x-pd1.webp",
   teaser:"https://www.youtube.com/watch?v=BayY9b0uX8A",
   intro:["команда исследует тему сезона и собирает движущуюся модель LEGO.","командалар маусым тақырыбын зерттеп, қозғалмалы LEGO моделін құрастырады.","teams explore the season theme and build a moving LEGO model."],
-  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 тренерге дейін","2–4 members, up to 2 coaches"]
+  team:["2–4 участника, до 2 тренеров","2–4 қатысушы, 2 жаттықтырушыға дейін","2–4 members, up to 2 coaches"]
  },
  {
   name:"LEGO® League Challenge",
@@ -547,7 +547,7 @@ const PROG=[
   photo:"assets/img/x-pd2.webp",
   teaser:"https://www.youtube.com/watch?v=MkpSgkw8A7I",
   intro:["команда программирует автономного робота LEGO и готовит инновационный проект.","команда автономды LEGO роботын бағдарламалап, инновациялық жоба дайындайды.","teams program an autonomous LEGO robot and develop an innovation project."],
-  team:["2–8 участников, до 2 тренеров","2–8 қатысушы, 2 тренерге дейін","2–8 members, up to 2 coaches"]
+  team:["2–8 участников, до 2 тренеров","2–8 қатысушы, 2 жаттықтырушыға дейін","2–8 members, up to 2 coaches"]
  },
  {
   name:"LEGO® League Future Edition",
@@ -557,7 +557,7 @@ const PROG=[
   wordmark:["LEGO® LEAGUE","FUTURE EDITION"],
   photo:"assets/img/x-nw-first-table.webp",
   intro:["новый формат на базе LEGO Education Computer Science & AI для двух групп: K–2 (5–7 лет) и 3–8 классы (8–16 лет).","LEGO Education Computer Science & AI негізіндегі жаңа формат: K–2 тобы (5–7 жас) және 3–8-сыныптар (8–16 жас).","a new format based on LEGO Education Computer Science & AI: grades K–2 (ages 5–7) and 3–8 (ages 8–16)."],
-  team:["4–8 участников, до 2 тренеров; для K–2 состав уточняется","4–8 қатысушы, 2 тренерге дейін; K–2 үшін құрамы нақтыланады","4–8 members, up to 2 coaches; K–2 team size to be confirmed"]
+  team:["4–8 участников, до 2 тренеров; для K–2 состав уточняется","4–8 қатысушы, 2 жаттықтырушыға дейін; K–2 үшін құрамы нақтыланады","4–8 members, up to 2 coaches; K–2 team size to be confirmed"]
  },
  {
   name:"Tech Challenge",
@@ -569,7 +569,7 @@ const PROG=[
   ppos:"50% 45%",
   teaser:"https://www.youtube.com/watch?v=sUH3z5a5S9I",
   intro:["команда проектирует, собирает и программирует робота для матчей на поле.","команда алаңдағы матчтарға арналған роботты жобалап, құрастырып, бағдарламалайды.","teams design, build and program a robot for matches on the field."],
-  team:["2–15 участников, до 2 тренеров","2–15 қатысушы, 2 тренерге дейін","2–15 members, up to 2 coaches"]
+  team:["2–15 участников, до 2 тренеров","2–15 қатысушы, 2 жаттықтырушыға дейін","2–15 members, up to 2 coaches"]
  },
  {
   name:"Robotics Competition",
