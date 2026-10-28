@@ -337,7 +337,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   const ses=s=>{
     const cats=s.cats,conn=viaConnect(e);
     const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
-    const showV=!(conn&&(s.conn||!s.v))&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турнира со страницей в uSTEM Connect место не показываем – оно там; пока страницы нет, место из таблицы показывается */
+    const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* место проведения из таблицы – у всех событий, и у турниров uSTEM Connect тоже */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
