@@ -14,7 +14,9 @@
    логотип сезона -> assets/img/season.png|jpg|webp, фото новостей -> assets/img/news/sh-*.
 4. Берёт посты публичного Telegram-канала с хэштегом из tools/config.json (по умолчанию #сайт); telegram_max_news = 0 – хранить все
    -> assets/data/news.js, фото -> assets/img/news/.
-5. Время последней успешной проверки -> assets/data/status.js (служебное; на сайте «Обновлено» = дата изменения таблицы из sheet.js).
+5. Открывает список событий uSTEM Connect с открытой регистрацией (connect.ustem.kz/events?open=1): адреса их страниц
+   -> assets/data/sheet.js (connect). Сайт сам находит в нём страницу турнира по названию и ведёт кнопку регистрации прямо туда.
+6. Время последней успешной проверки -> assets/data/status.js (служебное; на сайте «Обновлено» = дата изменения таблицы из sheet.js).
 Если какой-то источник недоступен, прежние данные остаются как есть: сайт никогда не остаётся пустым.
 """
 import datetime, hashlib, html, io, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
@@ -31,7 +33,8 @@ STAGES = ('scrimmage', 'regional', 'qualifier', 'kick-off', 'championship', 'off
 LINK_HOSTS = ('docs.google.com', 'drive.google.com', 'firstinspires.org', 'firstlegoleague.org', 'first.global', 'firstrobotics.kz', 'ustem.kz')
 VIDEO_HOSTS = ('youtube.com', 'youtu.be')
 # Скрипт ходит только по адресам Google, Telegram и официальных сайтов FIRST (и по их переадресациям); всё остальное из таблицы не открывается.
-ALLOWED_HOSTS = ('forms.gle', 'docs.google.com', 't.me') + LINK_HOSTS + tuple('www.' + h for h in LINK_HOSTS[2:])
+CONNECT_HOST = 'connect.ustem.kz'   # uSTEM Connect — регистрация на официальные турниры (как CONNECT в assets/js/data.js)
+ALLOWED_HOSTS = ('forms.gle', 'docs.google.com', 't.me', CONNECT_HOST) + LINK_HOSTS + tuple('www.' + h for h in LINK_HOSTS[2:])
 ALLOWED_SUFFIXES = ('.google.com', '.googleusercontent.com', '.telegram.org', '.telesco.pe', '.cdn-telegram.org', '.t.me')
 
 
@@ -340,6 +343,41 @@ def check_forms(tabs, prev):
             print('  форма не открылась:', url, '-', str(e)[:100])
         time.sleep(0.3)
     return out
+
+
+# ---------------------------------------------------------------- 2а. uSTEM Connect
+CONNECT_LIST = 'https://%s/events?open=1' % CONNECT_HOST   # только события с открытой регистрацией
+CONNECT_LINK = re.compile(r'href="(?:https://%s)?/events/([a-z0-9][a-z0-9-]{2,120})/?"' % re.escape(CONNECT_HOST))
+CONNECT_PAGE = re.compile(r'href="(?:https://%s)?/events/?\?(?:[^"]*&(?:amp;)?)?page=(\d{1,2})[^"]*"' % re.escape(CONNECT_HOST))
+
+
+def parse_connect(page):
+    """HTML списка событий Connect -> (адреса страниц событий, номера других страниц списка)."""
+    slugs = []
+    for m in CONNECT_LINK.finditer(page):
+        if m.group(1) not in slugs:
+            slugs.append(m.group(1))
+    return slugs, {int(n) for n in CONNECT_PAGE.findall(page)}
+
+
+def fetch_connect(prev):
+    """События uSTEM Connect с открытой регистрацией: адрес страницы -> на сайте кнопка «Регистрация в uSTEM Connect»
+    ведёт прямо на страницу своего турнира (сопоставление по названию — app.js → connMatch); пока страницы нет, кнопка
+    неактивна. Закрылась регистрация — событие пропадает из списка, кнопка снова неактивна. Платформа недоступна
+    или список пустой — остаётся прежний результат."""
+    slugs, seen, todo = [], {1}, [1]
+    while todo and len(seen) <= 10:
+        n = todo.pop(0)
+        _, body = get(CONNECT_LIST + ('&page=%d' % n if n > 1 else ''), 20, cap=5 * 1024 * 1024)
+        found, pages = parse_connect(body.decode('utf-8', 'replace'))
+        slugs += [x for x in found if x not in slugs]
+        for p in sorted(pages - seen):
+            seen.add(p)
+            todo.append(p)
+    if not slugs:
+        print('   в списке Connect не найдено ни одного события — оставлены прежние ссылки')
+        return prev
+    return sorted('https://%s/events/%s' % (CONNECT_HOST, x) for x in slugs)
 
 
 # ---------------------------------------------------------------- 3. Telegram
@@ -684,12 +722,13 @@ def main():
         print('   форм: %d, скрыто: %d' % (len(forms), len(bad)))
         for u, f in bad.items():
             print('   [%s] %s — %s' % ('закрыта' if f['s'] == 'closed' else 'другое событие', u, f.get('t', '')))
-        # 'updated' — то, что сайт показывает как «Обновлено»: меняется только при настоящем изменении таблицы или статуса формы.
-        # (Раньше отметка ещё и переписывалась раз в месяц; репозиторий и без неё не «засыпает» — status.js коммитится каждый день.)
-        changed = tabs != prev.get('tabs') or forms != prev.get('forms')
+        # 'updated' — то, что сайт показывает как «Обновлено»: меняется только при настоящем изменении таблицы, статуса формы
+        # регистрации или списка событий Connect. (Раньше отметка ещё и переписывалась раз в месяц; репозиторий и без неё
+        # не «засыпает» — status.js коммитится каждый день.)
+        changed = tabs != prev.get('tabs') or forms != prev.get('forms') or connect != (prev.get('connect') or [])
         if changed:
             write_js('sheet.js', 'FK_SHEET', {'updated': stamp, 'source': 'https://docs.google.com/spreadsheets/d/%s/edit' % CFG['sheet_id'],
-                                             'tabs': tabs, 'forms': forms},
+                                             'tabs': tabs, 'forms': forms, 'connect': connect},
                      'Снимок официальной таблицы расписания. Обновляется автоматически (tools/update_data.py), вручную не редактировать.')
             print('   sheet.js обновлён')
         else:

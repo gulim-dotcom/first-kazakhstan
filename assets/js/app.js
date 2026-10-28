@@ -19,14 +19,24 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 /* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
  * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
-/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Платформа берёт события из той же таблицы:
- * как только в строке турнира заполнено место проведения, он появляется в Connect – и кнопка на сайте становится активной.
- * Ссылка на конкретное событие – любая гиперссылка на connect.ustem.kz в строке события таблицы; без неё кнопка ведёт на список событий платформы */
+/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Кнопка на сайте активна, только когда у турнира
+ * есть страница в Connect: она находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы.
+ * Нет страницы – кнопка серая, «регистрация ещё не открыта» */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
 const viaConnect=e=>(/^(reg|qual|rep|off)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&!/^(SMC|F4A)$/.test(e.tab);
+/* страница турнира в uSTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
+ * Адрес страницы повторяет название события («IQanat FIRST Regional 2026» → /events/iqanat-first-regional-2026), поэтому сначала
+ * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school).
+ * Ничего не нашлось – кнопка ведёт на список событий Connect, как раньше */
+const slugOf=t=>lo(t).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const CONN_EV=(SHEET.connect||[]).map(u=>connUrl(u)).filter(Boolean).map(u=>({u:u,k:(u.split("/events/")[1]||"").replace(/\/+$/,"")}));
+const connMatch=name=>{const k=slugOf(name);if(!k)return"";
+  const ex=CONN_EV.find(x=>x.k===k);if(ex)return ex.u;
+  if(!/\d{4}/.test(k))return"";   /* без года в названии – только точное совпадение, чтобы не попасть на прошлый сезон */
+  const pre=CONN_EV.filter(x=>x.k.startsWith(k+"-"));return pre.length===1?pre[0].u:""};
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -126,6 +136,7 @@ EVENTS.forEach(e=>{
     const w={reg:"Regional",scrim:"Scrimmage",qual:"Qualifier"}[e.stage],st=e.sessions[0].d.start;
     if(w&&e.city.n)e.name=`${e.city.n[2]} FIRST ${w}${st?" "+st.getFullYear():""}`;
   }
+  if(viaConnect(e)){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn)s.conn=m})}   /* своя гиперссылка из таблицы важнее */
   e.vis=e.sessions.filter(s=>!isDone(s)&&!(s.d.end&&s.d.end<TODAY));
   e.codes=[...new Set(e.vis.reduce((a,s)=>a.concat(s.cats.map(x=>x.code)),[]))];
   const ds=e.vis.map(s=>s.d.start).filter(Boolean).sort((a,b)=>a-b);e.start=ds.length?ds[0]:null;
@@ -320,18 +331,18 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
   /* порядок строк: город → площадка → дата → категории → регистрация.
    * Регистрация: скримидж (и кик-офф) – Google Формы из таблицы, по кнопке на категорию; официальный турнир (viaConnect) – одна кнопка uSTEM Connect:
-   * в строке заполнено место проведения (или есть ссылка на connect.ustem.kz) – «регистрация открыта», кнопка активна; иначе серая
-   * неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров кнопками
-   * не становятся – кроме семинаров для учителей */
+   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
+   * иначе серая неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров
+   * кнопками не становятся – кроме семинаров для учителей */
   const ses=s=>{
     const cats=s.cats,conn=viaConnect(e);
     const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
-    const showV=!conn&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турниров с uSTEM Connect место не показываем – оно на странице турнира в Connect */
+    const showV=!(conn&&(s.conn||!s.v))&&!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* у турнира со страницей в uSTEM Connect место не показываем – оно там; пока страницы нет, место из таблицы показывается */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
-    if(conn){const open=!!(s.conn||(s.v&&s.d.start)),url=s.conn||CONNECT.url;
+    if(conn){const open=!!s.conn,url=s.conn;
       reg=`<div class="rb ${open?"open":"wait"}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
         <div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
