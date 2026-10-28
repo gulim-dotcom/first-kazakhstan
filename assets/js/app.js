@@ -141,6 +141,8 @@ EVENTS.forEach(e=>{
     if(w&&e.city.n)e.name=`${e.city.n[2]} FIRST ${w}${st?" "+st.getFullYear():""}`;
   }
   if(viaConnect(e)){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn)s.conn=m})}   /* своя гиперссылка из таблицы важнее */
+  /* скримидж без открытой формы на команды (только семинар или ничего), но со страницей в Connect – регистрация через Connect */
+  else if(e.stage==="scrim"){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn&&!s.cats.some(c=>c.url&&!c.closed&&c.code!=="SEM"))s.conn=m})}
   e.vis=e.sessions.filter(s=>!isDone(s)&&!(s.d.end&&s.d.end<TODAY));
   e.codes=[...new Set(e.vis.reduce((a,s)=>a.concat(s.cats.map(x=>x.code)),[]))];
   const ds=e.vis.map(s=>s.d.start).filter(Boolean).sort((a,b)=>a-b);e.start=ds.length?ds[0]:null;
@@ -337,9 +339,10 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
    * Регистрация: скримидж (и кик-офф) – Google Формы из таблицы, по кнопке на категорию; официальный турнир (viaConnect) – одна кнопка uSTEM Connect:
    * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
    * иначе серая неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров
-   * кнопками не становятся – кроме семинаров для учителей */
+   * кнопками не становятся – кроме семинаров для учителей. Скримидж со страницей в Connect, но без открытой формы на команды
+   * (s.conn задан выше или ссылкой из таблицы) – тоже кнопка Connect; его форма семинара остаётся */
   const ses=s=>{
-    const cats=s.cats,conn=viaConnect(e);
+    const cats=s.cats,conn=viaConnect(e)||(e.stage==="scrim"&&!!s.conn);
     const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"||c.code==="SMC"));   /* у турниров Connect из Google Форм остаются семинары; у SMC – «Условия и задания» */
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* место проведения из таблицы – у всех событий, и у турниров uSTEM Connect тоже */
     const one=cats.length===1&&btn.length===1;
