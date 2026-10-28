@@ -378,7 +378,8 @@ function renderEvents(){
   $("#past").innerHTML=pastHtml();
   const eg=$("#evs .eg"),mw=$("#evs .morew");
   if(eg){const upd=()=>mw.classList.toggle("end",eg.scrollHeight-eg.clientHeight-eg.scrollTop<8);eg.addEventListener("scroll",upd,{passive:true});upd();setTimeout(upd,400)}
-  const up=(window.FK_STATUS&&window.FK_STATUS.checked)||SHEET.updated,s=up?stamp(up):"";
+  /* «Обновлено» = дата, когда данные таблицы (или статус формы регистрации) действительно изменились, а не время последней проверки */
+  const up=SHEET.updated,s=up?stamp(up):"";
   $("#evsrc").textContent=s?`${tt("evupd")} ${s}`:"";
 }
 /* --- вкладка «Сайт» таблицы (assets/data/site.js): сезон, тема, ссылки, названия тем программ --- */

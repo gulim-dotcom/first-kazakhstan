@@ -16,7 +16,7 @@
    -> assets/data/news.js, фото -> assets/img/news/.
 5. Открывает список событий uSTEM Connect с открытой регистрацией (connect.ustem.kz/events?open=1): адреса их страниц
    -> assets/data/sheet.js (connect). Сайт сам находит в нём страницу турнира по названию и ведёт кнопку регистрации прямо туда.
-6. Время последней успешной проверки -> assets/data/status.js.
+6. Время последней успешной проверки -> assets/data/status.js (служебное; на сайте «Обновлено» = дата изменения таблицы из sheet.js).
 Если какой-то источник недоступен, прежние данные остаются как есть: сайт никогда не остаётся пустым.
 """
 import datetime, hashlib, html, io, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
@@ -722,20 +722,15 @@ def main():
         print('   форм: %d, скрыто: %d' % (len(forms), len(bad)))
         for u, f in bad.items():
             print('   [%s] %s — %s' % ('закрыта' if f['s'] == 'closed' else 'другое событие', u, f.get('t', '')))
-        print('2а. uSTEM Connect…')
-        try:
-            connect = fetch_connect(prev.get('connect') or [])
-            print('   событий в Connect: %d' % len(connect))
-        except Exception as e:  # платформа недоступна — прежние ссылки остаются
-            connect = prev.get('connect') or []
-            print('   uSTEM Connect недоступен:', str(e)[:100])
+        # 'updated' — то, что сайт показывает как «Обновлено»: меняется только при настоящем изменении таблицы, статуса формы
+        # регистрации или списка событий Connect. (Раньше отметка ещё и переписывалась раз в месяц; репозиторий и без неё
+        # не «засыпает» — status.js коммитится каждый день.)
         changed = tabs != prev.get('tabs') or forms != prev.get('forms') or connect != (prev.get('connect') or [])
-        month_old = (prev.get('updated') or '')[:7] != stamp[:7]
-        if changed or month_old:
+        if changed:
             write_js('sheet.js', 'FK_SHEET', {'updated': stamp, 'source': 'https://docs.google.com/spreadsheets/d/%s/edit' % CFG['sheet_id'],
                                              'tabs': tabs, 'forms': forms, 'connect': connect},
                      'Снимок официальной таблицы расписания. Обновляется автоматически (tools/update_data.py), вручную не редактировать.')
-            print('   sheet.js обновлён' if changed else '   sheet.js без изменений (ежемесячная отметка)')
+            print('   sheet.js обновлён')
         else:
             print('   изменений нет')
         status['checked'] = stamp
