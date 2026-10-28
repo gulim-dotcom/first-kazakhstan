@@ -14,7 +14,7 @@
    логотип сезона -> assets/img/season.png|jpg|webp, фото новостей -> assets/img/news/sh-*.
 4. Берёт посты публичного Telegram-канала с хэштегом из tools/config.json (по умолчанию #сайт); telegram_max_news = 0 – хранить все
    -> assets/data/news.js, фото -> assets/img/news/.
-5. Открывает список событий uSTEM Connect (connect.ustem.kz/events): адреса страниц всех опубликованных там событий
+5. Открывает список событий uSTEM Connect с открытой регистрацией (connect.ustem.kz/events?open=1): адреса их страниц
    -> assets/data/sheet.js (connect). Сайт сам находит в нём страницу турнира по названию и ведёт кнопку регистрации прямо туда.
 6. Время последней успешной проверки -> assets/data/status.js.
 Если какой-то источник недоступен, прежние данные остаются как есть: сайт никогда не остаётся пустым.
@@ -346,7 +346,7 @@ def check_forms(tabs, prev):
 
 
 # ---------------------------------------------------------------- 2а. uSTEM Connect
-CONNECT_LIST = 'https://%s/events' % CONNECT_HOST
+CONNECT_LIST = 'https://%s/events?open=1' % CONNECT_HOST   # только события с открытой регистрацией
 CONNECT_LINK = re.compile(r'href="(?:https://%s)?/events/([a-z0-9][a-z0-9-]{2,120})/?"' % re.escape(CONNECT_HOST))
 CONNECT_PAGE = re.compile(r'href="(?:https://%s)?/events/?\?(?:[^"]*&(?:amp;)?)?page=(\d{1,2})[^"]*"' % re.escape(CONNECT_HOST))
 
@@ -361,13 +361,14 @@ def parse_connect(page):
 
 
 def fetch_connect(prev):
-    """Все опубликованные в uSTEM Connect события: адрес страницы -> на сайте кнопка «Регистрация в uSTEM Connect»
-    ведёт прямо на страницу своего турнира (сопоставление по названию — app.js → connMatch). Платформа недоступна или
-    список пустой — остаётся прежний результат."""
+    """События uSTEM Connect с открытой регистрацией: адрес страницы -> на сайте кнопка «Регистрация в uSTEM Connect»
+    ведёт прямо на страницу своего турнира (сопоставление по названию — app.js → connMatch). Закрылась регистрация —
+    событие пропадает из списка, и кнопка возвращается к прежнему правилу (место в таблице). Платформа недоступна
+    или список пустой — остаётся прежний результат."""
     slugs, seen, todo = [], {1}, [1]
     while todo and len(seen) <= 10:
         n = todo.pop(0)
-        _, body = get(CONNECT_LIST + ('?page=%d' % n if n > 1 else ''), 20, cap=5 * 1024 * 1024)
+        _, body = get(CONNECT_LIST + ('&page=%d' % n if n > 1 else ''), 20, cap=5 * 1024 * 1024)
         found, pages = parse_connect(body.decode('utf-8', 'replace'))
         slugs += [x for x in found if x not in slugs]
         for p in sorted(pages - seen):
