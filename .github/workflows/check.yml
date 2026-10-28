@@ -1,0 +1,40 @@
+# Проверка кода: каждый pull request и каждая правка main. Ловит то, что иначе всплыло бы только в запусках
+# «Обновление сайта» (и могло бы незаметно остановить обновление данных, как 28.10.2026, когда при слиянии веток из
+# tools/update_data.py выпал блок с переменной connect):
+#   - pyflakes — опечатки, неопределённые имена, лишние импорты в tools/update_data.py и tools/selfcheck.py;
+#   - tools/selfcheck.py — прогон обновления без сети на копии данных (см. описание в начале файла);
+#   - node --check — синтаксис всех JS-файлов сайта; node tools/build_site.mjs — сайт собирается.
+# Красная галочка у pull request — объединять нельзя, пока не исправлено. Подробности: README → «Проверка кода».
+name: Проверка кода
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Python — имена и опечатки (pyflakes), прогон обновления без сети (tools/selfcheck.py)
+        run: |
+          pip install --quiet pyflakes==3.2.0
+          python -m pyflakes tools/update_data.py tools/selfcheck.py
+          python tools/selfcheck.py
+
+      - name: JavaScript — синтаксис и сборка сайта (tools/build_site.mjs)
+        run: |
+          for f in assets/js/*.js assets/data/*.js tools/build_site.mjs; do node --check "$f"; done
+          node tools/build_site.mjs _site
+          test -s _site/index.html && test -s _site/news.html && test -s _site/version.json

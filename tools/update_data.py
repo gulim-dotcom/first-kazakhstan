@@ -4,6 +4,7 @@
 
 Запускается GitHub Action'ом (.github/workflows/update-site.yml) по расписанию, вручную и при каждом изменении
 репозитория. Можно запустить и на компьютере:  pip install openpyxl  &&  python tools/update_data.py
+Проверить код без сети (то же делает Actions для каждого pull request):  python tools/selfcheck.py
 
 1. Скачивает официальную Google-таблицу расписания (файл .xlsx): значения и ссылки всех вкладок
    -> assets/data/sheet.js. Сайт сам собирает из неё карточки событий (даты, места, категории, регистрация).
@@ -722,6 +723,13 @@ def main():
         print('   форм: %d, скрыто: %d' % (len(forms), len(bad)))
         for u, f in bad.items():
             print('   [%s] %s — %s' % ('закрыта' if f['s'] == 'closed' else 'другое событие', u, f.get('t', '')))
+        print('2а. uSTEM Connect…')
+        try:
+            connect = fetch_connect(prev.get('connect') or [])
+            print('   событий в Connect: %d' % len(connect))
+        except Exception as e:  # платформа недоступна — прежние ссылки остаются
+            connect = prev.get('connect') or []
+            print('   uSTEM Connect недоступен:', str(e)[:100])
         # 'updated' — то, что сайт показывает как «Обновлено»: меняется только при настоящем изменении таблицы, статуса формы
         # регистрации или списка событий Connect. (Раньше отметка ещё и переписывалась раз в месяц; репозиторий и без неё
         # не «засыпает» — status.js коммитится каждый день.)
