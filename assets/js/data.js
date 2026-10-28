@@ -643,13 +643,16 @@ const PNAMES_L={
 };
 
 /* ================= встроенные карточки событий =================
- * SMC – Social Media Challenge (4-й этап сезона): показывается до даты end, пока в таблице нет своей строки; url – папка с условиями или форма.
+ * SMC – Social Media Challenge (4-й этап сезона): показывается до даты end, пока в таблице нет своей строки; url – папка с условиями и заданиями
+ *   (кнопка «Условия и задания»). Регистрация – в uSTEM Connect: страница находится по названию в списке Connect; если адрес другой,
+ *   впишите его в connect (пусто – искать по названию).
  * F4A – FIRST4ALL: без площадки (noLoc), дата – срок подачи списков; url пустой – пометка «регистрация скоро» (впишите Google Форму) */
 const SMC={
  name:"Social Media Challenge (SMC)",
  start:"23.09.2026",
  end:"25.01.2027",
  url:"https://drive.google.com/drive/folders/1Sk4qLMkO3AX-cTWk9B3sXjKQB-fm5bfm",
+ connect:"",
  img:"assets/img/x-nw-hero.webp"
 };
 const F4A={
