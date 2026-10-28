@@ -25,18 +25,22 @@ const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostna
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Скримидж и кик-офф – Google Формы из таблицы; прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
- * как раньше, только ссылки из таблицы; встроенные карточки SMC и FIRST4ALL – со своими ссылками из data.js */
-const viaConnect=e=>(/^(reg|qual|rep|off)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&!/^(SMC|F4A)$/.test(e.tab);
+ * как раньше, только ссылки из таблицы. Social Media Challenge (встроенная карточка SMC) тоже регистрируется в Connect, кнопка
+ * «Условия и задания» при этом остаётся; FIRST4ALL – со своей ссылкой из data.js */
+const viaConnect=e=>(/^(reg|qual|rep|off|smc)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&e.tab!=="F4A";
 /* страница турнира в uSTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
  * Адрес страницы повторяет название события («IQanat FIRST Regional 2026» → /events/iqanat-first-regional-2026), поэтому сначала
- * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school).
- * Ничего не нашлось – кнопка ведёт на список событий Connect, как раньше */
-const slugOf=t=>lo(t).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+ * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school);
+ * у названия без года – только страница «название + сезон» (…-2026 или …-2026-27), чтобы не попасть на чужое событие.
+ * Пояснение в скобках в названии не учитывается: «Social Media Challenge (SMC)» → social-media-challenge-2026-27.
+ * Ничего не нашлось – кнопка неактивна */
+const slugOf=t=>lo(t).replace(/\([^)]*\)/g," ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
 const CONN_EV=(SHEET.connect||[]).map(u=>connUrl(u)).filter(Boolean).map(u=>({u:u,k:(u.split("/events/")[1]||"").replace(/\/+$/,"")}));
 const connMatch=name=>{const k=slugOf(name);if(!k)return"";
   const ex=CONN_EV.find(x=>x.k===k);if(ex)return ex.u;
-  if(!/\d{4}/.test(k))return"";   /* без года в названии – только точное совпадение, чтобы не попасть на прошлый сезон */
-  const pre=CONN_EV.filter(x=>x.k.startsWith(k+"-"));return pre.length===1?pre[0].u:""};
+  let pre=CONN_EV.filter(x=>x.k.startsWith(k+"-"));
+  if(!/\d{4}/.test(k))pre=pre.filter(x=>/^\d{4}(-\d{2}|-\d{4})?$/.test(x.k.slice(k.length+1)));
+  return pre.length===1?pre[0].u:""};
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -149,7 +153,7 @@ const UPC=EVENTS.filter(e=>e.vis.length).sort((a,b)=>(a.start?+a.start:9e15)-(b.
  * пока в таблице нет собственной строки «Social Media Challenge» */
 if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e.name))){const d=parseDate(SMC.start+" – "+SMC.end);
   if(d.end&&d.end>=TODAY){const n=CITY.online||["Онлайн","Онлайн","Online"];UPC.unshift({tab:"SMC",name:SMC.name,city:{key:"online",n:n},region:null,allowed:null,stage:"smc",codes:["SMC"],start:d.start,cn:n,cc:n[1],im:SMC.img||"",
-    vis:[{d:d,v:null,cats:[{code:"SMC",label:"SMC",url:SMC.url,closed:false}],st:"",chg:""}]})}}
+    vis:[{d:d,v:null,cats:[{code:"SMC",label:"SMC",url:SMC.url,closed:false}],st:"",chg:"",conn:connUrl(String(SMC.connect||""))||connMatch(SMC.name)}]})}}
 /* FIRST4ALL – карточка из data.js (F4A). Пока ссылки нет, вместо кнопки – пометка «регистрация скоро».
  * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
 if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
@@ -336,7 +340,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
    * кнопками не становятся – кроме семинаров для учителей */
   const ses=s=>{
     const cats=s.cats,conn=viaConnect(e);
-    const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"));
+    const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"||c.code==="SMC"));   /* у турниров Connect из Google Форм остаются семинары; у SMC – «Условия и задания» */
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* место проведения из таблицы – у всех событий, и у турниров uSTEM Connect тоже */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
