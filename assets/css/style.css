@@ -329,7 +329,7 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .ec p.chg{display:block;background:#fdeee6;color:#8a3a1c;border-radius:6px;padding:4px 8px;font-size:13px}
 /* регистрация в карточке события (app.js → evCard): пометка-статус, кнопка, пояснение. Скримидж – Google Форма (.form);
  * официальный турнир – uSTEM Connect: регистрация открыта (.open – активная кнопка сама говорит, что регистрация идёт, без пометки),
- * есть в Connect, но закрыта (.closed – белая пунктирная кнопка .fb.cn.off «регистрация закрыта · страница события»),
+ * есть в Connect, но закрыта (.closed – белая пунктирная кнопка .fb.cn.off «регистрация закрыта» и строка «кнопка ведёт на страницу события»),
  * события в Connect нет (серая неактивная кнопка .fb.cn.dis и плашка .rn.wait «регистрация откроется в uSTEM Connect») */
 .rb{margin-top:10px}
 .rb .fbs{margin-top:8px}

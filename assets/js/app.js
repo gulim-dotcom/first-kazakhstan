@@ -347,7 +347,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
    * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
    * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
    * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – регистрация открыта: синяя кнопка ведёт на неё;
-   * страница есть, но регистрация закрыта (s.connClosed) – белая пунктирная кнопка «Регистрация закрыта · страница события», ведёт на неё;
+   * страница есть, но регистрация закрыта (s.connClosed) – белая пунктирная кнопка «Регистрация закрыта», ведёт на неё, под ней строка «кнопка ведёт на страницу события»;
    * турнира в Connect нет совсем – серая неактивная кнопка и плашка «регистрация откроется в uSTEM Connect». Google Формы категорий из строк таких
    * турниров кнопками не становятся. У турнира со страницей в Connect не показывается ни одна Google Форма (семинар для учителей
    * тоже регистрируется через Connect) – чтобы люди не путались, через что записываться; пока страницы нет, из форм остаётся только
@@ -365,7 +365,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
       reg=`<div class="rb${open?" open":url?" closed":""}"><div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
           :url?`<a class="fb cn off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
-        ${open?`<p class="rn">${esc(tt("connNote"))}</p>`:url?"":`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
+        ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
     else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
