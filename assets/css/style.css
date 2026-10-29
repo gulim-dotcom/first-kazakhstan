@@ -329,7 +329,8 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .ec p.chg{display:block;background:#fdeee6;color:#8a3a1c;border-radius:6px;padding:4px 8px;font-size:13px}
 /* регистрация в карточке события (app.js → evCard): пометка-статус, кнопка, пояснение. Скримидж – Google Форма (.form);
  * официальный турнир – uSTEM Connect: регистрация открыта (.open – активная кнопка сама говорит, что регистрация идёт, без пометки),
- * есть в Connect, но закрыта (кнопка на страницу события) или события в Connect нет (серая неактивная кнопка .fb.cn.dis и плашка .rn.wait) */
+ * есть в Connect, но закрыта (.closed – белая пунктирная кнопка .fb.cn.off «регистрация закрыта» и строка «кнопка ведёт на страницу события»),
+ * события в Connect нет (серая неактивная кнопка .fb.cn.dis и плашка .rn.wait «регистрация откроется в uSTEM Connect») */
 .rb{margin-top:10px}
 .rb .fbs{margin-top:8px}
 .rs{display:inline-flex;align-items:center;gap:7px;padding:2px 10px 2px 8px;border-radius:999px;font-size:12px;font-weight:600;line-height:18px;letter-spacing:.01em}
@@ -343,6 +344,8 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb.cn:hover{background:#0c1e36;border-color:#0c1e36}
 .fb.cn.dis{background:#eef1f5;border-color:#e3e7ec;color:#8a94a3;cursor:default;pointer-events:none} /* турнира ещё нет в uSTEM Connect */
+.fb.cn.off{background:#fff;border:1px dashed #c9d0da;color:var(--lt);font-weight:500} /* регистрация в Connect закрыта: кнопка ведёт на страницу события, но не выглядит как кнопка регистрации */
+.fb.cn.off:hover{background:#f3f4f6;border-color:#9ca3af;color:var(--tx)}
 .morew{position:relative;z-index:2;text-align:center;margin-top:-34px}
 .morew.end{visibility:hidden}
 .more{display:inline-flex;align-items:center;justify-content:center;border:1px solid #eceff3;background:#fff;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.14);cursor:pointer;color:#4b5563;padding:8px 14px;font-size:0;transition:transform .18s,box-shadow .18s}

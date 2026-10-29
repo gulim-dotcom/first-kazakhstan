@@ -346,9 +346,9 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   /* порядок строк: город → площадка → дата → категории → регистрация.
    * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
    * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
-   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
-   * страница есть, но регистрация закрыта (s.connClosed) – кнопка ведёт на неё и строка «статус регистрации – в uSTEM Connect»;
-   * турнира в Connect нет совсем – серая неактивная кнопка и «регистрация ещё не открыта». Google Формы категорий из строк таких
+   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – регистрация открыта: синяя кнопка ведёт на неё;
+   * страница есть, но регистрация закрыта (s.connClosed) – белая пунктирная кнопка «Регистрация закрыта», ведёт на неё, под ней строка «кнопка ведёт на страницу события»;
+   * турнира в Connect нет совсем – серая неактивная кнопка и плашка «регистрация откроется в uSTEM Connect». Google Формы категорий из строк таких
    * турниров кнопками не становятся. У турнира со страницей в Connect не показывается ни одна Google Форма (семинар для учителей
    * тоже регистрируется через Connect) – чтобы люди не путались, через что записываться; пока страницы нет, из форм остаётся только
    * семинар для учителей */
@@ -362,9 +362,10 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
     if(conn){const open=!!s.conn,url=s.conn||s.connClosed||"";
-      reg=`<div class="rb${open?" open":""}"><div class="fbs">${url?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+      reg=`<div class="rb${open?" open":url?" closed":""}"><div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+          :url?`<a class="fb cn off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
-        ${url?`<p class="rn">${esc(tt(open?"connNote":"connPage"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
+        ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
     else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
