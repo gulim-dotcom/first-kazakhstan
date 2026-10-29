@@ -366,7 +366,6 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
           :url?`<a class="fb cn off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
         ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
-    else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
       <p class="dt">${ICO.cal}<span>${esc(dTxt(s.d,i))}</span></p>

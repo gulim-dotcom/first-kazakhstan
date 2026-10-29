@@ -223,7 +223,7 @@ GitHub Pages разрешает браузерам хранить страниц
   (на GitHub: открыть файл → значок карандаша → **Commit changes**; сайт обновится сам).
   Название и тему сезона, логотип, видео, ссылки на правила, письмо и расписание удобнее задавать во вкладке «Сайт» таблицы — заполненные там значения
   имеют приоритет над `data.js`.
-- Адрес uSTEM Connect — `CONNECT` в `assets/js/data.js`; тексты пометок и кнопок регистрации (`rsForm`, `connBtn`, `connNote`, `connClosed`, `connClosedNote`, `connWait`, `joinSem`, `geoReg`) —
+- Адрес uSTEM Connect — `CONNECT` в `assets/js/data.js`; тексты пометок и кнопок регистрации (`connBtn`, `connNote`, `connClosed`, `connClosedNote`, `connWait`, `joinSem`, `regsoon`, `geoReg`) —
   там же, в `T`, на трёх языках.
 - Хэштег для новостей и канал Telegram — `tools/config.json`.
 - Оформление — `assets/css/style.css`, фото и логотипы — `assets/img/`.

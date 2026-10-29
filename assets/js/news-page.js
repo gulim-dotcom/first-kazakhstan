@@ -28,10 +28,19 @@ function render(){const i=I[L];
     return x.url?`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<div class="card">${body}</div>`}).join("");
 }
 /* язык держится в пределах визита (как на главной); новый заход — на казахском */
-function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
+/* «FIRST» всегда курсивом – как на главной (app.js → italicFirst): после каждой отрисовки слово FIRST в текстах оборачивается в <span class="fir"> */
+const FW=/\b(FIRST)\b/;
+function italicFirst(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>FW.test(n.nodeValue)&&n.parentElement&&!n.parentElement.closest("script,style,option,.fi,.fir")?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});
+  const list=[];for(let n;(n=w.nextNode());)list.push(n);
+  list.forEach(t=>{const f=document.createDocumentFragment(),fx=/flex|grid/.test(getComputedStyle(t.parentElement).display);
+    t.nodeValue.split(FW).forEach((s,i)=>{if(!s)return;if(i%2){const e=document.createElement("span");e.className="fir";e.textContent=s;if(fx)e.style.display="contents";f.appendChild(e)}else f.appendChild(document.createTextNode(s))});
+    t.parentNode.replaceChild(f,t)});
+}
+function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render();italicFirst(document.body)}
 try{localStorage.removeItem("fk-lang")}catch(e){}
 try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStorage.getItem("fk-lang");L=(u&&T[u])?u:(s&&T[s])?s:"kk";if(u&&T[u])sessionStorage.setItem("fk-lang",u)}catch(e){}
-render();
+render();italicFirst(document.body);
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
 const burger=$("#burger");
 const closeNav=()=>{document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)};
