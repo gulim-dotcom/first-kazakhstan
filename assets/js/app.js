@@ -23,11 +23,12 @@ const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostna
  * есть страница в Connect: она находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы.
  * Нет страницы – кнопка серая, «регистрация ещё не открыта» */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
-/* регистрация через uSTEM Connect – командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
- * Скримидж и кик-офф – Google Формы из таблицы, но если у них есть страница в Connect, – тоже Connect (e.viaConn); прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
+/* регистрация через uSTEM Connect – скримиджи и командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
+ * Пока скримиджа нет в Connect, кнопка серая и «регистрация ещё не открыта»: Google Формы его категорий кнопками не становятся, чтобы команды не путались.
+ * Кик-офф – Google Формы из таблицы, но если у него есть страница в Connect, – тоже Connect (e.viaConn); прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы. Social Media Challenge (встроенная карточка SMC) тоже регистрируется в Connect, кнопка
  * «Условия и задания» при этом остаётся; FIRST4ALL – со своей ссылкой из data.js */
-const viaConnect=e=>(/^(reg|qual|rep|off|smc)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&e.tab!=="F4A";
+const viaConnect=e=>(/^(reg|scrim|qual|rep|off|smc)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&e.tab!=="F4A";
 /* страница турнира в uSTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
  * Адрес страницы повторяет название события («IQanat FIRST Regional 2026» → /events/iqanat-first-regional-2026), поэтому сначала
  * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school);
@@ -140,8 +141,8 @@ EVENTS.forEach(e=>{
     const w={reg:"Regional",scrim:"Scrimmage",qual:"Qualifier"}[e.stage],st=e.sessions[0].d.start;
     if(w&&e.city.n)e.name=`${e.city.n[2]} FIRST ${w}${st?" "+st.getFullYear():""}`;
   }
-  /* страница в uSTEM Connect ищется у всех событий: скримидж или кик-офф, который уже есть в Connect, тоже регистрируется только там
-   * (Google Формы его категорий кнопками не становятся, чтобы не путать команды); нет в Connect – остаются Google Формы из таблицы */
+  /* страница в uSTEM Connect ищется у всех событий: кик-офф или другое событие, которое уже есть в Connect, тоже регистрируется только там
+   * (Google Формы его категорий кнопками не становятся, чтобы не путать команды) */
   if(e.tab!=="F4A"){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn)s.conn=m})}   /* своя гиперссылка из таблицы важнее */
   e.viaConn=viaConnect(e)||e.sessions.some(s=>s.conn);
   e.vis=e.sessions.filter(s=>!isDone(s)&&!(s.d.end&&s.d.end<TODAY));
@@ -338,8 +339,8 @@ const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener n
 function evCard(e){const i=I[L],online=e.city.key==="online";
   const vis=e.vis,multi=vis.length>1;
   /* порядок строк: город → площадка → дата → категории → регистрация.
-   * Регистрация: официальный турнир (viaConnect), а также скримидж или кик-офф, у которого есть страница в Connect (e.viaConn), – одна кнопка uSTEM Connect;
-   * скримидж (и кик-офф), которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У турнира uSTEM Connect:
+   * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
+   * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
    * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
    * иначе серая неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров
    * кнопками не становятся – кроме семинаров для учителей */
