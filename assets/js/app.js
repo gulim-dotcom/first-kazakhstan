@@ -348,11 +348,14 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
    * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
    * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
    * страница есть, но регистрация закрыта (s.connClosed) – кнопка ведёт на неё и строка «статус регистрации – в uSTEM Connect»;
-   * турнира в Connect нет совсем – серая неактивная кнопка и «регистрация ещё не открыта». Google Формы в строках таких турниров
-   * кнопками не становятся – кроме семинаров для учителей */
+   * турнира в Connect нет совсем – серая неактивная кнопка и «регистрация ещё не открыта». Google Формы категорий из строк таких
+   * турниров кнопками не становятся. У турнира со страницей в Connect не показывается ни одна Google Форма (семинар для учителей
+   * тоже регистрируется через Connect) – чтобы люди не путались, через что записываться; пока страницы нет, из форм остаётся только
+   * семинар для учителей */
   const ses=s=>{
     const cats=s.cats,conn=e.viaConn||viaConnect(e);
-    const btn=cats.filter(c=>c.url&&(!conn||c.code==="SEM"||c.code==="SMC"));   /* у турниров Connect из Google Форм остаются семинары; у SMC – «Условия и задания» */
+    const page=!!(s.conn||s.connClosed);   /* у события есть своя страница в Connect */
+    const btn=cats.filter(c=>c.url&&(!conn||(c.code==="SEM"&&!page)||c.code==="SMC"));   /* у турниров Connect без страницы из Google Форм остаётся семинар; со страницей – ни одной; у SMC – «Условия и задания» */
     const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* место проведения из таблицы – у всех событий, и у турниров uSTEM Connect тоже */
     const one=cats.length===1&&btn.length===1;
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
