@@ -476,9 +476,9 @@ const N=[
   p:["13–16 августа в Пекине соревновались 375 команд из 25 стран и регионов. Команды Казахстана получили 3 серебряные, 5 бронзовых и 15 специальных наград.","13–16 тамызда Бейжіңде 25 ел мен өңірден 375 команда бақ сынады. Қазақстан командалары 3 күміс, 5 қола және 15 арнайы марапат алды.","On 13–16 August, 375 teams from 25 countries and regions competed in Beijing. Kazakhstan's teams won 3 silver, 5 bronze and 15 special awards."]
  },
  {
-  src:"Kazinform",
+  src:"Казахстанская правда",
   date:"2026-05-13",
-  url:"https://inform.kz/ru/kazahstanskie-shkolniki-stali-prizerami-chempionata-po-robototehnike-v-gretsii-904311b9",
+  url:"https://kazpravda.kz/n/kazahstanskie-shkolniki-stali-prizerami-chempionata-po-robototehnike-v-grecii/",
   img:"assets/img/n-gr26.webp",
   pos:"50% 45%",
   t:["Команда Qazygurt стала призёром международного чемпионата в Греции","Qazygurt командасы Грекиядағы халықаралық чемпионатта жүлдегер атанды","Team Qazygurt wins an award at an international championship in Greece"],
