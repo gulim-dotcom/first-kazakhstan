@@ -22,7 +22,7 @@ const T={
   a_srch:"Поиск",
   metaDesc:"FIRST® Kazakhstan\u00a0– глобальное сообщество робототехники и STEM. Программы FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition и FIRST® Global Challenge, календарь соревнований и регистрация. Оператор в Казахстане\u00a0– USTEM Foundation.",
   h1:"Казахстан\u00a0– 4-кратный чемпион мира FIRST Global Challenge",
-  h1p:"Международные программы робототехники FIRST для школьников. Открыта регистрация на сезон 2026–2027",
+  h1p:"Международные программы робототехники FIRST для школьников. Открыта регистрация на сезон 2026–2027.",
   regb:"Записаться",
   new:"Новый сезон",
   bTheme:"Тема сезона\u00a0– биоразнообразие. Игры сезона: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
@@ -37,7 +37,7 @@ const T={
   gline:"853 000+ школьников в 114 странах · 83% выпускников FIRST® выбирают STEM-специальности в университете",
   geoH2:"Выберите регион и зарегистрируйтесь",
   geoP2:"На карте – все события сезона по регионам. Нажмите на регион: откроется список его событий с этапом, категориями и ссылкой на регистрацию.",
-  geoReg:"Скримиджи – регистрация через Google Форму. Официальные турниры (Regional, Qualifier, национальный этап) – через платформу uSTEM Connect.",
+  geoReg:"Регистрация на скримиджи и официальные турниры (Regional, Qualifier, национальный этап) – через платформу uSTEM Connect.",
   geoEv:["событие","события","событий"],
   geoAllE:"Все события",
   geoShow:"Показать все события",
@@ -89,8 +89,8 @@ const T={
   rsForm:"Регистрация: Google Форма",
   rsOpen:"Регистрация открыта в uSTEM Connect",
   connBtn:"Регистрация в uSTEM Connect",
-  connNote:"Войдите в аккаунт тренера и подайте заявку на турнир.",
-  connWait:"Регистрация ещё не открыта. Следите за обновлениями.",
+  connNote:"Войдите в аккаунт тренера и подайте заявку на участие.",
+  connWait:"Регистрация ещё не открыта. Как только она начнётся, событие появится в uSTEM Connect.",
   regs:"Регионы (для FLL)",
   tba:"Дата уточняется",
   vtba:"Площадка уточняется",
@@ -143,22 +143,22 @@ const T={
   a_srch:"Іздеу",
   metaDesc:"FIRST® Kazakhstan\u00a0– робототехника және STEM жаһандық қауымдастығы. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition және FIRST® Global Challenge бағдарламалары, жарыс күнтізбесі және тіркелу. Қазақстандағы операторы\u00a0– USTEM Foundation.",
   h1:"Қазақстан\u00a0– FIRST Global Challenge-дің 4\u00a0дүркін әлем чемпионы",
-  h1p:"Мектеп оқушыларына арналған FIRST халықаралық робототехника бағдарламалары. 2026–2027 маусымына тіркелу ашық",
+  h1p:"Мектеп оқушыларына арналған FIRST халықаралық робототехника бағдарламалары. 2026–2027 маусымына тіркелу ашық.",
   regb:"Тіркелу",
   new:"Жаңа маусым",
   bTheme:"Маусым тақырыбы\u00a0– биоалуантүрлілік. Маусым ойындары: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
   bVideo:"Маусым бейнебаяны",
-  about:"FIRST® жастарды ғылыми, инженерлік және технологиялық дағдыларды дамытуға бағытталған қызықты бағдарламалар арқылы тәлімгерлердің жетекшілігімен ғылым мен технология саласындағы көшбасшылар мен жаңашылдар болуға ынталандырады. Қазақстанда бұл бағдарламаларды «USTEM Foundation» Қоғамдық Қоры жүзеге асырады.",
+  about:"FIRST тәлімгерлердің жетекшілігімен өтетін қызықты бағдарламалар арқылы жастарды ғылым мен технология саласында көшбасшы әрі жаңашыл болуға шабыттандырады. Қазақстанда бұл бағдарламаларды «USTEM Foundation» қоғамдық қоры жүзеге асырады.",
   cap1:"Қазақстан құрамасы",
   res:"Біздің нәтижелеріміз",
-  proof:"Бағдарламаның пайдасы",
+  proof:"Дәлелденген пайда",
   proofp:"FIRST жастарға сыни ойлауды, ынтымақтастықты және көшбасшылық дағдыларды дамытуға көмектеседі. FIRST бағдарламаларына қатысу мектептегі үлгерімді жақсартып, STEM бағыттарына қызығушылықты арттырады. Түлектер көбіне білімін жалғастырып, осы салаларда табысты мансап құрады.",
   rep:"FIRST бағдарламаларының пайдасы туралы ресми деректер (ағылш.)",
   gh:"FIRST® әлемде",
   gline:"114 елде 853 000+ оқушы · FIRST® түлектерінің 83%-ы университетте STEM мамандығын таңдайды",
-  geoH2:"Аймақты басып, тіркеліңіз",
+  geoH2:"Аймақты таңдап, тіркеліңіз",
   geoP2:"Картада – маусымның барлық іс-шаралары аймақтар бойынша. Аймақты басыңыз: оның іс-шаралары кезеңімен, санаттарымен және тіркелу сілтемесімен ашылады.",
-  geoReg:"Скримиджге тіркелу – Google Форма арқылы. Ресми жарыстарға (Regional, Qualifier, ұлттық кезең) – uSTEM Connect платформасы арқылы.",
+  geoReg:"Скримидждерге және ресми жарыстарға (Regional, Qualifier, ұлттық кезең) тіркелу – uSTEM Connect платформасы арқылы.",
   geoEv:"іс-шара",
   geoAllE:"Барлық іс-шаралар",
   geoShow:"Барлық іс-шараларды көру",
@@ -211,7 +211,7 @@ const T={
   rsOpen:"Тіркелу uSTEM Connect-те ашық",
   connBtn:"uSTEM Connect-те тіркелу",
   connNote:"Жаттықтырушы аккаунтына кіріп, жарысқа өтінім беріңіз.",
-  connWait:"Тіркелу әлі ашылмаған. Жаңалықтарды қадағалаңыз.",
+  connWait:"Тіркелу әлі ашылған жоқ. Тіркелу басталған кезде іс-шара uSTEM Connect платформасында пайда болады.",
   regs:"Қатысатын аймақтар (FLL үшін)",
   tba:"Күні нақтылануда",
   vtba:"Өтетін орны нақтылануда",
@@ -264,7 +264,7 @@ const T={
   a_srch:"Search",
   metaDesc:"FIRST® Kazakhstan\u00a0– a global robotics and STEM community. FIRST® LEGO® League, FIRST® Tech Challenge, FIRST® Robotics Competition and FIRST® Global Challenge programs, competition calendar and registration. Operated in Kazakhstan by USTEM Foundation.",
   h1:"Kazakhstan\u00a0– 4-time FIRST Global Challenge world champion",
-  h1p:"FIRST international robotics programs for school students. Registration for the 2026–2027 season is open",
+  h1p:"FIRST international robotics programs for school students. Registration for the 2026–2027 season is open.",
   regb:"Register",
   new:"New season",
   bTheme:"The season theme is biodiversity. Season games: BIOGLOW (FIRST LEGO League), BIOBUZZ (FIRST Tech Challenge), BIOCORE (FIRST Robotics Competition).",
@@ -279,7 +279,7 @@ const T={
   gline:"853,000+ students in 114 countries · 83% of FIRST® alumni major in STEM at university",
   geoH2:"Select a region and register",
   geoP2:"The map shows all season events by region. Select a region to open its events with the stage, categories and registration link.",
-  geoReg:"Scrimmages register via Google Form. Official tournaments (Regional, Qualifier, national stage) register via the uSTEM Connect platform.",
+  geoReg:"Scrimmages and official tournaments (Regional, Qualifier, national stage) register via the uSTEM Connect platform.",
   geoEv:["event","events"],
   geoAllE:"All events",
   geoShow:"Show all events",
@@ -293,7 +293,7 @@ const T={
   win:"Our achievements",
   valh:"Values",
   valp:"Our core values reflect the principles of Gracious Professionalism® and collaboration.",
-  sth:"How to start",
+  sth:"How to get started",
   st1:"Choose a program",
   st1a:"Programs",
   st2:"Read the season rules",
@@ -303,7 +303,7 @@ const T={
   prog:"Programs",
   progp:"Depending on their age and interests, students can join different programs.",
   yrs:"years old",
-  tz:"Watch teaser",
+  tz:"Watch the teaser",
   allProg:"Show all programs",
   dTitle:"Season rules and documents",
   dIntro:"Official regulations: categories, age ranges, team sizes and registration.",
@@ -333,7 +333,7 @@ const T={
   rsOpen:"Registration open in uSTEM Connect",
   connBtn:"Register in uSTEM Connect",
   connNote:"Sign in to your coach account and submit the team's application.",
-  connWait:"Registration is not open yet. Follow the updates.",
+  connWait:"Registration is not open yet. Once it opens, the event will appear in uSTEM Connect.",
   regs:"Regions (for FLL)",
   tba:"Date TBA",
   vtba:"Venue TBA",
@@ -377,7 +377,7 @@ const T={
 /* ================= документы сезона ================= */
 /* правила сезона по языкам (на en показывается русская версия – с пометкой docRu, если русской нет – казахская с пометкой docKk); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
-/* uSTEM Connect – платформа регистрации команд на официальные турниры (все этапы, кроме кик-оффа и скримиджа; скримиджи – Google Формы из таблицы).
+/* uSTEM Connect – платформа регистрации команд на скримиджи и официальные турниры (все этапы, кроме кик-оффа).
  * Кнопка на сайте активна, только когда у турнира есть страница в Connect: её находит по названию tools/update_data.py (sheet.js → connect),
  * либо это гиперссылка на connect.ustem.kz в строке события в таблице. host – по нему такие ссылки узнаются (app.js → connUrl);
  * переехала платформа – поменяйте его здесь и CONNECT_HOST в tools/update_data.py. */
@@ -403,7 +403,7 @@ const KS=[
   500,
   "+",
   "",
-  ["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда 30+ елден Қазақстандағы Орталық Азия FIRST® чемпионатында","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]
+  ["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда Қазақстандағы Орталық Азия FIRST® чемпионатына 30+ елден қатысты","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]
  ]
 ];
 
@@ -413,8 +413,8 @@ const V=[
  ["Командная работа","Топтық жұмыс","Teamwork","Мы сильнее, когда работаем сообща.","Біз бірігіп жұмыс істегенде күштіміз.","We are stronger when we work together."],
  ["Инклюзия","Инклюзия","Inclusion","Мы уважаем друг друга и принимаем наши различия.","Бір-бірімізді құрметтейміз және ерекшеліктерімізді қабылдаймыз.","We respect each other and embrace our differences."],
  ["Влияние","Әсер ету","Impact","Мы применяем знания, чтобы сделать мир лучше.","Біз білімімізді әлемді жақсарту үшін қолданамыз.","We apply what we learn to improve our world."],
- ["Веселье","Көңіл көтеру","Fun","Мы наслаждаемся и радуемся тому, что мы делаем!","Біз істеп жатқан ісімізден ләззат аламыз және қуанамыз!","We enjoy and celebrate what we do!"],
- ["Открытие","Жаңалық ашу","Discovery","Мы изучаем новые навыки и идеи.","Біз жаңа дағдылар үйренеміз және идеяларды зерттейміз.","We explore new skills and ideas."],
+ ["Веселье","Көңіл көтеру","Fun","Нам нравится то, что мы делаем, и мы радуемся этому!","Біз істеп жатқан ісімізден ләззат аламыз және қуанамыз!","We enjoy and celebrate what we do!"],
+ ["Открытие","Жаңалық ашу","Discovery","Мы осваиваем новые навыки и исследуем новые идеи.","Біз жаңа дағдылар үйренеміз және идеяларды зерттейміз.","We explore new skills and ideas."],
  ["Инновация","Инновация","Innovation","Мы используем креативность и настойчивость для решения проблем.","Біз мәселелерді шешу үшін шығармашылық пен табандылықты қолданамыз.","We use creativity and persistence to solve problems."]
 ];
 const CV=[
@@ -490,7 +490,7 @@ const N=[
   url:"https://www.inform.kz/ru/sbornaya-kazahstana-zavoevala-12-nagrad-na-chempionate-mira-po-robototehnike-v-h-abe020c1",
   img:"assets/img/n-hou26.webp",
   pos:"50% 50%",
-  t:["FIRST Championship 2026, Хьюстон: команды Казахстана завоевали 12 наград","FIRST Championship 2026, Хьюстон: Қазақстан командалары 12 марапат алды","FIRST Championship 2026, Houston: Kazakhstan teams win 12 awards"],
+  t:["FIRST Championship 2026, Хьюстон: команды Казахстана завоевали 12 наград","FIRST Championship 2026, Хьюстон: Қазақстан командалары 12 марапат алды","FIRST Championship 2026, Houston: Kazakhstan's teams win 12 awards"],
   p:["В чемпионате мира в Хьюстоне участвовали 17 команд\u00a0– рекордная делегация из 225 школьников. Результаты стали возможны при поддержке Министерства просвещения РК, USTEM Foundation и РНПЦ «Дарын».","Хьюстондағы әлем чемпионатына 17 команда\u00a0– 225 оқушыдан тұратын рекордтық делегация барды. Бұл нәтижеге ҚР Оқу-ағарту министрлігінің, USTEM Foundation-ның және «Дарын» РҒПО-ның қолдауымен қол жеткізілді.","A record delegation of 17 teams and 225 students took part in the world championship in Houston. The results were made possible with support from the Ministry of Education of Kazakhstan, USTEM Foundation and the Daryn National Center."]
  },
  {

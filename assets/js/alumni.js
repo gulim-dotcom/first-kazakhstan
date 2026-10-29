@@ -12,5 +12,5 @@ const ALUMNI=[
  {photo:"assets/img/alumni/zhanzakov.webp?v=20261024-1710",name:["Нурсултан Жанзаков","Нұрсұлтан Жанзақов","Nursultan Zhanzakov"],path:["FIRST → Южная Корея","FIRST → Оңтүстік Корея","FIRST → South Korea"],text:["","",""],url:"https://www.instagram.com/p/DD4YOljuqRc/"}
 ];
 Object.assign(T.ru,{alh:"Выпускники FIRST® и их путь",alp:"Наши выпускники продолжают путь в науке, технологиях и инженерии. Их истории – тоже наше достижение.",alig:"Читать полностью",alsoon:"История выпускника скоро появится здесь"});
-Object.assign(T.kk,{alh:"FIRST® түлектері және олардың жолы",alp:"Түлектеріміз ғылым, технология және инженерия саласындағы жолын жалғастыруда. Олардың тарихы – біздің де жетістігіміз.",alig:"Толық оқу",alsoon:"Түлектің тарихы жақында осында болады"});
+Object.assign(T.kk,{alh:"FIRST® түлектері және олардың жолы",alp:"Түлектеріміз ғылым, технология және инженерия саласындағы жолын жалғастыруда. Олардың тарихы – біздің де жетістігіміз.",alig:"Толық оқу",alsoon:"Түлектің тарихы жақында осында жарияланады"});
 Object.assign(T.en,{alh:"FIRST® alumni and their path",alp:"Our alumni carry on in science, technology and engineering. Their stories are our achievement too.",alig:"Read the full story",alsoon:"This alumni story is coming soon"});
