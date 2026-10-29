@@ -337,7 +337,7 @@ function renderNews(){const i=I[L];
 }
 
 /* --- события --- */
-const ICO={pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+const ICO={clk:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
   ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
@@ -362,10 +362,9 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
     if(conn){const open=!!s.conn,url=s.conn||s.connClosed||"";
-      reg=`<div class="rb${open?" open":""}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
-        <div class="fbs">${url?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+      reg=`<div class="rb${open?" open":""}"><div class="fbs">${url?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
-        <p class="rn">${esc(tt(open?"connNote":url?"connPage":"connWait"))}</p>${fbs}</div>`}
+        ${url?`<p class="rn">${esc(tt(open?"connNote":"connPage"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
     else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}

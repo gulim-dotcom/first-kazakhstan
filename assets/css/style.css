@@ -328,15 +328,17 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .empty{color:var(--mu);padding:40px 0;text-align:center;font-size:18px}
 .ec p.chg{display:block;background:#fdeee6;color:#8a3a1c;border-radius:6px;padding:4px 8px;font-size:13px}
 /* регистрация в карточке события (app.js → evCard): пометка-статус, кнопка, пояснение. Скримидж – Google Форма (.form);
- * официальный турнир – uSTEM Connect: регистрация открыта (.open – пометка «регистрация открыта», кнопка на страницу события),
- * есть в Connect, но закрыта (кнопка на страницу события) или события в Connect нет (серая неактивная кнопка .fb.cn.dis и «ещё не открыта») */
+ * официальный турнир – uSTEM Connect: регистрация открыта (.open – активная кнопка сама говорит, что регистрация идёт, без пометки),
+ * есть в Connect, но закрыта (кнопка на страницу события) или события в Connect нет (серая неактивная кнопка .fb.cn.dis и плашка .rn.wait) */
 .rb{margin-top:10px}
 .rb .fbs{margin-top:8px}
 .rs{display:inline-flex;align-items:center;gap:7px;padding:2px 10px 2px 8px;border-radius:999px;font-size:12px;font-weight:600;line-height:18px;letter-spacing:.01em}
 .rs:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
 .rb.form .rs{background:#fdecec;color:#b42318}
-.rb.open .rs{background:#e4edfc;color:#1e4fc2}
 .ec p.rn{display:block;margin:6px 0 0;font-size:12.5px;line-height:18px;color:var(--mu)}
+.rb>.fbs:first-child{margin-top:0}
+.ec p.rn.wait{display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding:8px 10px;border-radius:8px;background:#f4f6f9;color:#4b5563}
+.ec p.rn.wait svg{width:16px;height:16px;margin-top:1px;stroke:#8a94a3}
 .fb.cn{gap:7px;background:var(--blue);border-color:var(--blue);color:#fff}
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb.cn:hover{background:#0c1e36;border-color:#0c1e36}
