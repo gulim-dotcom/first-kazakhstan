@@ -251,7 +251,7 @@ const T={
   waH:"FIRST® Kazakhstan WhatsApp қауымдастығы",
   waP:"Командаларға, жаттықтырушыларға, мұғалімдер мен ата-аналарға арналған ресми қауымдастық. Ештеңені жіберіп алмау үшін қосылыңыз:",
   waB1:"жарыстар мен скримидждер туралы хабарландырулар",
-  waB2:"тіркеудің ашылуы және соңғы мерзімдер",
+  waB2:"тіркелудің ашылуы және соңғы мерзімдер",
   waB3:"маусым жаңалықтары мен пайдалы материалдар",
   waJ:"Қауымдастыққа қосылу",
   waX:"Жабу"
@@ -285,7 +285,7 @@ const T={
   gline:"853,000+ students in 114 countries · 83% of FIRST® alumni major in STEM at university",
   geoH2:"Select a region and register",
   geoP2:"The map shows all season events by region. Select a region to open its events with the stage, categories and registration link.",
-  geoReg:"Scrimmages and official tournaments (Regional, Qualifier, national stage) register via the uSTEM Connect platform.",
+  geoReg:"Registration for scrimmages and official tournaments (Regional, Qualifier, national stage) is via the uSTEM Connect platform.",
   geoEv:["event","events"],
   geoAllE:"All events",
   geoShow:"Show all events",
@@ -387,7 +387,7 @@ const T={
 /* правила сезона по языкам (на en показывается русская версия – с пометкой docRu, если русской нет – казахская с пометкой docKk); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
 /* uSTEM Connect – платформа регистрации команд на скримиджи и официальные турниры (все этапы, кроме кик-оффа).
- * Кнопка на сайте активна, только когда у турнира есть страница в Connect: её находит по названию tools/update_data.py (sheet.js → connect),
+ * Страницу турнира находит по названию tools/update_data.py (sheet.js → connect – с открытой регистрацией, connect_all – все события),
  * либо это гиперссылка на connect.ustem.kz в строке события в таблице. host – по нему такие ссылки узнаются (app.js → connUrl);
  * переехала платформа – поменяйте его здесь и CONNECT_HOST в tools/update_data.py. */
 const CONNECT={host:"connect.ustem.kz"};
@@ -423,7 +423,7 @@ const V=[
  ["Инклюзия","Инклюзия","Inclusion","Мы уважаем друг друга и принимаем наши различия.","Бір-бірімізді құрметтейміз және ерекшеліктерімізді қабылдаймыз.","We respect each other and embrace our differences."],
  ["Влияние","Әсер ету","Impact","Мы применяем знания, чтобы сделать мир лучше.","Біз білімімізді әлемді жақсарту үшін қолданамыз.","We apply what we learn to improve our world."],
  ["Веселье","Көңіл көтеру","Fun","Нам нравится то, что мы делаем, и мы радуемся этому!","Біз істеп жатқан ісімізден ләззат аламыз және қуанамыз!","We enjoy and celebrate what we do!"],
- ["Открытие","Жаңалық ашу","Discovery","Мы осваиваем новые навыки и исследуем новые идеи.","Біз жаңа дағдылар үйренеміз және идеяларды зерттейміз.","We explore new skills and ideas."],
+ ["Открытие","Жаңалық ашу","Discovery","Мы осваиваем новые навыки и исследуем новые идеи.","Біз жаңа дағдылар үйреніп, жаңа идеяларды зерттейміз.","We explore new skills and ideas."],
  ["Инновация","Инновация","Innovation","Мы используем креативность и настойчивость для решения проблем.","Біз мәселелерді шешу үшін шығармашылық пен табандылықты қолданамыз.","We use creativity and persistence to solve problems."]
 ];
 const CV=[
@@ -669,7 +669,7 @@ const F4A={
  name:"FIRST4ALL",
  url:"",
  date:"25.12.2026",
- dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026 дейін","Team lists due by 25.12.2026"],
+ dateTxt:["Приём списков команд – до 25.12.2026","Командалар тізімін тапсыру – 25.12.2026-ға дейін","Team lists due by 25.12.2026"],
  noLoc:true,
  img:"assets/img/x-nw-first-table.webp"
 };
