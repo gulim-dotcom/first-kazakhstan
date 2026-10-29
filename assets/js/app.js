@@ -21,10 +21,12 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
 /* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Кнопка на сайте активна, только когда у турнира
  * есть страница в Connect: она находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы.
- * Нет страницы – кнопка серая, «регистрация ещё не открыта» */
+ * Страница есть, но регистрация там закрыта (общий список событий Connect, SHEET.connect_all) – кнопка всё равно ведёт на неё;
+ * события нет в Connect совсем – кнопка серая, «регистрация ещё не открыта» */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
 /* регистрация через uSTEM Connect – скримиджи и командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
- * Пока скримиджа нет в Connect, кнопка серая и «регистрация ещё не открыта»: Google Формы его категорий кнопками не становятся, чтобы команды не путались.
+ * Пока скримиджа нет в Connect, кнопка серая и «регистрация ещё не открыта»; есть в Connect с закрытой регистрацией – кнопка ведёт на его страницу.
+ * Google Формы его категорий кнопками не становятся, чтобы команды не путались.
  * Кик-офф – Google Формы из таблицы, но если у него есть страница в Connect, – тоже Connect (e.viaConn); прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы. Social Media Challenge (встроенная карточка SMC) тоже регистрируется в Connect, кнопка
  * «Условия и задания» при этом остаётся; FIRST4ALL – со своей ссылкой из data.js */
@@ -36,12 +38,14 @@ const viaConnect=e=>(/^(reg|scrim|qual|rep|off|smc)$/.test(e.stage)||(e.stage===
  * Пояснение в скобках в названии не учитывается: «Social Media Challenge (SMC)» → social-media-challenge-2026-27.
  * Ничего не нашлось – кнопка неактивна */
 const slugOf=t=>lo(t).replace(/\([^)]*\)/g," ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
-const CONN_EV=(SHEET.connect||[]).map(u=>connUrl(u)).filter(Boolean).map(u=>({u:u,k:(u.split("/events/")[1]||"").replace(/\/+$/,"")}));
-const connMatch=name=>{const k=slugOf(name);if(!k)return"";
-  const ex=CONN_EV.find(x=>x.k===k);if(ex)return ex.u;
-  let pre=CONN_EV.filter(x=>x.k.startsWith(k+"-"));
+const connList=l=>(l||[]).map(u=>connUrl(u)).filter(Boolean).map(u=>({u:u,k:(u.split("/events/")[1]||"").replace(/\/+$/,"")}));
+const CONN_EV=connList(SHEET.connect),CONN_ALL=connList(SHEET.connect_all);   /* события с открытой регистрацией / все события Connect */
+const connFind=(list,name)=>{const k=slugOf(name);if(!k)return"";
+  const ex=list.find(x=>x.k===k);if(ex)return ex.u;
+  let pre=list.filter(x=>x.k.startsWith(k+"-"));
   if(!/\d{4}/.test(k))pre=pre.filter(x=>/^\d{4}(-\d{2}|-\d{4})?$/.test(x.k.slice(k.length+1)));
   return pre.length===1?pre[0].u:""};
+const connMatch=name=>connFind(CONN_EV,name),connAny=name=>connFind(CONN_ALL,name);
 const cu=v=>{const u=encodeURI(String(v==null?"":v)).replace(/[()"']/g,"");return u?`url('${u}')`:"none"};   /* в атрибуте style — только одинарные кавычки */
 const lo=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 const p2=n=>String(n).padStart(2,"0");
@@ -143,9 +147,10 @@ EVENTS.forEach(e=>{
   }
   /* страница в uSTEM Connect ищется у всех событий: кик-офф или другое событие, которое уже есть в Connect, тоже регистрируется только там
    * (Google Формы его категорий кнопками не становятся, чтобы не путать команды) */
-  if(e.tab!=="F4A"){const m=connMatch(e.name);if(m)e.sessions.forEach(s=>{if(!s.conn)s.conn=m})}   /* своя гиперссылка из таблицы важнее */
-  e.viaConn=viaConnect(e)||e.sessions.some(s=>s.conn);
-  e.vis=e.sessions.filter(s=>!isDone(s)&&!(s.d.end&&s.d.end<TODAY));
+  if(e.tab!=="F4A"){const m=connMatch(e.name),a=m||connAny(e.name);if(a)e.sessions.forEach(s=>{if(!s.conn){if(m)s.conn=m;else s.connClosed=a}})}   /* своя гиперссылка из таблицы важнее */
+  e.viaConn=viaConnect(e)||e.sessions.some(s=>s.conn||s.connClosed);
+  /* предстоящие: пока не прошла дата (пометка «Өтілді» в таблице раньше даты карточку не убирает); без даты – пока нет пометки «прошло» */
+  e.vis=e.sessions.filter(s=>s.d.end?s.d.end>=TODAY:!isDone(s));
   e.codes=[...new Set(e.vis.reduce((a,s)=>a.concat(s.cats.map(x=>x.code)),[]))];
   const ds=e.vis.map(s=>s.d.start).filter(Boolean).sort((a,b)=>a-b);e.start=ds.length?ds[0]:null;
   const base=BASE[e.city.key]||e.city.key;e.cn=e.city.key?(CITY[base]||e.city.n):null;e.cc=e.cn?e.cn[1]:"";
@@ -157,7 +162,7 @@ const UPC=EVENTS.filter(e=>e.vis.length).sort((a,b)=>(a.start?+a.start:9e15)-(b.
  * пока в таблице нет собственной строки «Social Media Challenge» */
 if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e.name))){const d=parseDate(SMC.start+" – "+SMC.end);
   if(d.end&&d.end>=TODAY){const n=CITY.online||["Онлайн","Онлайн","Online"];UPC.unshift({tab:"SMC",name:SMC.name,city:{key:"online",n:n},region:null,allowed:null,stage:"smc",codes:["SMC"],start:d.start,cn:n,cc:n[1],im:SMC.img||"",
-    vis:[{d:d,v:null,cats:[{code:"SMC",label:"SMC",url:SMC.url,closed:false}],st:"",chg:"",conn:connUrl(String(SMC.connect||""))||connMatch(SMC.name)}]})}}
+    vis:[{d:d,v:null,cats:[{code:"SMC",label:"SMC",url:SMC.url,closed:false}],st:"",chg:"",conn:connUrl(String(SMC.connect||""))||connMatch(SMC.name),connClosed:connAny(SMC.name)}]})}}
 /* FIRST4ALL – карточка из data.js (F4A). Пока ссылки нет, вместо кнопки – пометка «регистрация скоро».
  * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
 if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
@@ -342,7 +347,8 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
    * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
    * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
    * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – «регистрация открыта», кнопка ведёт на неё;
-   * иначе серая неактивная кнопка и строка «регистрация ещё не открыта, следите за обновлениями». Google Формы в строках таких турниров
+   * страница есть, но регистрация закрыта (s.connClosed) – кнопка ведёт на неё и строка «статус регистрации – в uSTEM Connect»;
+   * турнира в Connect нет совсем – серая неактивная кнопка и «регистрация ещё не открыта». Google Формы в строках таких турниров
    * кнопками не становятся – кроме семинаров для учителей */
   const ses=s=>{
     const cats=s.cats,conn=e.viaConn||viaConnect(e);
@@ -352,11 +358,11 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
     const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
     const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
     let reg=fbs;
-    if(conn){const open=!!s.conn,url=s.conn;
-      reg=`<div class="rb ${open?"open":"wait"}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
-        <div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+    if(conn){const open=!!s.conn,url=s.conn||s.connClosed||"";
+      reg=`<div class="rb${open?" open":""}">${open?`<span class="rs">${esc(tt("rsOpen"))}</span>`:""}
+        <div class="fbs">${url?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
           :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
-        <p class="rn">${esc(tt(open?"connNote":"connWait"))}</p>${fbs}</div>`}
+        <p class="rn">${esc(tt(open?"connNote":url?"connPage":"connWait"))}</p>${fbs}</div>`}
     else if(btn.length&&e.stage==="scrim")reg=`<div class="rb form"><span class="rs">${esc(tt("rsForm"))}</span>${fbs}</div>`;
     return `<div class="${multi?"ses":"one"}">
       ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}

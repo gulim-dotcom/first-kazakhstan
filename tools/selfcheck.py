@@ -44,7 +44,7 @@ def pure_functions():
           'parse_connect: %r, страницы %r' % (slugs, pages))
     check(u.is_form_url('https://forms.gle/abc') and u.is_form_url('https://docs.google.com/forms/d/e/1/viewform')
           and not u.is_form_url('http://forms.gle/abc') and not u.is_form_url('https://docs.google.com/spreadsheets/d/1/edit'), 'is_form_url')
-    check(u.host_ok(u.CONNECT_LIST) and u.host_ok('https://t.me/s/firstroboticskz')
+    check(u.host_ok(u.CONNECT_LIST) and u.host_ok(u.CONNECT_ALL) and u.host_ok('https://t.me/s/firstroboticskz')
           and not u.host_ok('https://example.com/') and not u.host_ok('http://' + u.CONNECT_HOST + '/'), 'host_ok')
     check(u.link_ok('https://www.firstinspires.org/x') and u.link_ok('https://ustem.kz/')
           and not u.link_ok('https://firstinspires.org.example.com/'), 'link_ok')
@@ -63,12 +63,13 @@ def dry_run():
         os.environ.pop('FK_QUICK', None)
         prev = u.read_js('sheet.js', 'FK_SHEET')
         check(bool(prev and prev.get('tabs') and prev.get('forms') is not None), 'assets/data/sheet.js: нет снимка таблицы — не с чем проверять')
-        connect0 = prev.get('connect') or []
+        connect0, all0 = prev.get('connect') or [], prev.get('connect_all') or []
         new_ev = 'https://%s/events/selfcheck-first-regional-2099' % u.CONNECT_HOST
+        closed_ev = 'https://%s/events/selfcheck-first-scrimmage-2099' % u.CONNECT_HOST   # есть в Connect, регистрация закрыта
         calls = []
         u.fetch_sheet = lambda sheet_id: copy_of(prev['tabs'])
         u.check_forms = lambda tabs, prev_forms: (calls.append('forms'), copy_of(prev['forms']))[1]
-        u.fetch_connect = lambda prev_list: sorted(connect0 + [new_ev])
+        u.fetch_connect = lambda prev_list, prev_all: (sorted(connect0 + [new_ev]), sorted(set(all0 + connect0 + [new_ev, closed_ev])))
         u.update_site = lambda site_rows, news_rows, n, stamp: ''
         u.fetch_telegram = lambda channel, tags, prev_items, max_items: prev_items
 
@@ -77,6 +78,8 @@ def dry_run():
         sh, st = u.read_js('sheet.js', 'FK_SHEET'), u.read_js('status.js', 'FK_STATUS')
         check(rc == 0 and st.get('sheet') == 'ok' and st.get('site') == 'ok' and st.get('telegram') == 'ok', '1: код %r, статус %r' % (rc, st))
         check(new_ev in sh['connect'] and len(sh['connect']) == len(connect0) + 1, '1: список Connect в sheet.js не обновился')
+        check(new_ev in sh['connect_all'] and closed_ev in sh['connect_all'] and closed_ev not in sh['connect'],
+              '1: общий список Connect (connect_all) в sheet.js не обновился')
         check(sh['updated'] != prev['updated'] and sh['tabs'] == prev['tabs'] and sh['forms'] == prev['forms'], '1: отметка «Обновлено» или данные таблицы')
         check(calls == ['forms'], '1: при полном запуске формы должны проверяться один раз, вызовов: %r' % calls)
 
@@ -84,7 +87,7 @@ def dry_run():
         before = read('sheet.js')
         calls.clear()
         os.environ['FK_QUICK'] = '1'
-        u.fetch_connect = lambda prev_list: list(sh['connect'])
+        u.fetch_connect = lambda prev_list, prev_all: (list(sh['connect']), list(sh['connect_all']))
         rc = u.main()
         check(rc == 0 and read('sheet.js') == before and not calls,
               '2: код %r, формы открывались: %r, sheet.js %s' % (rc, bool(calls), 'переписан' if read('sheet.js') != before else 'тот же'))
@@ -92,7 +95,7 @@ def dry_run():
 
         print('--- 3. Connect недоступен')
 
-        def down(prev_list):
+        def down(prev_list, prev_all):
             raise OSError('connect down')
         u.fetch_connect = down
         rc = u.main()
@@ -104,7 +107,7 @@ def dry_run():
         def no_sheet(sheet_id):
             raise RuntimeError('таблица не открылась как .xlsx')
         u.fetch_sheet = no_sheet
-        u.fetch_connect = lambda prev_list: list(sh['connect'])
+        u.fetch_connect = lambda prev_list, prev_all: (list(sh['connect']), list(sh['connect_all']))
         rc = u.main()
         st4 = u.read_js('status.js', 'FK_STATUS')
         check(rc == 1 and (st4.get('sheet') or '').startswith('error: таблица не открылась') and read('sheet.js') == before,
