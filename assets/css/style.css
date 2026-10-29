@@ -396,10 +396,13 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .mq:hover .lgs{animation-play-state:paused}
 .lg{display:flex;align-items:center;justify-content:center;width:256px;height:100px;flex:none}
 .lg img{max-height:100px;max-width:160px;width:auto;height:auto}
-/* строка для партнёров под логотипами */
-.pt .cta{margin:40px 0 0;text-align:center;color:var(--mu);font-size:16px;line-height:1.6}
-.pt .cta a{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.pt .cta a:hover{color:var(--tx)}
+/* «Поддержать нас» под логотипами: Kaspi QR для всех, строка с почтой для компаний */
+.sup{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-top:40px;padding:32px 40px;border:1px solid var(--line);border-radius:12px;background:var(--band)}
+.supqr{width:224px;height:auto;border-radius:12px;background:#fff;box-shadow:var(--sh)}
+.supt{min-width:0}
+.supt h3{font-size:26px;font-weight:700;line-height:1.2;letter-spacing:-.01em}
+.supt p{margin:10px 0 0;max-width:640px;color:var(--mu);font-size:17px;line-height:1.6}
+.supb{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);color:var(--mu);font-size:16px}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* подвал */
@@ -585,6 +588,10 @@ footer .team+.cp{margin-top:32px}
   .nws b{font-size:18px}
   .nws p{font-size:15px}
   .pt{padding:50px 0 60px}
+  .sup{grid-template-columns:1fr;gap:22px;margin-top:28px;padding:24px 20px;justify-items:center;text-align:center}
+  .supqr{width:200px}
+  .supt h3{font-size:22px}
+  .supb{justify-content:center}
   .dh{margin-bottom:16px}
   .dh:before{width:48px;margin-right:16px}
   .dh:after{margin-left:16px}
