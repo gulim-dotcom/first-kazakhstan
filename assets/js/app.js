@@ -413,7 +413,7 @@ function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
   if(S.logo&&/^assets\/img\/[\w.-]+$/.test(S.logo)){const im=$(".sl img");if(im)im.src=S.logo}
   if(okUrl(S.letter)){const a=$("#letterLink");if(a)a.href=S.letter}
   if(okUrl(S.schedule)){const a=$("#schedLink");if(a)a.href=S.schedule}
-  const ev=((window.FK_SITE||{}).stats||{}).events;if(ev>=10&&KS[2]&&Math.floor(ev/10)*10>KS[2][0])KS[2][0]=Math.floor(ev/10)*10;
+  const ev=((window.FK_SITE||{}).stats||{}).events;if(ev>=10&&KS[3]&&Math.floor(ev/10)*10>KS[3][0])KS[3][0]=Math.floor(ev/10)*10; /* число мероприятий из расписания: если в таблице больше, цифра «80+» растёт сама (с округлением до десятков) */
 }
 applySite();
 /* --- язык --- */

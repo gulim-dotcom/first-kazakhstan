@@ -413,6 +413,12 @@ const KS=[
   "+",
   "",
   ["команд из 30+ стран на Центральноазиатском чемпионате FIRST® в Казахстане","команда Қазақстандағы Орталық Азия FIRST® чемпионатына 30+ елден қатысты","teams from 30+ countries at the Central Asia FIRST® Championship in Kazakhstan"]
+ ],
+ [
+  80,
+  "+",
+  "",
+  ["мероприятий FIRST® в Казахстане за год: кик-оффы, скримиджи, региональные и национальные турниры","жылына Қазақстандағы FIRST® іс-шарасы: кик-офф, скримидж, аймақтық және ұлттық жарыстар","FIRST® events in Kazakhstan a year: kick-offs, scrimmages, regional and national tournaments"]
  ]
 ];
 

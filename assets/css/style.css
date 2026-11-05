@@ -678,16 +678,10 @@ footer .team+.cp{margin-top:32px}
 .wh svg{display:none}
 .wh:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:7px;flex:none}
 .wh h3{font-size:24px}
-/* кнопка «Тіркелу» в шапке – главное действие видно всегда */
-.hcta{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:var(--rc);background:#cf6634;color:#fff;font-weight:700;font-size:16px;white-space:nowrap;transition:background-color .18s}
-.hcta:hover{background:#b8572b}
-.hcta:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.top .hcta+.lw{margin-left:-16px}
 /* приказ № 514 – строкой под цифрами */
 .lawn{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;margin-top:6px;padding:14px 16px;border-radius:10px;background:#fbf1ea;font-size:15px;line-height:1.5;color:var(--bd)}
 .lawn svg{width:20px;height:20px;flex:none;margin-top:1px;fill:none;stroke:#cf6634;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .lawn a{white-space:nowrap;font-weight:600;color:var(--tx);text-decoration:underline;text-decoration-color:#e3b79f;text-underline-offset:3px}
-@media(max-width:1060px){.hcta{order:2;min-height:36px;padding:0 14px;font-size:15px}.top .logo{margin-left:auto}}
-@media(max-width:400px){.hcta{padding:0 10px;font-size:14px}.top .logo img{height:38px}}
+@media(max-width:400px){.top .logo img{height:38px}}
 .top .logo{flex:none}
-@media(min-width:1061px) and (max-width:1200px){.nl{gap:14px;font-size:14px}.hcta{padding:0 14px;font-size:15px}.top{gap:20px}}
+@media(min-width:1061px) and (max-width:1200px){.nl{gap:14px;font-size:14px}.top{gap:20px}}
