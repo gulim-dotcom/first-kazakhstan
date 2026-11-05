@@ -32,6 +32,7 @@ button,select,input{font:inherit;color:inherit}
 
 /* ---------- шапка ---------- */
 .top{position:sticky;top:0;z-index:40;height:62px;display:flex;align-items:center;gap:32px;padding:0 max(48px,calc((100% - 1216px)/2));background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.06)} /* поля шапки = поля контента (.w): лого и меню на одной линии с текстом страницы */
+.top .logo{flex:none}
 .top .logo img{height:48px;width:auto}
 .nl{display:flex;align-items:center;gap:28px;margin-left:auto;font-weight:500;font-size:16px;color:var(--mu)}
 .nl a{white-space:nowrap}
@@ -129,7 +130,6 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .st .lb{position:relative;display:block;margin-top:14px;font-size:16px;line-height:1.5;font-weight:500;color:var(--tx)}
 .st b a.law{color:inherit;text-decoration:underline;text-decoration-color:#f0d3c3;text-decoration-thickness:2px;text-underline-offset:6px}
 .st b a.law:hover{text-decoration-color:#d9733f}
-.wld{margin-top:64px}
 .wl{display:flex;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:22px 0;align-items:center}
 .wl .wlab{flex:none;padding-right:36px;font-size:14px;font-weight:600;color:var(--lt);text-transform:uppercase;letter-spacing:.08em}
 /* «FIRST в мире» – одна строка текста рядом с подписью */
@@ -188,7 +188,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 /* достижения */
 #winners{padding:64px 0 90px;background:var(--band)}
 .wh{display:flex;align-items:center;gap:10px;margin-bottom:56px;color:var(--mu)}
-.wh svg{width:52px;height:52px;flex:none;fill:none;stroke:var(--mu);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.wh:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:7px;flex:none}
 .wh h3{font-size:24px;font-weight:600;color:var(--mu);line-height:1.2}
 .wh:after{content:"";flex:1;height:2px;background:var(--acc2);margin-left:10px}
 .cw{position:relative;min-width:0}
@@ -229,14 +229,12 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 @media(max-width:760px){.alc{flex-basis:86%}.alsub{margin-bottom:24px}.alb{padding:18px 20px 20px}}
 
 /* ценности */
-#values{position:relative;padding-top:40px}
-.val{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:66px;gap:34px 40px}
-.vl{display:grid;background:none;box-shadow:none;border-radius:0;padding:0;grid-template-columns:60px 1fr;gap:18px;align-items:start}
+#values{position:relative;padding:40px 0 56px}
+.val{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin-top:36px;gap:20px}
+.vl{display:grid;grid-template-columns:1fr;justify-items:center;text-align:center;gap:10px;align-items:start}
 .vl .ic{background:var(--c);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:60px;height:60px;border-radius:10px;padding:0;gap:0}
 .vl .ic img{object-fit:contain;width:38px;height:28px}
-.vl>div{min-width:0}
-.vl h4{overflow-wrap:break-word;font-size:18px;font-weight:700;color:var(--tx);line-height:1.25;margin:0 0 6px}
-.vl p{color:var(--bd);overflow-wrap:break-word;font-size:16px;line-height:1.55}
+.vl h4{overflow-wrap:break-word;font-size:16px;font-weight:700;color:var(--tx);line-height:1.25;margin:0}
 
 /* как начать: три шага перед программами, в стиле блока цифр */
 #start{padding:64px 0 0}
@@ -473,7 +471,7 @@ footer .team+.cp{margin-top:32px}
   .st{grid-column:1/-1;display:grid;grid-template-columns:max-content 1fr;grid-template-columns:subgrid;gap:16px;align-items:center}
   .st b{font-size:30px;letter-spacing:-.01em;min-width:96px}
   .st .lb{margin-top:0;font-size:15px;line-height:1.35;min-width:0;overflow-wrap:anywhere}
-  .val,.grid{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
   .wc{flex-basis:calc((100% - 28px)/2)}
   .mg{grid-template-columns:1fr}
   .ngrid{grid-template-columns:repeat(2,1fr)}
@@ -492,11 +490,9 @@ footer .team+.cp{margin-top:32px}
   .ab .col{height:380px}
   .st{padding:2px 0 2px 16px}
   .st b{min-width:0}
-  .vl{grid-template-columns:52px 1fr;gap:14px}
+  .val{grid-template-columns:repeat(3,minmax(0,1fr))}
   .vl .ic{width:52px;height:52px;border-radius:9px}
   .vl .ic img{width:32px;height:24px}
-  .vl h4{font-size:16px}
-  .vl p{font-size:15px}
   .wl{display:block;padding:18px 0}
   .wl .wlab{padding:0 0 8px}
   .wl .wtx{padding:0;border:0;font-size:15px}
@@ -539,10 +535,8 @@ footer .team+.cp{margin-top:32px}
   .dv:before{width:48px;margin-right:16px}
   .dv:after{margin-left:16px}
   .proof p{font-size:16px;margin:16px 0 22px}
-  .wld{margin-top:40px}
   .wl{gap:14px 16px}
   .wh{margin-bottom:28px;gap:12px}
-  .wh svg{width:34px;height:34px}
   .wh h3{font-size:20px}
   .rail{gap:16px;padding:4px 2px 12px;margin:0}
   .wc{flex-basis:86%;height:300px}
@@ -550,7 +544,8 @@ footer .team+.cp{margin-top:32px}
   .wc .yr{top:14px;right:14px;font-size:17px;padding:6px 14px}
   .wt small{font-size:16px}
   .ar{display:none}
-  .val{grid-template-columns:1fr;margin-top:40px}
+  .val{gap:18px 12px;margin-top:28px}
+  .vl h4{font-size:14px}
   .grid{grid-template-columns:1fr;gap:24px;margin-top:40px}
   .eg{grid-template-columns:1fr;gap:12px;padding:12px 6px 52px 0;max-height:62vh}
   .pc .pi{height:140px;padding:0 20px}
@@ -633,9 +628,6 @@ footer .team+.cp{margin-top:32px}
 }
 /* узкие телефоны: цифра над подписью, чтобы подпись не сжималась в узкую колонку */
 @media(max-width:560px){.stats,.stats.three{grid-template-columns:1fr}.st{display:block}.st .lb{margin-top:8px}}
-/* телефоны: фильтры в один столбец (подписи селектов не обрезаются), зоны нажатия 44 px */
-@media(max-width:480px){
-}
 /* если в системе отключена анимация — логотипы стоят рядами, все видны */
 @media(prefers-reduced-motion:reduce){.lgs{animation:none;width:auto;flex-wrap:wrap;justify-content:center}.lg[aria-hidden]{display:none}}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -659,29 +651,16 @@ footer .team+.cp{margin-top:32px}
 .wa-join:hover{background:#157a40;color:#fff}
 .wa-join:focus-visible,.wa-x:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
-/* упрощённая главная: компактные ценности, этапы под спойлером, мировые цифры под текстом «Нәтижелер» */
-.val{grid-template-columns:repeat(6,minmax(0,1fr));gap:20px;margin-top:36px}
-.vl{grid-template-columns:1fr;justify-items:center;text-align:center;gap:10px}
-.vl p{display:none}
-.vl h4{font-size:16px;margin:0}
-#values{padding-bottom:56px}
+/* упрощённая главная: этапы под спойлером, мировые цифры под текстом «Нәтижелер» */
 .proof .wl{display:block;border:0;padding:0;margin-top:28px}
 .proof .wl .wlab{display:block;padding:0 0 6px}
 .proof .wl .wtx{padding:0;border:0;font-size:15px}
 .dmore{margin-top:12px}
 .dmore summary{cursor:pointer;font-weight:600;font-size:16px;color:var(--tx);list-style-position:inside}
 .dmore[open] summary{margin-bottom:4px}
-@media(max-width:900px){.val{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.val{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;margin-top:28px}.vl h4{font-size:14px}.vl .ic{width:52px;height:52px}}
 
-/* единый стиль заголовков разделов: «Жетістіктер» и «Түлектер» – как остальные подзаголовки (линия слева, без иконки) */
-.wh svg{display:none}
-.wh:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:7px;flex:none}
-.wh h3{font-size:24px}
 /* приказ № 514 – строкой под цифрами */
 .lawn{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;margin-top:6px;padding:14px 16px;border-radius:10px;background:#fbf1ea;font-size:15px;line-height:1.5;color:var(--bd)}
 .lawn svg{width:20px;height:20px;flex:none;margin-top:1px;fill:none;stroke:#cf6634;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .lawn a{white-space:nowrap;font-weight:600;color:var(--tx);text-decoration:underline;text-decoration-color:#e3b79f;text-underline-offset:3px}
-@media(max-width:400px){.top .logo img{height:38px}}
-.top .logo{flex:none}
 @media(min-width:1061px) and (max-width:1200px){.nl{gap:14px;font-size:14px}.top{gap:20px}}
