@@ -184,6 +184,7 @@ function renderStats(){const i=I[L];
   const law=KS.filter(k=>k[4]),nums=KS.filter(k=>!k[4]); /* документ (приказ № 514) – строкой с галочкой, а не цифрой: это не достижение */
   $("#stats").innerHTML=nums.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i])).join("")+law.map(k=>`<p class="lawn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>${esc(k[3][i])} <a href="${esc(k[4][i])}" target="_blank" rel="noopener noreferrer">${esc(k[2])}${k[0]}</a></span></p>`).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
   $("#stats").classList.toggle("three",nums.length>=2); /* три цифры – одной колонкой */
+  const hs=$("#hs");if(hs)hs.innerHTML=`<li><b>4<i>×</i></b><span>${esc(tt("hs1"))}</span></li>`+nums.slice(0,3).map((k,j)=>`<li><b>${fmt(k[0])}${esc(Array.isArray(k[1])?k[1][i]:k[1])}</b><span>${esc(tt("hs"+(j+2)))}</span></li>`).join(""); /* полоса цифр под первым экраном */
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`; /* мировые цифры FIRST – одной строкой текста, без анимации */
   countUp();
 }

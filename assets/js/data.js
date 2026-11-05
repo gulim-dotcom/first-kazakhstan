@@ -864,3 +864,23 @@ const ONLINE_IMG="assets/img/x-forbes.webp",FTC_IMG="assets/img/x-pd3.webp",GEN_
 const evim=(t,ck,codes)=>{if(ck==="online")return ONLINE_IMG;const b=String(t).split(" ")[0];return EVI[BRD[b]]||EI[IMK[b]]||EI[EIK[ck]]||EVI[ck]||EVI[CITY_EVI[ck]]||(codes&&codes.length===1&&codes[0]==="FTC"?FTC_IMG:GEN_IMG)};
 /* этап события по названию (когда вкладка таблицы его не определяет) */
 const stg=t=>/Kick-/i.test(t)?"kick":/Scrimmage/.test(t)?"scrim":/Qualifier/.test(t)?"qual":/Regional|Digital Bridge/.test(t)?"reg":/Kazakhstan.*Championship/.test(t)?"rep":/Off-Season|Tech Cup/i.test(t)?"off":"big";
+
+/* макет v2: первый экран и блок «Кому подходит» */
+Object.assign(T.ru,{hEye:"Глобальное STEM-сообщество · FIRST® Kazakhstan",
+ hs1:"раза чемпионы мира FIRST Global Challenge",hs2:"школьников прошли программы",hs3:"команд по всей стране",hs4:"мероприятий в год",
+ whoH:"Кому подходит FIRST",who1:"Школьнику",who1p:"От 4 до 18 лет: своя программа под каждый возраст, от LEGO до настоящих роботов.",who1a:"Выбрать программу",
+ who2:"Родителю",who2p:"Как записать ребёнка, что понадобится и сколько это стоит.",who2a:"С чего начать",
+ who3:"Школе и учителю",who3p:"Откройте команду: правила сезона, презентации, письма поддержки и расписание.",who3a:"Документы",
+ who4:"Партнёру и спонсору",who4p:"Поддержите региональный турнир или команду из своего региона.",who4a:"Партнёры"});
+Object.assign(T.kk,{hEye:"Жаһандық STEM қауымдастығы · FIRST® Kazakhstan",
+ hs1:"дүркін әлем чемпионы, FIRST Global Challenge",hs2:"оқушы бағдарламалардан өтті",hs3:"команда бүкіл ел бойынша",hs4:"іс-шара жылына",
+ whoH:"FIRST кімге арналған",who1:"Оқушыға",who1p:"4 жастан 18 жасқа дейін: LEGO-дан нағыз роботтарға дейін әр жасқа өз бағдарламасы.",who1a:"Бағдарламаны таңдау",
+ who2:"Ата-анаға",who2p:"Баланы қалай тіркеу, не қажет және қанша тұрады.",who2a:"Қалай бастау керек",
+ who3:"Мектепке және ұстазға",who3p:"Команда ашыңыз: маусым ережесі, презентациялар, қолдау хаттары және кесте.",who3a:"Құжаттар",
+ who4:"Серіктеске және демеушіге",who4p:"Аймақтық турнирді немесе өз аймағыңыздың командасын қолдаңыз.",who4a:"Серіктестер"});
+Object.assign(T.en,{hEye:"A global STEM community · FIRST® Kazakhstan",
+ hs1:"world titles at FIRST Global Challenge",hs2:"students have taken part",hs3:"teams across the country",hs4:"events a year",
+ whoH:"Who FIRST is for",who1:"Students",who1p:"Ages 4 to 18: a program for every age, from LEGO to full-size robots.",who1a:"Pick a program",
+ who2:"Parents",who2p:"How to enrol your child, what you need and what it costs.",who2a:"How to start",
+ who3:"Schools and teachers",who3p:"Start a team: season rules, presentations, support letters and the schedule.",who3a:"Documents",
+ who4:"Partners and sponsors",who4p:"Back a regional tournament or a team from your region.",who4a:"Partners"});
