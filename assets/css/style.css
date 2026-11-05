@@ -11,7 +11,7 @@
 @font-face{font-family:Inter;font-style:normal;font-weight:400 800;font-display:swap;src:url(../fonts/inter-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 :root{
   --band:#f5f7fb;--tx:#111827;--bd:#3b4350;--mu:#4b5563;--lt:#6b7280;--line:#e5e7eb;
-  --blue:#2f6fed;--blue2:#bfd6f6;--red:#e0514a;
+  --blue:#2f6fed;--acc:#cf6634;--acc2:#f0d3c3;--blue2:#bfd6f6;--red:#e0514a;
   --cream:#f7e3d4;--brown:#7a3f27;--brown2:#6a3320;--foot:#1c1c1c;
   --sh:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.06);--sh2:0 2px 10px rgba(16,24,40,.1);
   --chev3:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%237f7f7f' stroke-width='1.5' stroke-linecap='round'/></svg>");
@@ -91,7 +91,7 @@ button,select,input{font:inherit;color:inherit}
 /* ---------- разделы ---------- */
 section{padding:90px 0}
 h2.t,h1.t{font-size:clamp(34px,3.4vw,50px);font-weight:700;line-height:1.12;color:#1f2937;letter-spacing:-.015em}
-h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;background:#4e80ee;margin-top:6px;border-radius:2px}
+h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;background:var(--acc);margin-top:6px;border-radius:2px}
 .sub{color:var(--mu);margin-top:16px;max-width:820px;font-size:18px;line-height:1.7}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 .two>*{min-width:0}
@@ -114,8 +114,8 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 
 /* результаты */
 .dv{display:flex;align-items:center;margin:0 0 90px;color:var(--mu);font-size:24px;font-weight:600;line-height:1.2}
-.dv:before{content:"";width:95px;height:2px;background:#4e80ee;margin-right:17px;flex:none}
-.dv:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:17px}
+.dv:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:17px;flex:none}
+.dv:after{content:"";flex:1;height:2px;background:var(--acc2);margin-left:17px}
 .two.res{align-items:center;gap:64px}
 .proof h3{font-size:clamp(34px,3.4vw,50px);font-weight:700;line-height:1.15;color:#1f2937;letter-spacing:-.015em}
 .proof p{color:var(--mu);font-size:18px;line-height:1.7;margin:20px 0 10px}
@@ -190,13 +190,13 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .wh{display:flex;align-items:center;gap:10px;margin-bottom:56px;color:var(--mu)}
 .wh svg{width:52px;height:52px;flex:none;fill:none;stroke:var(--mu);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .wh h3{font-size:24px;font-weight:600;color:var(--mu);line-height:1.2}
-.wh:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:10px}
+.wh:after{content:"";flex:1;height:2px;background:var(--acc2);margin-left:10px}
 .cw{position:relative;min-width:0}
 .rail{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 0 16px;margin:0 52px}
 .rail::-webkit-scrollbar{display:none}
 .wc{position:relative;flex:0 0 calc((100% - 48px)/3);height:350px;scroll-snap-align:start;overflow:hidden;border-radius:12px;box-shadow:none}
 .wim{position:absolute;inset:0;background-size:cover;background-position:center 25%}
-.wim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.72) 100%)}
+.wim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 20%,rgba(0,0,0,.55) 50%,rgba(0,0,0,.88) 100%)} /* затемнение снизу сильнее: белый текст читается на любом фото */
 .wt{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff}
 .wc .yr{position:absolute;right:20px;top:20px;z-index:2;padding:8px 18px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:20px;line-height:1.2}
 .wt b{display:block;font-size:24px;line-height:1.2;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.3)}
@@ -391,9 +391,9 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 /* партнёры */
 .pt{padding:70px 0 40px}
 .dh{display:flex;align-items:center;margin:0 0 34px}
-.dh:before{content:"";width:95px;height:2px;background:#4e80ee;margin-right:17px;flex:none}
+.dh:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:17px;flex:none}
 .dh h2{font-size:24px;color:var(--mu);font-weight:600;line-height:1.2;white-space:nowrap}
-.dh:after{content:"";flex:1;height:2px;background:#c9d9fa;margin-left:17px}
+.dh:after{content:"";flex:1;height:2px;background:var(--acc2);margin-left:17px}
 .mq{overflow:hidden;margin-bottom:34px}
 .lgs{display:flex;width:max-content;animation:mq 42s linear infinite}
 .mq:hover .lgs{animation-play-state:paused}
@@ -673,3 +673,21 @@ footer .team+.cp{margin-top:32px}
 .dmore[open] summary{margin-bottom:4px}
 @media(max-width:900px){.val{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.val{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;margin-top:28px}.vl h4{font-size:14px}.vl .ic{width:52px;height:52px}}
+
+/* единый стиль заголовков разделов: «Жетістіктер» и «Түлектер» – как остальные подзаголовки (линия слева, без иконки) */
+.wh svg{display:none}
+.wh:before{content:"";width:95px;height:2px;background:var(--acc);margin-right:7px;flex:none}
+.wh h3{font-size:24px}
+/* кнопка «Тіркелу» в шапке – главное действие видно всегда */
+.hcta{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:var(--rc);background:#cf6634;color:#fff;font-weight:700;font-size:16px;white-space:nowrap;transition:background-color .18s}
+.hcta:hover{background:#b8572b}
+.hcta:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.top .hcta+.lw{margin-left:-16px}
+/* приказ № 514 – строкой под цифрами */
+.lawn{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;margin-top:6px;padding:14px 16px;border-radius:10px;background:#fbf1ea;font-size:15px;line-height:1.5;color:var(--bd)}
+.lawn svg{width:20px;height:20px;flex:none;margin-top:1px;fill:none;stroke:#cf6634;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.lawn a{white-space:nowrap;font-weight:600;color:var(--tx);text-decoration:underline;text-decoration-color:#e3b79f;text-underline-offset:3px}
+@media(max-width:1060px){.hcta{order:2;min-height:36px;padding:0 14px;font-size:15px}.top .logo{margin-left:auto}}
+@media(max-width:400px){.hcta{padding:0 10px;font-size:14px}.top .logo img{height:38px}}
+.top .logo{flex:none}
+@media(min-width:1061px) and (max-width:1200px){.nl{gap:14px;font-size:14px}.hcta{padding:0 14px;font-size:15px}.top{gap:20px}}

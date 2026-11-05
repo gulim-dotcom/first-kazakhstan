@@ -181,8 +181,9 @@ const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 function renderStats(){const i=I[L];
   const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
-  $("#stats").innerHTML=KS.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i],k[4]&&k[4][i])).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
-  $("#stats").classList.toggle("three",KS.length===3); /* три цифры – одной колонкой */
+  const law=KS.filter(k=>k[4]),nums=KS.filter(k=>!k[4]); /* документ (приказ № 514) – строкой с галочкой, а не цифрой: это не достижение */
+  $("#stats").innerHTML=nums.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i])).join("")+law.map(k=>`<p class="lawn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>${esc(k[3][i])} <a href="${esc(k[4][i])}" target="_blank" rel="noopener noreferrer">${esc(k[2])}${k[0]}</a></span></p>`).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
+  $("#stats").classList.toggle("three",nums.length>=2); /* три цифры – одной колонкой */
   $("#gstats").innerHTML=`<span class="wlab">${esc(tt("gh"))}</span><p class="wtx">${esc(tt("gline"))}</p>`; /* мировые цифры FIRST – одной строкой текста, без анимации */
   countUp();
 }
