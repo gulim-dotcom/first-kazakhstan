@@ -658,3 +658,18 @@ footer .team+.cp{margin-top:32px}
 .wa-join{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:10px;background:#1a8f4c;color:#fff;font-size:15px;font-weight:600;text-align:center;transition:background .18s}
 .wa-join:hover{background:#157a40;color:#fff}
 .wa-join:focus-visible,.wa-x:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* упрощённая главная: компактные ценности, этапы под спойлером, мировые цифры под текстом «Нәтижелер» */
+.val{grid-template-columns:repeat(6,minmax(0,1fr));gap:20px;margin-top:36px}
+.vl{grid-template-columns:1fr;justify-items:center;text-align:center;gap:10px}
+.vl p{display:none}
+.vl h4{font-size:16px;margin:0}
+#values{padding-bottom:56px}
+.proof .wl{display:block;border:0;padding:0;margin-top:28px}
+.proof .wl .wlab{display:block;padding:0 0 6px}
+.proof .wl .wtx{padding:0;border:0;font-size:15px}
+.dmore{margin-top:12px}
+.dmore summary{cursor:pointer;font-weight:600;font-size:16px;color:var(--tx);list-style-position:inside}
+.dmore[open] summary{margin-bottom:4px}
+@media(max-width:900px){.val{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.val{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;margin-top:28px}.vl h4{font-size:14px}.vl .ic{width:52px;height:52px}}
