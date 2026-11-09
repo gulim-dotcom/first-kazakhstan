@@ -9,9 +9,15 @@
 @font-face{font-family:Inter;font-style:normal;font-weight:400 800;font-display:swap;src:url(../fonts/inter-normal-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
 @font-face{font-family:Inter;font-style:normal;font-weight:400 800;font-display:swap;src:url(../fonts/inter-normal-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:Inter;font-style:normal;font-weight:400 800;font-display:swap;src:url(../fonts/inter-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* Цвета по ролям:
+   оранжевый --acc – фирменный акцент (линии заголовков, цифры, номера шагов), --acc2/--acc3 – его светлые оттенки;
+   --act – главное действие (залитые кнопки: «Тіркелу», регистрация в uSTEM Connect), темнее --acc, чтобы белый текст читался (контраст 4.7:1);
+   синий --blue – ссылки, навигация, выбор на карте и справочные подписи. Второстепенные кнопки – белые с рамкой (.btn.o, .pl .lnk).
+   Цвета программ (FLL, FTC, FRC…) – только внутри карточек программ; карточка сезона – в своей кремово-коричневой гамме. */
 :root{
   --band:#f5f7fb;--tx:#111827;--bd:#3b4350;--mu:#4b5563;--lt:#6b7280;--line:#e5e7eb;
-  --blue:#2f6fed;--acc:#cf6634;--acc2:#f0d3c3;--blue2:#bfd6f6;--red:#e0514a;
+  --blue:#2f6fed;--acc:#cf6634;--acc2:#f0d3c3;--acc3:#e0b9a3;--blue2:#bfd6f6;
+  --act:#b8572b;--act-h:#9c4723;
   --cream:#f7e3d4;--brown:#7a3f27;--brown2:#6a3320;--foot:#1c1c1c;
   --sh:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.06);--sh2:0 2px 10px rgba(16,24,40,.1);
   --chev3:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%237f7f7f' stroke-width='1.5' stroke-linecap='round'/></svg>");
@@ -55,8 +61,8 @@ button,select,input{font:inherit;color:inherit}
 
 /* ---------- кнопки ---------- */
 /* наведение: плавная смена цвета, лёгкий подъём и мягкая тень; без градиентов и свечения */
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:var(--rc);background:#cf6634;color:#fff;font-weight:700;font-size:18px;border:0;cursor:pointer;white-space:nowrap;gap:0;transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease}
-.btn:hover{background:#b8572b;transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(184,87,43,.6)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:var(--rc);background:var(--act);color:#fff;font-weight:700;font-size:18px;border:0;cursor:pointer;white-space:nowrap;gap:0;transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease}
+.btn:hover{background:var(--act-h);transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(156,71,35,.6)}
 .btn:active{transform:none;box-shadow:none;transition-duration:.08s}
 .btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:none}
 .btn.o{background:#fff;color:var(--tx);border:1px solid #d9dee5;box-shadow:none;font-weight:600;font-size:16px}
@@ -69,8 +75,11 @@ button,select,input{font:inherit;color:inherit}
 .hero h1{text-shadow:0 1px 14px rgba(8,20,40,.35);font-weight:800;text-transform:uppercase;max-width:960px;letter-spacing:-.005em;font-size:clamp(27px,2.7vw,40.5px);line-height:1.12}
 .hero p{text-shadow:0 1px 14px rgba(8,20,40,.35);font-size:clamp(19px,1.85vw,28px);line-height:1.25;font-weight:400;color:#fff;margin-top:26px;max-width:820px}
 .hero .in{position:relative;width:100%;max-width:1312px;margin:0 auto;padding:120px 48px 64px}
-.hero .btn{text-shadow:none;background:rgba(255,255,255,.06);color:#fff;border:2px solid rgba(255,255,255,.85);margin-top:40px}
-.hero .btn:hover{background:#fff;color:#0c1e36;border-color:#fff;box-shadow:0 8px 18px -8px rgba(0,0,0,.45)}
+/* кнопки первого экрана: «Тіркелу» – залитая (главное действие), «Бағдарламалар» – прозрачная с белой рамкой */
+.hero .hb{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:40px}
+.hero .btn{text-shadow:none}
+.hero .btn.gh{background:rgba(255,255,255,.06);color:#fff;border:2px solid rgba(255,255,255,.85)}
+.hero .btn.gh:hover{background:#fff;color:#0c1e36;border-color:#fff;box-shadow:0 8px 18px -8px rgba(0,0,0,.45)}
 @media(min-width:761px) and (max-height:780px){.hero{background-position:50% 50%}} /* невысокие экраны: лица на фото не уходят под текст */
 
 /* ---------- новый сезон ---------- */
@@ -80,7 +89,7 @@ button,select,input{font:inherit;color:inherit}
 .sp>.sx{z-index:1}
 /* тонкие лианы с листьями свисают с верхнего правого края панели (в тон фону, текст поверх) */
 .sp:after{content:"";position:absolute;top:0;right:14px;width:96px;height:240px;background:url(../img/canopy-leaves.svg) right top/contain no-repeat;opacity:.5;pointer-events:none}
-.tag{position:absolute;top:0;left:0;z-index:2;display:inline-block;margin:0;padding:10px 16px;border-radius:12px 0 8px 0;background:var(--red);color:#fff;font-weight:700;font-size:16px;line-height:1.25} /* тег «Новый сезон» в углу панели */
+.tag{position:absolute;top:0;left:0;z-index:2;display:inline-block;margin:0;padding:10px 16px;border-radius:12px 0 8px 0;background:var(--brown);color:#fff;font-weight:700;font-size:16px;line-height:1.25} /* тег «Новый сезон» в углу панели */
 .sl{display:flex;justify-content:flex-start}
 .sl img{width:100%;max-width:340px;height:auto}
 .bk{display:block;font-size:clamp(26px,2.6vw,38px);font-weight:700;color:var(--brown);line-height:1.15;margin-bottom:10px;white-space:nowrap}
@@ -125,11 +134,11 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:30px 26px}
 .stats.three{grid-template-columns:1fr;gap:22px} /* три цифры – одной колонкой на десктопе */
 @media(min-width:901px){.stats.three{grid-template-columns:max-content 1fr}.stats.three .st{grid-column:1/-1;display:grid;grid-template-columns:max-content 1fr;grid-template-columns:subgrid;gap:20px;align-items:center;padding:6px 0 6px 22px}.stats.three .st b{font-size:clamp(34px,3vw,44px)}.stats.three .st .lb{margin-top:0;font-size:16px;line-height:1.45}}
-.st{position:relative;overflow:hidden;background:none;border-radius:0;padding:4px 0 4px 22px;min-height:0;border-left:3px solid #f0d3c3;box-shadow:none}
-.st b{position:relative;display:block;font-size:clamp(36px,3.4vw,54px);white-space:nowrap;color:#d9733f;font-weight:700;line-height:1;letter-spacing:0;font-variant-numeric:tabular-nums}
+.st{position:relative;overflow:hidden;background:none;border-radius:0;padding:4px 0 4px 22px;min-height:0;border-left:3px solid var(--acc2);box-shadow:none}
+.st b{position:relative;display:block;font-size:clamp(36px,3.4vw,54px);white-space:nowrap;color:var(--acc);font-weight:700;line-height:1;letter-spacing:0;font-variant-numeric:tabular-nums}
 .st .lb{position:relative;display:block;margin-top:14px;font-size:16px;line-height:1.5;font-weight:500;color:var(--tx)}
-.st b a.law{color:inherit;text-decoration:underline;text-decoration-color:#f0d3c3;text-decoration-thickness:2px;text-underline-offset:6px}
-.st b a.law:hover{text-decoration-color:#d9733f}
+.st b a.law{color:inherit;text-decoration:underline;text-decoration-color:var(--acc2);text-decoration-thickness:2px;text-underline-offset:6px}
+.st b a.law:hover{text-decoration-color:var(--acc)}
 .wl{display:flex;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:22px 0;align-items:center}
 .wl .wlab{flex:none;padding-right:36px;font-size:14px;font-weight:600;color:var(--lt);text-transform:uppercase;letter-spacing:.08em}
 /* «FIRST в мире» – одна строка текста рядом с подписью */
@@ -164,7 +173,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .mk i{font-style:normal;font-weight:600;font-size:11px;line-height:1.1;letter-spacing:.01em;color:#1f2937;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff;transition:color .18s} /* подпись региона, с белым ореолом для читаемости */
 .mk.no i{color:var(--lt);font-weight:500}
 .mk.city{flex-direction:row;gap:5px;transform:translate(-14px,-50%)} /* город: подпись справа от кружка */
-.mk.on b{background:#cf6634;border-color:#cf6634;color:#fff}
+.mk.on b{background:var(--blue);border-color:#fff;color:#fff} /* выбранный регион – синий целиком: выбор на карте – навигация, а не действие */
 .mk.on i{color:#fff;text-shadow:0 0 3px rgba(12,30,54,.7),0 0 2px rgba(12,30,54,.7)}
 .gsel{display:none} /* список регионов – только на телефоне (ниже, в адаптиве) */
 /* онлайн и зарубежные события – кнопки под картой (#gext), выбранная – синяя, как регион на карте */
@@ -176,7 +185,7 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .gch:hover{border-color:var(--blue)}
 .gch:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .gch.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.gch.on b{background:#cf6634;border-color:#cf6634;color:#fff}
+.gch.on b{background:#fff;border-color:#fff;color:var(--blue)}
 .gcap{min-height:24px;margin-top:10px;font-size:15px;line-height:1.5;color:var(--mu)}
 .gcap b{color:var(--tx);font-weight:600}
 .gsrc{margin-top:2px;font-size:12px;color:#9ca3af}
@@ -240,10 +249,10 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 #start{padding:64px 0 0}
 #start .dv{margin-bottom:36px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;padding:4px 0 4px 18px;border-left:3px solid #f0d3c3;min-width:0}
-.step b{font-size:28px;line-height:1.1;font-weight:600;color:#d9733f;font-variant-numeric:tabular-nums}
+.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;padding:4px 0 4px 18px;border-left:3px solid var(--acc2);min-width:0}
+.step b{font-size:28px;line-height:1.1;font-weight:600;color:var(--acc);font-variant-numeric:tabular-nums}
 .step h3{font-size:18px;font-weight:600;line-height:1.3;margin:2px 0 4px;color:var(--mu)} /* серый, не чёрный: шаги – подсказка, а не заголовок */
-.step a{display:inline-flex;align-items:center;min-height:40px;font-weight:500;font-size:15px;color:var(--mu);text-decoration:underline;text-underline-offset:4px;text-decoration-color:#d9a183;transition:color .18s,text-decoration-color .18s}
+.step a{display:inline-flex;align-items:center;min-height:40px;font-weight:500;font-size:15px;color:var(--mu);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--acc3);transition:color .18s,text-decoration-color .18s}
 .step a:hover{color:var(--tx);text-decoration-color:var(--tx)}
 
 /* программы */
@@ -271,9 +280,10 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .pc.wide .intro{max-width:640px}
 .pmorew{display:none} /* кнопка «все программы» есть только на телефоне (ниже, в адаптиве) */
 .pl{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:auto;padding-top:30px}
-.pl .lnk{display:inline-flex;align-items:center;gap:14px;min-height:40px;padding:0 26px;border-radius:8px;background:#cf6634;color:#fff;font-weight:700;font-size:16px;transition:background-color .2s ease,transform .2s ease,box-shadow .2s ease}
-.pl .lnk:after{content:"";width:13px;height:13px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>") center/contain no-repeat}
-.pl .lnk:hover{background:#b8572b;transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(184,87,43,.6)}
+/* «Тізерді көру» – второстепенная ссылка: белая кнопка с рамкой, залитые оранжевые кнопки только у регистрации */
+.pl .lnk{display:inline-flex;align-items:center;gap:12px;min-height:40px;padding:0 20px;border-radius:8px;background:#fff;color:var(--tx);border:1px solid #d9dee5;font-weight:600;font-size:16px;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+.pl .lnk:after{content:"";width:13px;height:13px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 4h6v6M20 4l-9 9M18 13v6H5V6h6'/></svg>") center/contain no-repeat}
+.pl .lnk:hover{border-color:#9aa3b2;transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(16,24,40,.35)}
 
 /* правила сезона */
 .docs{margin-top:70px;display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:start;background:#fff;padding:40px 44px;border-radius:12px;box-shadow:none;border:1px solid var(--line)}
@@ -297,13 +307,21 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .flt input:focus{border-color:#9aa3b2}
 .flt input:focus:not(:focus-visible){outline:none}
 .evsrc{font-size:14px;color:var(--lt);margin:18px 0 0;text-align:right}
-.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:12px 10px 52px 0;border:1px solid var(--cream);border-radius:12px;max-height:min(772px,calc(100vh - 150px));overflow-y:auto;overscroll-behavior:auto;scrollbar-width:thin;scrollbar-color:#e0b9a3 transparent}
+.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:12px 10px 52px 0;border:1px solid var(--cream);border-radius:12px;max-height:min(772px,calc(100vh - 150px));overflow-y:auto;overscroll-behavior:auto;scrollbar-width:thin;scrollbar-color:var(--acc3) transparent}
 .eg::-webkit-scrollbar{width:6px}
-.eg::-webkit-scrollbar-thumb{background:#e0b9a3;border-radius:3px}
+.eg::-webkit-scrollbar-thumb{background:var(--acc3);border-radius:3px}
 .eg::-webkit-scrollbar-track{background:transparent}
 .eg>.cell{padding:0;min-width:0}
+/* ближайшие события – над картой (app.js → renderUpc): три карточки в ряд; на планшете и телефоне – лента с прокруткой вбок,
+   край следующей карточки виден, чтобы было понятно, что ленту можно листать */
+.upc{margin-top:36px}
+.upc h3{font-size:clamp(22px,2vw,28px);font-weight:700;line-height:1.15;color:#1f2937;letter-spacing:-.01em;margin-bottom:20px}
+.ug{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.ug>.cell{min-width:0}
+.upa{background:none;border:0;padding:0;cursor:pointer;margin-top:14px}
+.upc+.geo{margin-top:56px}
 .ec{height:100%;display:grid;grid-template-columns:1fr 136px;gap:14px;background:#fff;padding:20px 20px 20px 22px;border-radius:10px;box-shadow:none;border:1px solid var(--line);border-left:4px solid var(--cream);transition:border-color .2s,box-shadow .2s}
-.ec:hover{border-color:#d5dbe3;border-left-color:#e0b9a3;box-shadow:var(--sh)}
+.ec:hover{border-color:#d5dbe3;border-left-color:var(--acc3);box-shadow:var(--sh)}
 .ec>div{min-width:0}
 .ec h4{font-size:18px;line-height:24px;margin-bottom:2px;color:#1f2937;font-weight:700}
 .ec .stg{display:block;margin:0 0 7px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--blue)}
@@ -335,9 +353,9 @@ a.alc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .rb>.fbs:first-child{margin-top:0}
 .ec p.rn.wait{display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding:8px 10px;border-radius:8px;background:#f4f6f9;color:#4b5563}
 .ec p.rn.wait svg{width:16px;height:16px;margin-top:1px;stroke:#8a94a3}
-.fb.cn{gap:7px;background:var(--blue);border-color:var(--blue);color:#fff}
+.fb.cn{gap:7px;background:var(--act);border-color:var(--act);color:#fff} /* регистрация открыта – цвет главного действия, как «Тіркелу» на первом экране */
 .fb.cn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.fb.cn:hover{background:#0c1e36;border-color:#0c1e36}
+.fb.cn:hover{background:var(--act-h);border-color:var(--act-h)}
 .fb.cn.dis{background:#eef1f5;border-color:#e3e7ec;color:#8a94a3;cursor:default;pointer-events:none} /* турнира ещё нет в uSTEM Connect */
 .fb.cn.off{background:#fff;border:1px dashed #c9d0da;color:var(--lt);font-weight:500} /* регистрация в Connect закрыта: кнопка ведёт на страницу события, но не выглядит как кнопка регистрации */
 .fb.cn.off:hover{background:#f3f4f6;border-color:#9ca3af;color:var(--tx)}
@@ -444,6 +462,9 @@ footer .team+.cp{margin-top:32px}
 }
 @media(max-width:1200px){
   .eg{grid-template-columns:repeat(2,1fr)}
+  .ug{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:20px;margin:0 -48px;padding:2px 48px 10px;scroll-padding:0 48px}
+  .ug::-webkit-scrollbar{display:none}
+  .ug>.cell{flex:0 0 min(460px,78%);scroll-snap-align:start}
   .nl{gap:16px}
 }
 @media(max-width:1060px){
@@ -462,6 +483,7 @@ footer .team+.cp{margin-top:32px}
   .nl>a:after{display:none}
   .geo{grid-template-columns:1fr;grid-template-rows:none;gap:24px}
   .geo .gx,.geo .gm,.geo .gpast,.geo .flt,.geo .evs{grid-column:auto;grid-row:auto}
+  .ug{margin:0 -32px;padding:2px 32px 10px;scroll-padding:0 32px}
   .nl .ml{display:flex;gap:24px;padding-top:12px;font-size:16px;color:var(--mu)}
   .nl .ml a{border:0;padding:10px 0}
   .nl .lm{display:flex;gap:10px;padding:14px 0 4px}
@@ -511,7 +533,7 @@ footer .team+.cp{margin-top:32px}
   .hero .in{padding:calc(66.67vw - 6px) 20px 44px}
   .hero h1{font-size:clamp(21px,6vw,27px);line-height:1.2}
   .hero p{font-size:17px;line-height:1.5;margin-top:16px}
-  .hero .btn{margin-top:28px}
+  .hero .hb{margin-top:28px}
   .bk{font-size:24px}
   .sx p{font-size:17px}
   .blinks a{font-size:15px}
@@ -603,6 +625,12 @@ footer .team+.cp{margin-top:32px}
   footer .cp{margin-top:30px}
   .geo{margin-top:24px}
   .geo .gx h3{font-size:24px}
+  .upc{margin-top:24px}
+  .upc h3{font-size:24px;margin-bottom:14px}
+  .upc+.geo{margin-top:40px}
+  .ug{gap:12px;margin:0 -20px;padding:2px 20px 8px;scroll-padding:0 20px}
+  .ug>.cell{flex-basis:86%}
+  .ug .ec{grid-template-columns:1fr}.ug .eim{display:none} /* в ленте на телефоне без фото: текст и кнопка регистрации во всю ширину карточки */
   .mk,.mk.city{transform:translate(-50%,-50%)}
   .mk b{min-width:24px;height:24px;padding:0 5px;font-size:12px}
   .gext{margin:14px 0 10px}.gext .gxl{flex-basis:100%;margin:0 0 2px} /* подпись строкой над кнопками */
@@ -661,6 +689,6 @@ footer .team+.cp{margin-top:32px}
 
 /* приказ № 514 – строкой под цифрами */
 .lawn{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;margin-top:6px;padding:14px 16px;border-radius:10px;background:#fbf1ea;font-size:15px;line-height:1.5;color:var(--bd)}
-.lawn svg{width:20px;height:20px;flex:none;margin-top:1px;fill:none;stroke:#cf6634;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.lawn svg{width:20px;height:20px;flex:none;margin-top:1px;fill:none;stroke:var(--acc);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .lawn a{white-space:nowrap;font-weight:600;color:var(--tx);text-decoration:underline;text-decoration-color:#e3b79f;text-underline-offset:3px}
 @media(min-width:1061px) and (max-width:1200px){.nl{gap:14px;font-size:14px}.top{gap:20px}}

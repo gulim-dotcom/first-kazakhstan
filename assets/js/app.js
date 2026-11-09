@@ -243,11 +243,13 @@ function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";
   const n=GEO.cnt[k]||0,cities=n&&!isExt(k)?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
   c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
 /* выбранный регион: подсветка на карте, список на телефоне, строка над картой и видимость списка событий.
- * Пока регион не выбран, список скрыт – на странице только карта с подсказкой, ссылка «Показать все события» и последние прошедшие события */
+ * Пока регион не выбран, полный список скрыт – над картой ближайшие события (#upc, renderUpc), под ней ссылка «Показать все события» и последние прошедшие.
+ * Открыт полный список или выбран регион – блок ближайших прячется, чтобы карточки не повторялись */
 function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk, #gext .gch").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
   ["#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
+  const up=$("#upc");if(up)up.hidden=open||!up.childElementCount;
   const f=$("#events .flt");if(f)f.hidden=!open||!!k; /* строка поиска – только в полном списке */
   if(!pk)return;
   const btn=(act,key)=>`<button type="button" class="gcl" data-act="${act}">${esc(tt(key))}</button>`;
@@ -347,7 +349,7 @@ function evCard(e){const i=I[L],online=e.city.key==="online";
   /* порядок строк: город → площадка → дата → категории → регистрация.
    * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
    * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
-   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – регистрация открыта: синяя кнопка ведёт на неё;
+   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – регистрация открыта: оранжевая кнопка (цвет действия, как «Тіркелу» на первом экране) ведёт на неё;
    * страница есть, но регистрация закрыта (s.connClosed) – белая пунктирная кнопка «Регистрация закрыта», ведёт на неё, под ней строка «кнопка ведёт на страницу события»;
    * турнира в Connect нет совсем – серая неактивная кнопка и плашка «регистрация откроется в uSTEM Connect». Google Формы категорий из строк таких
    * турниров кнопками не становятся. У турнира со страницей в Connect не показывается ни одна Google Форма (семинар для учителей
@@ -401,6 +403,16 @@ function renderEvents(){
   const up=SHEET.updated,s=up?stamp(up):"";
   $("#evsrc").textContent=s?`${tt("evupd")} ${s}`:"";
 }
+/* ближайшие события – сразу под заголовком «Іс-шаралар», без выбора региона: главное действие сайта (регистрация) видно без кликов.
+ * Три события с ближайшей датой начала (ещё не начались); если таких меньше – добавляются идущие сейчас и без даты (SMC, FIRST4ALL).
+ * Карточки те же, что в полном списке (evCard), с той же кнопкой регистрации. Под ними – «Показать все события (N)» */
+function renderUpc(){const box=$("#upc");if(!box)return;
+  const soon=UPC.filter(e=>e.start&&e.start>=TODAY).sort((a,b)=>a.start-b.start);
+  const list=soon.concat(UPC.filter(e=>!soon.includes(e))).slice(0,3);
+  box.innerHTML=list.length?`<h3>${esc(tt("upcH"))}</h3><div class="ug">${list.map(evCard).join("")}</div>`+
+    (UPC.length>list.length?`<button type="button" class="alln upa">${esc(tt("geoShow"))} (${UPC.length})</button>`:""):"";
+  box.hidden=!list.length||GEO.open||!!GEO.sel;
+}
 /* --- вкладка «Сайт» таблицы (assets/data/site.js): сезон, тема, ссылки, названия тем программ --- */
 const okUrl=u=>/^https:\/\/[^\s"'<>]+$/.test(String(u||""));
 function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
@@ -426,7 +438,7 @@ function render(){
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
-  $("#fs").placeholder=tt("fs");renderEvents();
+  $("#fs").placeholder=tt("fs");renderEvents();renderUpc();
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
@@ -447,7 +459,7 @@ function italicFirst(root){
  * телефон не тянет сразу 2 МБ картинок. Блок, который уже был на экране, после смены языка показывает фото сразу. --- */
 const LZ=new Set();let lzio=null;
 function bgNow(box){box.querySelectorAll("[data-bg]").forEach(e=>{e.style.backgroundImage=e.dataset.bg;e.removeAttribute("data-bg")})}
-function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws,#evs,#past").forEach(box=>{
+function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws,#upc,#evs,#past").forEach(box=>{
   if(LZ.has(box)||!("IntersectionObserver" in window)){bgNow(box);return}
   if(!lzio)lzio=new IntersectionObserver(ens=>ens.forEach(en=>{if(en.isIntersecting){LZ.add(en.target);lzio.unobserve(en.target);bgNow(en.target)}}),{rootMargin:"900px 0px"});
   lzio.observe(box)})}
@@ -481,6 +493,9 @@ $("#lang").addEventListener("change",e=>setLang(e.target.value));
     gx.addEventListener("focusin",e=>geoCap(ch(e)));gx.addEventListener("focusout",()=>geoCap(""));
     gx.addEventListener("click",e=>{const k=ch(e);if(k)setReg(GEO.sel===k?"":k)})}
   const pk=$("#gpick");if(pk)pk.addEventListener("click",e=>{const b=e.target.closest(".gcl");if(!b)return;if(b.dataset.act==="close"){GEO.sel="";GEO.open=false;geoPanel()}else setReg("")});
+  /* «Показать все события» под ближайшими: открывается полный список, страница подъезжает к его началу (строка поиска) */
+  const up=$("#upc");if(up)up.addEventListener("click",e=>{const rg=e.target.closest(".rgl span");if(rg)rg.classList.toggle("x");
+    if(!e.target.closest(".upa"))return;setReg("");const f=$("#events .flt");if(f)f.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
 $("#fs").addEventListener("input",renderEvents);
