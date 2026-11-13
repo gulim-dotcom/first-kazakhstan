@@ -80,11 +80,11 @@ const T={
   smcBtn:"Условия и задания",
   regclosed:"регистрация закрыта",
   regsoon:"регистрация скоро откроется",
-  connBtn:"Регистрация в uSTEM Connect",
+  connBtn:"Регистрация в USTEM Connect",
   connNote:"Войдите в аккаунт тренера и подайте заявку на участие.",
-  connWait:"Регистрация откроется в uSTEM Connect. Как только она начнётся, кнопка станет активной.",
+  connWait:"Регистрация откроется в USTEM Connect. Как только она начнётся, кнопка станет активной.",
   connClosed:"Регистрация закрыта",
-  connClosedNote:"Кнопка ведёт на страницу события в uSTEM Connect.",
+  connClosedNote:"Кнопка ведёт на страницу события в USTEM Connect.",
   regs:"Регионы (для FLL)",
   tba:"Дата уточняется",
   vtba:"Площадка уточняется",
@@ -92,7 +92,7 @@ const T={
   chg:"Изменения",
   stt:"Статус",
   noneAll:"Расписание сезона уточняется",
-  evLead:"Нажмите на карточку – внутри категории, площадка и регистрация. На скримиджи и турниры команды регистрируются в uSTEM Connect.",
+  evLead:"Нажмите на карточку – внутри категории, площадка и регистрация. На скримиджи и турниры команды регистрируются в USTEM Connect.",
   evUp:"Предстоящие",
   evPast:"Прошедшие",
   evAll:"Все",
@@ -230,11 +230,11 @@ const T={
   smcBtn:"Шарттары мен тапсырмалары",
   regclosed:"тіркелу жабық",
   regsoon:"тіркелу жақында ашылады",
-  connBtn:"uSTEM Connect-те тіркелу",
+  connBtn:"USTEM Connect-те тіркелу",
   connNote:"Жаттықтырушы аккаунтына кіріп, жарысқа өтінім беріңіз.",
-  connWait:"Тіркелу uSTEM Connect-те ашылады. Тіркелу басталғанда батырма белсенді болады.",
+  connWait:"Тіркелу USTEM Connect-те ашылады. Тіркелу басталғанда батырма белсенді болады.",
   connClosed:"Тіркелу жабық",
-  connClosedNote:"Батырма uSTEM Connect-тегі іс-шара бетіне апарады.",
+  connClosedNote:"Батырма USTEM Connect-тегі іс-шара бетіне апарады.",
   regs:"Қатысатын аймақтар (FLL үшін)",
   tba:"Күні нақтылануда",
   vtba:"Өтетін орны нақтылануда",
@@ -242,7 +242,7 @@ const T={
   chg:"Өзгерістер",
   stt:"Мәртебесі",
   noneAll:"Маусым кестесі нақтылануда",
-  evLead:"Карточканы басыңыз – ішінде санаттар, өтетін жері және тіркелу. Скримидждер мен турнирлерге командалар uSTEM Connect арқылы тіркеледі.",
+  evLead:"Карточканы басыңыз – ішінде санаттар, өтетін жері және тіркелу. Скримидждер мен турнирлерге командалар USTEM Connect арқылы тіркеледі.",
   evUp:"Алдағы",
   evPast:"Өткен",
   evAll:"Барлығы",
@@ -381,11 +381,11 @@ const T={
   smcBtn:"Rules and tasks",
   regclosed:"registration closed",
   regsoon:"registration opens soon",
-  connBtn:"Register in uSTEM Connect",
+  connBtn:"Register in USTEM Connect",
   connNote:"Sign in to your coach account and submit the team's application.",
-  connWait:"Registration will open in uSTEM Connect. The button will become active once it starts.",
+  connWait:"Registration will open in USTEM Connect. The button will become active once it starts.",
   connClosed:"Registration closed",
-  connClosedNote:"The button opens the event page in uSTEM Connect.",
+  connClosedNote:"The button opens the event page in USTEM Connect.",
   regs:"Regions (for FLL)",
   tba:"Date TBA",
   vtba:"Venue TBA",
@@ -393,7 +393,7 @@ const T={
   chg:"Changes",
   stt:"Status",
   noneAll:"The season schedule will be announced soon",
-  evLead:"Tap a card for categories, venue and registration. Teams register for scrimmages and tournaments in uSTEM Connect.",
+  evLead:"Tap a card for categories, venue and registration. Teams register for scrimmages and tournaments in USTEM Connect.",
   evUp:"Upcoming",
   evPast:"Past",
   evAll:"All",
@@ -464,7 +464,7 @@ const T={
 /* ================= документы сезона ================= */
 /* правила сезона по языкам (на en показывается русская версия – с пометкой docRu, если русской нет – казахская с пометкой docKk); вкладка «Сайт» таблицы может их заменить */
 const RULES={ru:"https://docs.google.com/document/d/1TV8MHEAr9Bs6SmhHWekbSw3sm-X9tSE7zwMgebt6Rq8/edit?tab=t.0",kk:"https://docs.google.com/document/d/1UYpkDZL86SZpFMcgtpUmEJi4qnT7Oj-1BdGGisJD9ws/edit?tab=t.0"};
-/* uSTEM Connect – платформа регистрации команд на скримиджи и официальные турниры (все этапы, кроме кик-оффа).
+/* USTEM Connect – платформа регистрации команд на скримиджи и официальные турниры (все этапы, кроме кик-оффа).
  * Страницу турнира находит по названию tools/update_data.py (sheet.js → connect – с открытой регистрацией, connect_all – все события),
  * либо это гиперссылка на connect.ustem.kz в строке события в таблице. host – по нему такие ссылки узнаются (app.js → connUrl);
  * переехала платформа – поменяйте его здесь и CONNECT_HOST в tools/update_data.py. */
@@ -738,7 +738,7 @@ const PNAMES_L={
 
 /* ================= встроенные карточки событий =================
  * SMC – Social Media Challenge (4-й этап сезона): показывается до даты end, пока в таблице нет своей строки; url – папка с условиями и заданиями
- *   (кнопка «Условия и задания»). Регистрация – в uSTEM Connect: страница находится по названию в списке Connect; если адрес другой,
+ *   (кнопка «Условия и задания»). Регистрация – в USTEM Connect: страница находится по названию в списке Connect; если адрес другой,
  *   впишите его в connect (пусто – искать по названию).
  * F4A – FIRST4ALL: без площадки (noLoc), дата – срок подачи списков; url пустой – пометка «регистрация скоро» (впишите Google Форму) */
 const SMC={

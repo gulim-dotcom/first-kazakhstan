@@ -11,13 +11,15 @@
 @font-face{font-family:Inter;font-style:normal;font-weight:400 800;font-display:swap;src:url(../fonts/inter-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 /* Цвета по ролям:
    оранжевый --acc – фирменный акцент (линии заголовков, цифры, номера шагов), --acc2/--acc3 – его светлые оттенки;
-   --act – главное действие (залитые кнопки: «Тіркелу», регистрация в uSTEM Connect), темнее --acc, чтобы белый текст читался (контраст 4.7:1);
+   --act – главное действие (залитые кнопки: «Тіркелу», формы регистрации), темнее --acc, чтобы белый текст читался (контраст 4.7:1);
+   --ustem – синий USTEM: кнопка регистрации в USTEM Connect (в цвет платформы);
    синий --blue – ссылки, навигация, выбор на карте и справочные подписи. Второстепенные кнопки – белые с рамкой (.btn.o, .pl .lnk).
    Цвета программ (FLL, FTC, FRC…) – только внутри карточек программ; карточка сезона – в своей кремово-коричневой гамме. */
 :root{
   --band:#f5f7fb;--tx:#111827;--bd:#3b4350;--mu:#4b5563;--lt:#6b7280;--line:#e5e7eb;
   --blue:#2f6fed;--acc:#cf6634;--acc2:#f0d3c3;--acc3:#e0b9a3;--blue2:#bfd6f6;
   --act:#b8572b;--act-h:#9c4723;
+  --ustem:#0a74e4;--ustem-h:#0861c2; /* синий USTEM (логотип #0a7cf0, чуть темнее – белый текст читается): кнопка регистрации в USTEM Connect */
   --hot:#f26f1d; /* яркий оранжевый плашки даты и метки места на фото карточек событий (как в макете) */
   --cream:#f7e3d4;--brown:#7a3f27;--brown2:#6a3320;--foot:#1c1c1c;
   --sh:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.06);--sh2:0 2px 10px rgba(16,24,40,.1);
@@ -424,6 +426,8 @@ html.dlg{overflow:hidden}
 .fb:active{transform:scale(.985)}
 .fb.pri{background:var(--act);color:#fff;box-shadow:0 10px 22px -10px rgba(184,87,43,.8)}
 .fb.pri:hover{background:var(--act-h)}
+.fb.cn{background:var(--ustem);box-shadow:0 10px 22px -10px rgba(10,116,228,.75)} /* регистрация открыта в USTEM Connect – синяя, в цвет USTEM */
+.fb.cn:hover{background:var(--ustem-h)}
 .fb.off{border:1px dashed #c3cad4;box-shadow:none;color:var(--lt);font-weight:500} /* регистрация закрыта: ссылка на страницу события остаётся */
 .fb.off:hover{background:#f6f7f9;color:var(--tx)}
 .fb.dis{background:#eef1f5;box-shadow:none;color:#8a94a3;cursor:default;pointer-events:none} /* турнира ещё нет в uSTEM Connect */

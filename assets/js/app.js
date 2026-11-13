@@ -19,19 +19,19 @@ const curl=c=>Array.isArray(c)&&/^https?:\/\//.test(c[1])?c[1]:"";
 /* кнопка регистрации — только ссылка на Google Форму (forms.gle/… или docs.google.com/forms/…, как в tools/update_data.py → is_form_url);
  * любой другой адрес из таблицы (документ, таблица Google, чужой сайт) кнопкой не становится */
 const formUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&(x.hostname==="forms.gle"||(x.hostname==="docs.google.com"&&x.pathname.startsWith("/forms/")))?u:""}catch(e){return""}};
-/* uSTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Кнопка на сайте активна, только когда у турнира
+/* USTEM Connect (data.js → CONNECT): регистрация команд на официальные турниры. Кнопка на сайте активна, только когда у турнира
  * есть страница в Connect: она находится сама (connMatch ниже) или задаётся гиперссылкой на connect.ustem.kz в строке события таблицы.
  * Страница есть, но регистрация там закрыта (общий список событий Connect, SHEET.connect_all) – кнопка всё равно ведёт на неё;
  * события нет в Connect совсем – кнопка серая, «регистрация ещё не открыта» */
 const connUrl=u=>{try{const x=new URL(u);return x.protocol==="https:"&&x.hostname===CONNECT.host?u:""}catch(e){return""}};
-/* регистрация через uSTEM Connect – скримиджи и командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
+/* регистрация через USTEM Connect – скримиджи и командные турниры: Regional, Qualifier, национальный этап, Off-Season и чемпионаты из вкладки Big Events.
  * Пока скримиджа нет в Connect, кнопка серая и «регистрация ещё не открыта»; есть в Connect с закрытой регистрацией – кнопка ведёт на его страницу.
  * Google Формы его категорий кнопками не становятся, чтобы команды не путались.
  * Кик-офф – Google Формы из таблицы, но если у него есть страница в Connect, – тоже Connect (e.viaConn); прочие события Big Events (дедлайн и интервью FIRST Leadership Award, Digital Qazaqstan) –
  * как раньше, только ссылки из таблицы. Social Media Challenge (встроенная карточка SMC) тоже регистрируется в Connect, кнопка
  * «Условия и задания» при этом остаётся; FIRST4ALL – со своей ссылкой из data.js */
 const viaConnect=e=>(/^(reg|scrim|qual|rep|off|smc)$/.test(e.stage)||(e.stage==="big"&&/championship/i.test(e.name)))&&e.tab!=="F4A";
-/* страница турнира в uSTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
+/* страница турнира в USTEM Connect – по названию: список страниц Connect собирает tools/update_data.py (sheet.js → connect).
  * Адрес страницы повторяет название события («IQanat FIRST Regional 2026» → /events/iqanat-first-regional-2026), поэтому сначала
  * ищется точное совпадение, затем единственная страница, адрес которой начинается так же (например, …-2026-k-e-r-n-school);
  * у названия без года – только страница «название + сезон» (…-2026 или …-2026-27), чтобы не попасть на чужое событие.
@@ -129,9 +129,9 @@ Object.keys(SHEET.tabs||{}).forEach(tab=>{
   rows.slice(1).forEach(r=>{
     const g=k=>k>=0&&k<r.length?r[k]:"";
     const name=ctext(g(c.name)),dRaw=ctext(g(c.date));
-    const cats=[];if(c.catStart>=0)for(let k=c.catStart;k<r.length&&k<c.catEnd;k++){const t=ctext(r[k]);if(t&&!connUrl(curl(r[k])))cats.push(parseCat(t,curl(r[k])))}   /* ссылка на uSTEM Connect в ячейке категории – не категория */
+    const cats=[];if(c.catStart>=0)for(let k=c.catStart;k<r.length&&k<c.catEnd;k++){const t=ctext(r[k]);if(t&&!connUrl(curl(r[k])))cats.push(parseCat(t,curl(r[k])))}   /* ссылка на USTEM Connect в ячейке категории – не категория */
     let v=null;for(const k of c.venue){const t=ctext(g(k));if(t){v={n:t,u:curl(g(k))};break}}
-    const conn=r.map(x=>connUrl(curl(x))).find(Boolean)||"";   /* своя ссылка события в uSTEM Connect, если есть в строке */
+    const conn=r.map(x=>connUrl(curl(x))).find(Boolean)||"";   /* своя ссылка события в USTEM Connect, если есть в строке */
     const ses={d:parseDate(dRaw),v:v,cats:cats,st:ctext(g(c.status)),chg:ctext(g(c.chg)),conn:conn};
     if(!name){if(cur&&(dRaw||v||cats.length)){if(!dRaw){const f=cur.sessions[0];ses.d=f.d;if(!ses.st)ses.st=f.st}cur.sessions.push(ses)}return}
     cur={tab:tab,name:name,city:cityOf(ctext(g(c.city))||(typeof CITY_DEFAULT!="undefined"&&CITY_DEFAULT[lo(name)])||""),region:c.region>=0?regionOf(ctext(g(c.region))):null,
@@ -145,7 +145,7 @@ EVENTS.forEach(e=>{
     const w={reg:"Regional",scrim:"Scrimmage",qual:"Qualifier"}[e.stage],st=e.sessions[0].d.start;
     if(w&&e.city.n)e.name=`${e.city.n[2]} FIRST ${w}${st?" "+st.getFullYear():""}`;
   }
-  /* страница в uSTEM Connect ищется у всех событий: кик-офф или другое событие, которое уже есть в Connect, тоже регистрируется только там
+  /* страница в USTEM Connect ищется у всех событий: кик-офф или другое событие, которое уже есть в Connect, тоже регистрируется только там
    * (Google Формы его категорий кнопками не становятся, чтобы не путать команды) */
   if(e.tab!=="F4A"){const m=connMatch(e.name),a=m||connAny(e.name);if(a)e.sessions.forEach(s=>{if(!s.conn){if(m)s.conn=m;else s.connClosed=a}})}   /* своя гиперссылка из таблицы важнее */
   e.viaConn=viaConnect(e)||e.sessions.some(s=>s.conn||s.connClosed);
@@ -349,7 +349,7 @@ function dayTxt(d,yr){if(!d||d.tba)return tt("tba");if(!exact(d)||(yr&&d.own))re
   return `${a.getDate()} ${m(a)}${y(a)} – ${b.getDate()} ${m(b)}${y(b)}`}
 const wdTxt=d=>{if(!exact(d)||d.own||d.end-d.start>6*864e5)return"";const w=x=>WD[L][x.getDay()];return cap1(+d.start===+d.end?w(d.start):`${w(d.start)} – ${w(d.end)}`)};   /* у долгих событий (SMC: сентябрь – январь) день недели не пишется */
 
-/* регистрация сессии: open – страница в uSTEM Connect, регистрация идёт (или открытая Google Форма у кик-оффа); closed – страница в Connect есть,
+/* регистрация сессии: open – страница в USTEM Connect, регистрация идёт (или открытая Google Форма у кик-оффа); closed – страница в Connect есть,
  * регистрация закрыта; wait – событие регистрируется в Connect, но его там ещё нет; forms – только закрытые формы; "" – ссылок нет */
 const regKind=(e,s)=>{if(e.viaConn||viaConnect(e))return s.conn?"open":s.connClosed?"closed":"wait";
   return s.cats.some(c=>c.url&&!c.closed)?"open":s.cats.some(c=>c.url)?"forms":""};
@@ -394,9 +394,9 @@ function catRow(c){if(c.code==="SMC"||c.code==="F4A")return"";
   const p=PROG[CATP[c.code]],info=p?[`FIRST ${p.name}`,p.age?`${p.age}\u00a0${tt("yrs")}`:""].filter(Boolean).join(" · "):"";
   const note=c.closed&&!c.url?tt("regclosed"):c.soon?tt("regsoon"):"";
   return `<li><b${p?` style="--c:${esc(p.color)}"`:""}>${esc(String(c.label||"").trim()||c.code)}</b>${info?`<span>${esc(info)}</span>`:""}${note?`<em>${esc(note)}</em>`:""}</li>`}
-/* регистрация – как раньше в карточке: скримидж и официальный турнир (viaConnect), а также событие со страницей в Connect – одна кнопка uSTEM Connect
- * (открыта – оранжевая; страница есть, регистрация закрыта – белая пунктирная «Регистрация закрыта»; события в Connect нет – серая неактивная кнопка
- * и плашка «регистрация откроется в uSTEM Connect»); кик-офф без страницы в Connect – Google Формы из таблицы, по кнопке на категорию.
+/* регистрация – как раньше в карточке: скримидж и официальный турнир (viaConnect), а также событие со страницей в Connect – одна кнопка USTEM Connect
+ * (открыта – синяя, в цвет USTEM; страница есть, регистрация закрыта – белая пунктирная «Регистрация закрыта»; события в Connect нет – серая неактивная кнопка
+ * и плашка «регистрация откроется в USTEM Connect»); кик-офф без страницы в Connect – Google Формы из таблицы, по кнопке на категорию.
  * У турнира Connect без страницы из Google Форм остаётся только семинар для учителей, со страницей – ни одной; у SMC – ещё «Условия и задания» */
 function regHtml(e,s){const cats=s.cats,conn=e.viaConn||viaConnect(e),page=!!(s.conn||s.connClosed);
   const btn=cats.filter(c=>c.url&&(!conn||(c.code==="SEM"&&!page)||c.code==="SMC"));
@@ -406,7 +406,7 @@ function regHtml(e,s){const cats=s.cats,conn=e.viaConn||viaConnect(e),page=!!(s.
   const soon=cats.some(c=>c.soon)?`<p class="rn wait">${ICO.clk}<span>${esc(cap1(tt("regsoon")))}</span></p>`:"";   /* FIRST4ALL без ссылки – «регистрация скоро откроется» */
   if(!conn)return fbs||soon?`<div class="rb">${fbs}${soon}</div>`:"";
   const open=!!s.conn,url=s.conn||s.connClosed||"";
-  return `<div class="rb">${open?`<a class="fb pri" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+  return `<div class="rb">${open?`<a class="fb pri cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
     :url?`<a class="fb off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
     :`<span class="fb dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}
     ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
