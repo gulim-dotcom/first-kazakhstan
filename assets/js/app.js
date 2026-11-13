@@ -167,7 +167,7 @@ if(typeof SMC!="undefined"&&SMC.url&&!UPC.some(e=>/social media|\bsmc\b/i.test(e
  * Ссылку вписать в F4A.url; если в таблице появится строка «FIRST4ALL», встроенная карточка скрывается, чтобы не было дубля. */
 if(typeof F4A!="undefined"&&F4A.name&&!UPC.some(e=>/first\s*4\s*all/i.test(e.name))){
   const d=F4A.date?parseDate(F4A.date):{start:null,end:null,tba:true,txt:["","",""]};
-  if(Array.isArray(F4A.dateTxt)&&F4A.dateTxt.length===3&&!d.tba)d.txt=F4A.dateTxt;
+  if(Array.isArray(F4A.dateTxt)&&F4A.dateTxt.length===3&&!d.tba){d.txt=F4A.dateTxt;d.own=1}   /* own – своя подпись даты («приём списков – до 25.12.2026»): в окне события показывается она */
   if(!d.end||d.end>=TODAY){const url=formUrl(String(F4A.url||""));
     UPC.unshift({tab:"F4A",name:F4A.name,city:{key:"",n:null},region:null,allowed:null,stage:"big",codes:["F4A"],start:d.start,cn:null,cc:"",noLoc:!!F4A.noLoc,im:F4A.img||GEN_IMG,
       vis:[{d:d,v:null,cats:[{code:"F4A",label:"FIRST4ALL",url:url,closed:false,soon:!url}],st:"",chg:""}]})}}
@@ -207,7 +207,7 @@ function countUp(){
  * в кружках все события сезона из таблицы, в том числе уже прошедшие. Онлайн-события без города и события за рубежом (CITY_ABROAD)
  * на карту не попадают – они в строке кнопок под картой (#gext) с ключами «x:online», «x:Ташкент»…; «Город + Онлайн» остаётся в своём регионе.
  * Выбранный регион или кнопка (GEO.sel) фильтрует список событий раздела (renderEvents). Кружки с числами – HTML поверх SVG, поэтому не мельчают на телефоне. */
-const GEO={sel:"",open:false}; /* sel – выбранный регион, open – список событий раскрыт (по клику на регион или «Показать все события») */
+const GEO={sel:""}; /* sel – выбранный регион: в сетке событий остаются только его события */
 const RKEY=new Map(Object.keys(RGN).map(k=>[RGN[k],k]));
 const CITY_KEY={ast:"Астана",alm:"Алматы",shm:"Шымкент"};
 const isExt=k=>k.startsWith("x:");
@@ -219,7 +219,7 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
   if(typeof KZMAP=="undefined"){sec.hidden=true;return}
   const cnt={},evs={};
   /* события таблицы и встроенные карточки (SMC, FIRST4ALL), которых в таблице нет */
-  EVENTS.concat(UPC.filter(e=>!EVENTS.includes(e))).forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e)});
+  modeBase().forEach(e=>{const u=unitOf(e);if(!u)return;cnt[u]=(cnt[u]||0)+1;(evs[u]=evs[u]||[]).push(e)});   /* числа на карте – по выбранному режиму: предстоящие или прошедшие */
   const units=Object.keys(KZMAP.units),has=units.filter(k=>cnt[k]);
   if(!box.dataset.built){box.innerHTML=`<svg viewBox="0 0 ${KZMAP.w} ${KZMAP.h}" role="img">${units.map(k=>`<path class="rg" data-u="${k}" d="${KZMAP.units[k].d}" fill-rule="evenodd"/>`).join("")}</svg><div class="mks"></div>`;box.dataset.built="1"}
   box.querySelector("svg").setAttribute("aria-label",tt("a_map"));
@@ -242,31 +242,13 @@ function renderGeo(){const i=I[L],box=$("#kzmap"),sec=$("#geo");if(!box||!sec)re
 function geoCap(k){const i=I[L],c=$("#gcap");if(!c)return;if(!k){c.innerHTML="";return}
   const n=GEO.cnt[k]||0,cities=n&&!isExt(k)?[...new Set(GEO.evs[k].map(e=>e.cn?e.cn[i]:""))].filter(Boolean).join(", "):"";
   c.innerHTML=`<b>${esc(unitName(k,i))}</b> · ${n?`${n} ${esc(pl("geoEv",n))}${cities?` · ${esc(cities)}`:""}`:esc(tt("geoNone"))}`}
-/* выбранный регион: подсветка на карте, список на телефоне, строка над картой и видимость списка событий.
- * Пока регион не выбран, полный список скрыт – над картой ближайшие события (#upc, renderUpc), под ней ссылка «Показать все события» и последние прошедшие.
- * Открыт полный список или выбран регион – блок ближайших прячется, чтобы карточки не повторялись */
-function geoPanel(){const i=I[L],k=GEO.sel,pk=$("#gpick"),open=GEO.open||!!k;
+/* выбранный регион: подсветка на карте и в списке регионов (телефон) */
+function geoPanel(){const k=GEO.sel;
   document.querySelectorAll("#kzmap .rg, #kzmap .mk, #gext .gch").forEach(e=>e.classList.toggle("on",e.dataset.u===k));
   const sel=$("#gsel");if(sel)sel.value=k||"";
-  ["#evs","#evsrc"].forEach(s=>{const e=$(s);if(e)e.hidden=!open});
-  const up=$("#upc");if(up)up.hidden=open||!up.childElementCount;
-  const f=$("#events .flt");if(f)f.hidden=!open||!!k; /* строка поиска – только в полном списке */
-  if(!pk)return;
-  const btn=(act,key)=>`<button type="button" class="gcl" data-act="${act}">${esc(tt(key))}</button>`;
-  if(k&&GEO.cnt&&GEO.cnt[k]){const n=GEO.cnt[k];pk.innerHTML=`<b>${esc(unitName(k,i))}</b><span>${n} ${esc(pl("geoEv",n))}</span>${btn("all","geoAllE")}`}
-  else if(open)pk.innerHTML=`<b>${esc(tt("geoAllE"))}</b>${btn("close","geoHide")}`;
-  else pk.innerHTML=btn("all","geoShow");
 }
 /* этап события словами (Скримидж, Региональный этап…) – по ключам s_* в data.js */
 const stageTxt=e=>{const k="s_"+e.stage;return T[L]&&T[L][k]?tt(k):""};
-/* последние прошедшие события – короткой строкой под картой и списком (#past): название, этап, город, дата.
- * Выбран регион – его прошедшие события, иначе по всей стране; не больше трёх, самые свежие сверху */
-function pastHtml(){const i=I[L],k=GEO.sel;
-  const end=e=>Math.max(0,...e.sessions.map(s=>s.d.end?+s.d.end:0));
-  const past=EVENTS.filter(e=>!e.vis.length&&(!k||unitOf(e)===k)).sort((a,b)=>end(b)-end(a)).slice(0,3);
-  if(!past.length)return"";
-  const dts=e=>[...new Set(e.sessions.map(s=>dTxt(s.d,i)))].join(", ");
-  return `<h5>${esc(tt("geoPast"))}</h5><ul>${past.map(e=>`<li><b>${esc(e.name)}</b><span>${esc([stageTxt(e),e.cn?e.cn[i]:"",dts(e)].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul>`}
 function renderWinners(){const i=I[L];
   $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" data-bg="${esc(cu(w[13]||WI[w[3]]))}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
 }
@@ -339,79 +321,158 @@ function renderNews(){const i=I[L];
     return x.url?`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<div class="card">${body}</div>`}).join("");
 }
 
-/* --- события --- */
+/* --- события ---
+ * Карточка (evCard) – фото города, на нём площадка, дата с днём недели, этап и город; подробности (категории, площадка, регионы, регистрация) –
+ * в окне события (evModal) по нажатию на карточку. Над сеткой: «Алдағы / Өткен», поиск, сортировка, карта и фильтры-чипсы. */
 const ICO={clk:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',pin:'<svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',bld:'<svg viewBox="0 0 24 24"><path d="M4 21V4.5A1.5 1.5 0 0 1 5.5 3h8A1.5 1.5 0 0 1 15 4.5V21M15 9h3.5A1.5 1.5 0 0 1 20 10.5V21M2 21h20M7.5 7h1.5M10.5 7H12M7.5 10.5h1.5M10.5 10.5H12M7.5 14h1.5M10.5 14H12M8.5 21v-4h2v4"/></svg>',cal:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
-  ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>'};
+  ext:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>',
+  x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  chk:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  map:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 21 3l-7 18-2.5-8.5z"/></svg>',
+  dot:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.3 6.4 11.6 6.7 11.9a1.1 1.1 0 0 0 1.6 0c.3-.3 6.7-6.6 6.7-11.9A7.5 7.5 0 0 0 12 2zm0 10.3a2.8 2.8 0 1 1 0-5.6 2.8 2.8 0 0 1 0 5.6z"/></svg>',
+  none:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6M8.5 11h5"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
-function evCard(e){const i=I[L],online=e.city.key==="online";
-  const vis=e.vis,multi=vis.length>1;
-  /* порядок строк: город → площадка → дата → категории → регистрация.
-   * Регистрация: скримидж и официальный турнир (viaConnect), а также любое событие со страницей в Connect (e.viaConn), – одна кнопка uSTEM Connect;
-   * кик-офф, которого в Connect нет, – Google Формы из таблицы, по кнопке на категорию. У события uSTEM Connect:
-   * у турнира есть страница в Connect (s.conn: найдена по названию или ссылка из таблицы) – регистрация открыта: оранжевая кнопка (цвет действия, как «Тіркелу» на первом экране) ведёт на неё;
-   * страница есть, но регистрация закрыта (s.connClosed) – белая пунктирная кнопка «Регистрация закрыта», ведёт на неё, под ней строка «кнопка ведёт на страницу события»;
-   * турнира в Connect нет совсем – серая неактивная кнопка и плашка «регистрация откроется в uSTEM Connect». Google Формы категорий из строк таких
-   * турниров кнопками не становятся. У турнира со страницей в Connect не показывается ни одна Google Форма (семинар для учителей
-   * тоже регистрируется через Connect) – чтобы люди не путались, через что записываться; пока страницы нет, из форм остаётся только
-   * семинар для учителей */
-  const ses=s=>{
-    const cats=s.cats,conn=e.viaConn||viaConnect(e);
-    const page=!!(s.conn||s.connClosed);   /* у события есть своя страница в Connect */
-    const btn=cats.filter(c=>c.url&&(!conn||(c.code==="SEM"&&!page)||c.code==="SMC"));   /* у турниров Connect без страницы из Google Форм остаётся семинар; со страницей – ни одной; у SMC – «Условия и задания» */
-    const showV=!(online&&(!s.v||/^(online|онлайн)$/i.test(s.v.n)))&&!!(s.v||e.cn);   /* место проведения из таблицы – у всех событий, и у турниров uSTEM Connect тоже */
-    const one=cats.length===1&&btn.length===1;
-    const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
-    const fbs=btn.length?`<div class="fbs">${btn.map(c=>`<a class="fb${c.code==="SEM"?" sem":""}${c.closed?" off":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" title="${esc(catLabel(c))}">${esc(bl(c))}</a>`).join("")}</div>`:"";
-    let reg=fbs;
-    if(conn){const open=!!s.conn,url=s.conn||s.connClosed||"";
-      reg=`<div class="rb${open?" open":url?" closed":""}"><div class="fbs">${open?`<a class="fb cn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
-          :url?`<a class="fb cn off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
-          :`<span class="fb cn dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}</div>
-        ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
-    return `<div class="${multi?"ses":"one"}">
-      ${showV?`<p>${ICO.pin}<span>${venueHtml(s.v)}</span></p>`:""}
-      <p class="dt">${ICO.cal}<span>${esc(dTxt(s.d,i))}</span></p>
-      ${s.chg?`<p class="chg"><b>${esc(tt("chg"))}:</b> ${esc(s.chg)}</p>`:""}
-      ${s.st?`<p class="chg"><b>${esc(tt("stt"))}:</b> ${esc(s.st)}</p>`:""}
-      ${cats.length&&!(one&&cats[0].code==="SEM")?`<div class="tg">${cats.map(c=>`<span${c.closed&&!c.url?' class="closed"':""}>${esc(catLabel(c))}${c.closed&&!c.url?` · ${esc(tt("regclosed"))}`:c.soon?` · ${esc(tt("regsoon"))}`:""}</span>`).join("")}</div>`:""}
-      ${reg}
-    </div>`};
-  return `<div class="cell"><div class="ec"><div>
-    <h4>${esc(e.name)}</h4>
-    ${stageTxt(e)?`<span class="stg">${esc(stageTxt(e))}</span>`:""}
-    ${e.noLoc?"":`<p>${ICO.bld}<span>${esc(e.cn?e.cn[i]:tt("ctba"))}${e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?`, ${esc(e.region[i])}`:""}</span></p>`}
-    ${e.allowed?`<p class="rgl">${ICO.pin}<span title="${esc(e.allowed[i])}"><b>${esc(tt("regs"))}:</b> ${esc(e.allowed[i])}</span></p>`:""}
-    ${vis.map(ses).join("")}
-  </div><div class="eim" data-bg="${esc(cu(e.im))}"></div></div></div>`;
-}
 /* «Актобе, Актюбинская область» → область не повторяется, если она названа по городу */
 const sameStem=(city,region)=>{const a=String(city||"").toLowerCase().slice(0,4),b=String(region||"").toLowerCase().slice(0,4);return a.length>=4&&a===b};
 function stamp(iso){const d=new Date(iso);if(isNaN(d))return"";try{return d.toLocaleDateString("ru-RU",{timeZone:"Asia/Almaty",day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return `${p2(d.getDate())}.${p2(d.getMonth()+1)}.${d.getFullYear()}`}}
-function renderEvents(){
-  const q=$("#fs").value.trim().toLowerCase();
-  const ok=e=>(!GEO.sel||unitOf(e)===GEO.sel)&&
-    (!q||[e.name,...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...(e.codes||[]),...[].concat(...e.vis.map(s=>s.cats.map(catLabel))),...e.vis.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase().includes(q));
-  const u=UPC.filter(ok);
-  /* все события в одной прокручиваемой сетке; стрелка внизу листает её */
-  const more=`<div class="morew"><button class="more" type="button" aria-label="${esc(tt("more"))}" title="${esc(tt("more"))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg></button></div>`;
-  $("#evs").innerHTML=u.length?`<div class="eg">${u.map(e=>evCard(e)).join("")}</div>${more}`:`<p class="empty">${esc(tt(UPC.length?"none":"noneAll"))}</p>`;
-  $("#past").innerHTML=pastHtml();
-  const eg=$("#evs .eg"),mw=$("#evs .morew");
-  if(eg){const upd=()=>mw.classList.toggle("end",eg.scrollHeight-eg.clientHeight-eg.scrollTop<8);eg.addEventListener("scroll",upd,{passive:true});upd();setTimeout(upd,400)}
+
+/* дата словами: «21–22 қараша», «28 ноября – 2 декабря» (в окне события – с годом) и день недели «Сенбі – жексенбі» */
+const WD={ru:["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],kk:["жексенбі","дүйсенбі","сейсенбі","сәрсенбі","бейсенбі","жұма","сенбі"],en:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]};
+const MG={ru:["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],kk:MN.kk,en:MN.en};
+const cap1=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+const exact=d=>!!(d&&d.start&&d.txt&&/\d\.\d{2}\.\d{4}/.test(d.txt[0]));   /* точная дата, а не «Ақпан 2027» */
+function dayTxt(d,yr){if(!d||d.tba)return tt("tba");if(!exact(d)||(yr&&d.own))return d.txt[I[L]];
+  const a=d.start,b=d.end,m=x=>MG[L][x.getMonth()],y=x=>yr?" "+x.getFullYear():"";
+  if(+a===+b)return `${a.getDate()} ${m(a)}${y(a)}`;
+  if(a.getFullYear()===b.getFullYear())return a.getMonth()===b.getMonth()?`${a.getDate()}–${b.getDate()} ${m(b)}${y(b)}`:`${a.getDate()} ${m(a)} – ${b.getDate()} ${m(b)}${y(b)}`;
+  return `${a.getDate()} ${m(a)}${y(a)} – ${b.getDate()} ${m(b)}${y(b)}`}
+const wdTxt=d=>{if(!exact(d)||d.own||d.end-d.start>6*864e5)return"";const w=x=>WD[L][x.getDay()];return cap1(+d.start===+d.end?w(d.start):`${w(d.start)} – ${w(d.end)}`)};   /* у долгих событий (SMC: сентябрь – январь) день недели не пишется */
+
+/* регистрация сессии: open – страница в uSTEM Connect, регистрация идёт (или открытая Google Форма у кик-оффа); closed – страница в Connect есть,
+ * регистрация закрыта; wait – событие регистрируется в Connect, но его там ещё нет; forms – только закрытые формы; "" – ссылок нет */
+const regKind=(e,s)=>{if(e.viaConn||viaConnect(e))return s.conn?"open":s.connClosed?"closed":"wait";
+  return s.cats.some(c=>c.url&&!c.closed)?"open":s.cats.some(c=>c.url)?"forms":""};
+
+/* все события раздела: предстоящие (UPC) и прошедшие (PAST). Для фильтров и сортировки у каждого считаются:
+ * ses – показываемые сессии, t0/t1 – начало и конец, grp – этап для чипсов, prog – программы (FLL/FTC/FRC), score – «масштаб» (чемпионат > Qualifier > Regional…,
+ * затем число дней и категорий), open – регистрация открыта, ph – фото города (assets/img/city, Wikimedia Commons; у города с двумя фото – по очереди) */
+const PAST=EVENTS.filter(e=>!e.vis.length),ALL=UPC.concat(PAST);
+const GW={champ:6,qual:5,reg:4,off:3,scrim:2,kick:2,other:1},PROGS=["FLL","FTC","FRC"],GRPS=["reg","qual","champ","scrim","kick","off","other"];
+{const used={};ALL.forEach((e,k)=>{e.k=k;e.past=!e.vis.length;e.ses=e.past?e.sessions:e.vis;
+  const st=e.ses.map(s=>s.d.start).filter(Boolean).map(Number),en=e.ses.map(s=>s.d.end).filter(Boolean).map(Number);
+  e.t0=st.length?Math.min(...st):NaN;e.t1=en.length?Math.max(...en):e.t0;
+  e.grp=(e.stage==="rep"||(e.stage==="big"&&/championship/i.test(e.name)))?"champ":/^(qual|reg|off|scrim|kick)$/.test(e.stage)?e.stage:"other";
+  const codes=[...new Set([].concat(...e.ses.map(s=>s.cats.map(c=>c.code))))];
+  e.prog=PROGS.filter(p=>codes.some(c=>p==="FLL"?/^(FLL|FE)/.test(c):c===p));
+  const days=e.ses.reduce((n,s)=>n+(exact(s.d)?Math.min(5,Math.round((s.d.end-s.d.start)/864e5)+1):1),0);   /* «Ақпан 2027» – не 28 дней, а один */
+  e.score=(e.stage==="rep"?7:GW[e.grp])*1000+days*30+codes.filter(c=>/^(FLL|FE|FTC|FRC)/.test(c)).length*10;   /* национальный чемпионат – выше зарубежных */
+  e.open=!e.past&&e.ses.some(s=>regKind(e,s)==="open");
+  const ck=e.city&&e.city.key&&e.city.key!=="online"?(BASE[e.city.key]||e.city.key):"",ph=ck&&typeof CITY_IMG!="undefined"&&CITY_IMG[ck];
+  if(ph){const c=used[ck]=(used[ck]||0)+1,n=ph[(c-1)%ph.length];e.ph={s:`assets/img/city/${n}-640.webp`,l:`assets/img/city/${n}-1200.webp`,c:(typeof CITY_CRED!="undefined"&&CITY_CRED[n])||null}}
+  else e.ph={s:e.im||GEN_IMG,l:e.im||GEN_IMG,c:null};
+})}
+
+/* карточка: сверху слева – площадка (или область), справа – дата и день недели; снизу – «регистрация открыта», название без года и город крупно */
+const eyebrow=e=>e.cn?e.name.replace(/\s+20\d\d(?:[-–]\d{2,4})?$/,""):stageTxt(e);
+const ttl=e=>e.cn?e.cn[I[L]]:e.name;
+const tsz=t=>{const n=[...t].length;return n<=7?"":n<=10?" m":n<=13?" s":" xs"};   /* длинный город – мельче, чтобы влез в одну строку */
+function evLoc(e){const i=I[L],s=e.ses[0]||{};if(e.city.key==="online")return"";
+  if(s.v&&!/^(online|онлайн)$/i.test(s.v.n))return vname(s.v.n);
+  return e.region&&!sameStem(e.cn?e.cn[i]:"",e.region[i])?e.region[i]:""}
+function evCard(e,n){const d=(e.ses[0]||{}).d,loc=evLoc(e),t=ttl(e),wd=wdTxt(d),two=e.ph.s!==e.ph.l;
+  return `<li class="evi${n!=null?" in":""}"${n!=null?` style="--n:${n}"`:""}><button type="button" class="evc${e.past?" past":""}" data-k="${e.k}" aria-haspopup="dialog">
+<img class="evc-im" src="${esc(e.ph.s)}"${two?` srcset="${esc(e.ph.s)} 640w, ${esc(e.ph.l)} 1200w" sizes="(max-width:760px) 92vw, (max-width:1060px) 46vw, 400px"`:""} alt="" loading="lazy" decoding="async">
+<span class="evc-top">${loc?`<span class="evc-loc">${ICO.dot}<span>${esc(loc)}</span></span>`:"<span></span>"}<span class="evc-when"><span class="evc-date">${esc(dayTxt(d))}</span>${wd?`<span class="evc-wd">${esc(wd)}</span>`:""}</span></span>
+<span class="evc-bot">${e.open?`<span class="evc-open"><i></i>${esc(tt("evOpen"))}</span>`:e.past?`<span class="evc-open done">${esc(tt("md_done"))}</span>`:""}<span class="evc-eb">${esc(eyebrow(e))}</span><span class="evc-t${tsz(t)}">${esc(t)}</span></span>
+</button></li>`}
+
+/* --- окно события --- */
+const CATP={"FLL-D":0,"FLL-E":1,"FLL-C":2,FE:3,FTC:4,FRC:5};   /* код категории → программа в PROG (data.js): название, возраст, цвет */
+function catRow(c){if(c.code==="SMC"||c.code==="F4A")return"";
+  if(c.code==="SEM")return `<li><b>${esc(tt("sem"))}</b></li>`;
+  const p=PROG[CATP[c.code]],info=p?[`FIRST ${p.name}`,p.age?`${p.age}\u00a0${tt("yrs")}`:""].filter(Boolean).join(" · "):"";
+  const note=c.closed&&!c.url?tt("regclosed"):c.soon?tt("regsoon"):"";
+  return `<li><b${p?` style="--c:${esc(p.color)}"`:""}>${esc(String(c.label||"").trim()||c.code)}</b>${info?`<span>${esc(info)}</span>`:""}${note?`<em>${esc(note)}</em>`:""}</li>`}
+/* регистрация – как раньше в карточке: скримидж и официальный турнир (viaConnect), а также событие со страницей в Connect – одна кнопка uSTEM Connect
+ * (открыта – оранжевая; страница есть, регистрация закрыта – белая пунктирная «Регистрация закрыта»; события в Connect нет – серая неактивная кнопка
+ * и плашка «регистрация откроется в uSTEM Connect»); кик-офф без страницы в Connect – Google Формы из таблицы, по кнопке на категорию.
+ * У турнира Connect без страницы из Google Форм остаётся только семинар для учителей, со страницей – ни одной; у SMC – ещё «Условия и задания» */
+function regHtml(e,s){const cats=s.cats,conn=e.viaConn||viaConnect(e),page=!!(s.conn||s.connClosed);
+  const btn=cats.filter(c=>c.url&&(!conn||(c.code==="SEM"&&!page)||c.code==="SMC"));
+  const join=btn.filter(c=>!c.closed&&c.code!=="SEM"&&c.code!=="SMC");
+  const bl=c=>c.closed?`${catLabel(c)} · ${tt("regclosed")}`:c.code==="SEM"?tt("joinSem"):c.code==="SMC"?tt("smcBtn"):btn.length>1?`${tt("join")} · ${catLabel(c)}`:tt("join");
+  const fbs=btn.map(c=>`<a class="fb${c.closed?" off":!conn&&join.length===1&&join[0]===c?" pri":""}" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(bl(c))}${ICO.ext}</a>`).join("");
+  const soon=cats.some(c=>c.soon)?`<p class="rn wait">${ICO.clk}<span>${esc(cap1(tt("regsoon")))}</span></p>`:"";   /* FIRST4ALL без ссылки – «регистрация скоро откроется» */
+  if(!conn)return fbs||soon?`<div class="rb">${fbs}${soon}</div>`:"";
+  const open=!!s.conn,url=s.conn||s.connClosed||"";
+  return `<div class="rb">${open?`<a class="fb pri" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connBtn"))}${ICO.ext}</a>`
+    :url?`<a class="fb off" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(tt("connClosed"))}${ICO.ext}</a>`
+    :`<span class="fb dis" aria-disabled="true">${esc(tt("connBtn"))}${ICO.ext}</span>`}
+    ${url?`<p class="rn">${esc(tt(open?"connNote":"connClosedNote"))}</p>`:`<p class="rn wait">${ICO.clk}<span>${esc(tt("connWait"))}</span></p>`}${fbs}</div>`}
+function evModal(e){const i=I[L],multi=e.ses.length>1,online=e.city.key==="online";
+  const city=e.cn?e.cn[i]+(e.region&&!sameStem(e.cn[i],e.region[i])?", "+e.region[i]:""):tt("ctba");
+  const row=(ic,lb,v,sm)=>`<li><span class="ic">${ic}</span><div><span class="lb">${esc(lb)}</span><span class="v${sm?" sm":""}">${v}</span></div></li>`;
+  const ses=s=>{const wd=wdTxt(s.d),cats=s.cats.map(catRow).join("");
+    const place=online?esc(e.cn[i]):s.v?`${venueHtml(s.v)}<small>${esc(city)}</small>`:`${esc(city)}<small>${esc(tt("vtba"))}</small>`;
+    return `<div class="evd-s"><ul class="evd-f">${row(ICO.cal,tt("md_date"),`${esc(dayTxt(s.d,1))}${wd?`<small>${esc(wd)}</small>`:""}`)}${e.noLoc?"":row(ICO.pin,tt("md_place"),place)}${e.allowed?row(ICO.bld,tt("regs"),esc(e.allowed[i]),1):""}</ul>
+      ${s.chg?`<p class="evd-n"><b>${esc(tt("chg"))}:</b> ${esc(s.chg)}</p>`:""}${s.st&&!e.past?`<p class="evd-n"><b>${esc(tt("stt"))}:</b> ${esc(s.st)}</p>`:""}
+      ${cats?`<h4 class="evd-h">${esc(tt("md_cats"))}</h4><ul class="evd-c">${cats}</ul>`:""}${multi&&!e.past?regHtml(e,s):""}</div>`};
+  const reg=!multi&&!e.past?regHtml(e,e.ses[0]):"",c=e.ph.c;
+  return `<div class="evd-sc"><div class="evd-hero"><img src="${esc(e.ph.l)}" alt="" decoding="async"><button type="button" class="evd-x" aria-label="${esc(tt("md_close"))}">${ICO.x}</button>
+    <div class="evd-ht">${stageTxt(e)?`<span class="evd-stg">${esc(stageTxt(e))}</span>`:""}<h3 id="evdT">${esc(e.name)}</h3></div></div>
+    <div class="evd-b">${e.ses.map(ses).join("")}
+      ${e.past?`<p class="evd-done"><b>${esc(tt("md_done"))}</b><a href="https://t.me/firstroboticskz" target="_blank" rel="noopener">${esc(tt("md_res"))}</a></p>`:""}</div>
+    ${reg?`<div class="evd-reg">${reg}</div>`:""}
+    ${c&&/^https:\/\/commons\.wikimedia\.org\//.test(c.u)?`<p class="evd-cr">${esc(tt("md_photo"))}: <a href="${esc(c.u)}" target="_blank" rel="noopener noreferrer">${esc(c.a)}</a> · ${esc(c.l)}</p>`:""}</div>`}
+let evFrom=null;
+function openEv(k,from){const e=ALL[k],d=$("#evd");if(!e||!d)return;
+  d.innerHTML=evModal(e);evFrom=from||null;
+  if(typeof d.showModal==="function"){if(!d.open)d.showModal()}else d.setAttribute("open","");
+  document.documentElement.classList.add("dlg");
+  const x=d.querySelector(".evd-x");if(x)x.focus({preventScroll:true})}
+
+/* --- поиск, фильтры, сортировка --- */
+const EV={mode:"up",prog:"",grp:"",open:false,sort:"date",lim:0};
+const STEP=()=>matchMedia("(max-width:760px)").matches?6:matchMedia("(max-width:1060px)").matches?8:9;   /* карточек за раз (полные ряды сетки); «Тағы көрсету» добавляет ещё столько же */
+const modeBase=()=>EV.mode==="up"?UPC:PAST;
+const qText=e=>[e.name,stageTxt(e),...(e.cn||[]),...(e.region||[]),...(e.allowed||[]),...e.prog,...[].concat(...e.ses.map(s=>s.cats.map(c=>c.code+" "+catLabel(c)))),...e.ses.map(s=>s.v?s.v.n+" "+vname(s.v.n):"")].join(" ").toLowerCase();
+function evFilter(){const q=$("#fs").value.trim().toLowerCase();
+  return modeBase().filter(e=>(!EV.prog||e.prog.includes(EV.prog))&&(!EV.grp||e.grp===EV.grp)&&(!EV.open||e.open)&&(!GEO.sel||unitOf(e)===GEO.sel)&&(!q||qText(e).includes(q)))}
+/* «сначала ближайшие» у предстоящих – по дате начала, у прошедших – самые недавние сверху; «поздние» – наоборот; «крупные» – по score */
+function evSort(l){const r=l.slice(),up=EV.mode==="up",a0=e=>isNaN(e.t0)?9e15:e.t0,b1=e=>isNaN(e.t1)?-9e15:e.t1;
+  if(EV.sort==="big")r.sort((a,b)=>b.score-a.score||a0(a)-a0(b));
+  else if(EV.sort==="az")r.sort((a,b)=>a.name.localeCompare(b.name,"en"));
+  else r.sort(up===(EV.sort==="date")?(a,b)=>a0(a)-a0(b):(a,b)=>b1(b)-b1(a));
+  return r}
+const SORTS=["date","late","big","az"];
+const soKey=s=>({date:EV.mode==="up"?"so_date":"so_dateP",late:EV.mode==="up"?"so_late":"so_lateP",big:"so_big",az:"so_az"})[s];
+function renderSortMenu(){const m=$("#sortm");if(!m)return;
+  m.innerHTML=SORTS.map(s=>`<button type="button" role="menuitemradio" aria-checked="${s===EV.sort}" data-s="${s}" tabindex="-1">${ICO.chk}<span>${esc(tt(soKey(s)))}</span></button>`).join("");
+  $("#sortl").textContent=tt(soKey(EV.sort))}
+const chip=(a,v,label,on,pre)=>`<button type="button" class="chip${on?" on":""}" data-a="${a}" data-v="${esc(v)}" aria-pressed="${on}">${pre||""}${esc(label)}</button>`;
+function renderChips(){const base=modeBase(),none=!EV.prog&&!EV.grp&&!EV.open&&!GEO.sel,i=I[L];
+  const ps=PROGS.filter(p=>base.some(e=>e.prog.includes(p))),gs=GRPS.filter(g=>base.some(e=>e.grp===g));
+  let h=chip("all","",tt("evAll"),none);
+  if(base.some(e=>e.open))h+=chip("open","",tt("evOpen"),EV.open,'<i class="dot"></i>');
+  if(ps.length>1)h+='<span class="csep"></span>'+ps.map(p=>chip("prog",p,p,EV.prog===p)).join("");
+  if(gs.length>1)h+='<span class="csep"></span>'+gs.map(g=>chip("grp",g,tt("g_"+g),EV.grp===g)).join("");
+  if(GEO.sel)h+=`<span class="csep"></span><button type="button" class="chip on rgc" data-a="reg" aria-label="${esc(tt("evRegX"))}: ${esc(unitName(GEO.sel,i))}">${ICO.map}${esc(unitName(GEO.sel,i))}${ICO.x}</button>`;
+  $("#chips").innerHTML=h}
+/* how: "anim" – карточки появляются по очереди (смена фильтра, режима, сортировки), "more" – дописать следующую порцию, без – просто перерисовать (поиск) */
+function renderEvents(how){const base=modeBase();
+  document.querySelectorAll("#evseg button").forEach(b=>{const on=b.dataset.m===EV.mode;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);b.querySelector("b").textContent=(b.dataset.m==="up"?UPC:PAST).length});
+  renderChips();renderSortMenu();
+  const list=evSort(evFilter());if(!EV.lim)EV.lim=STEP();
+  const ul=$("#evs .evg");
+  if(how==="more"&&ul){const from=ul.children.length;ul.insertAdjacentHTML("beforeend",list.slice(from,EV.lim).map((e,n)=>evCard(e,n)).join(""))}
+  else $("#evs").innerHTML=list.length?`<ul class="evg">${list.slice(0,EV.lim).map((e,n)=>evCard(e,how==="anim"?n:null)).join("")}</ul>`
+    :`<div class="evempty">${ICO.none}<p>${esc(tt(base.length?"evNone":"noneAll"))}</p>${base.length?`<button type="button" class="evreset">${esc(tt("evReset"))}</button>`:""}</div>`;
+  const mb=$("#evmore"),rest=list.length-EV.lim;mb.hidden=rest<=0;mb.innerHTML=`${esc(tt("evMore"))} <b>${Math.max(rest,0)}</b>`;
+  $("#evcount").textContent=`${list.length} ${pl("geoEv",list.length)}`;
   /* «Обновлено» = дата, когда данные таблицы (или статус формы регистрации) действительно изменились, а не время последней проверки */
   const up=SHEET.updated,s=up?stamp(up):"";
   $("#evsrc").textContent=s?`${tt("evupd")} ${s}`:"";
-}
-/* ближайшие события – сразу под заголовком «Іс-шаралар», без выбора региона: главное действие сайта (регистрация) видно без кликов.
- * Три события с ближайшей датой начала (ещё не начались); если таких меньше – добавляются идущие сейчас и без даты (SMC, FIRST4ALL).
- * Карточки те же, что в полном списке (evCard), с той же кнопкой регистрации. Под ними – «Показать все события (N)» */
-function renderUpc(){const box=$("#upc");if(!box)return;
-  const soon=UPC.filter(e=>e.start&&e.start>=TODAY).sort((a,b)=>a.start-b.start);
-  const list=soon.concat(UPC.filter(e=>!soon.includes(e))).slice(0,3);
-  box.innerHTML=list.length?`<h3>${esc(tt("upcH"))}</h3><div class="ug">${list.map(evCard).join("")}</div>`+
-    (UPC.length>list.length?`<button type="button" class="alln upa">${esc(tt("geoShow"))} (${UPC.length})</button>`:""):"";
-  box.hidden=!list.length||GEO.open||!!GEO.sel;
 }
 /* --- вкладка «Сайт» таблицы (assets/data/site.js): сезон, тема, ссылки, названия тем программ --- */
 const okUrl=u=>/^https:\/\/[^\s"'<>]+$/.test(String(u||""));
@@ -438,7 +499,8 @@ function render(){
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
-  $("#fs").placeholder=tt("fs");renderEvents();renderUpc();
+  $("#fs").placeholder=tt("fs");renderEvents();
+  const d=$("#evd");if(d&&d.open&&EV.cur!=null)d.innerHTML=evModal(ALL[EV.cur]);
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
@@ -459,7 +521,7 @@ function italicFirst(root){
  * телефон не тянет сразу 2 МБ картинок. Блок, который уже был на экране, после смены языка показывает фото сразу. --- */
 const LZ=new Set();let lzio=null;
 function bgNow(box){box.querySelectorAll("[data-bg]").forEach(e=>{e.style.backgroundImage=e.dataset.bg;e.removeAttribute("data-bg")})}
-function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws,#upc,#evs,#past").forEach(box=>{
+function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws").forEach(box=>{
   if(LZ.has(box)||!("IntersectionObserver" in window)){bgNow(box);return}
   if(!lzio)lzio=new IntersectionObserver(ens=>ens.forEach(en=>{if(en.isIntersecting){LZ.add(en.target);lzio.unobserve(en.target);bgNow(en.target)}}),{rootMargin:"900px 0px"});
   lzio.observe(box)})}
@@ -473,16 +535,16 @@ try{const u=new URLSearchParams(location.search).get("lang");const s=sessionStor
 L=start;render();
 
 $("#lang").addEventListener("change",e=>setLang(e.target.value));
-/* карта в разделе событий: наведение – подсказка, клик/Enter или список на телефоне – выбор региона, список событий фильтруется;
- * «Все события» снимает выбор региона, «Скрыть список» прячет список */
+/* карта в разделе событий (по кнопке «Карта»): наведение – подсказка, клик/Enter или список на телефоне – выбор региона,
+ * в сетке остаются только его события; повторный клик или крестик на чипсе региона снимает выбор */
+const setReg=k=>{GEO.sel=k;EV.lim=0;geoPanel();renderEvents("anim");
+  /* если сетка оказалась ниже экрана (телефон), страница подъезжает к её началу, а карта остаётся видна */
+  const r=$("#evs").getBoundingClientRect();if(k&&r.top>innerHeight*.75)scrollBy({top:Math.round(r.top-innerHeight*.4),behavior:RM?"auto":"smooth"})};
 {const m=$("#kzmap");if(m){
   /* клик по контуру региона или по его кружку с подписью (кружки городов стоят поверх области) */
   const u=e=>{const p=e.target.closest(".rg.has, .mk:not(.no)");return p?p.dataset.u:""},any=e=>{const p=e.target.closest(".rg, .mk");return p?p.dataset.u:""};
   m.addEventListener("mouseover",e=>geoCap(any(e)));m.addEventListener("mouseout",()=>geoCap(""));
   m.addEventListener("focusin",e=>geoCap(u(e)));m.addEventListener("focusout",()=>geoCap(""));
-  const setReg=k=>{GEO.sel=k;GEO.open=true;geoPanel();renderEvents();
-    /* если список оказался ниже экрана (телефон), страница подъезжает так, чтобы его начало было в середине экрана, а карта осталась видна */
-    const r=$("#evs").getBoundingClientRect();if(k&&r.top>innerHeight*.75)scrollBy({top:Math.round(r.top-innerHeight*.45),behavior:RM?"auto":"smooth"})};
   const pick=e=>{const k=u(e);if(!k)return;setReg(GEO.sel===k?"":k)};
   m.addEventListener("click",pick);
   m.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){if(u(e)){e.preventDefault();pick(e)}}});
@@ -492,15 +554,37 @@ $("#lang").addEventListener("change",e=>setLang(e.target.value));
     gx.addEventListener("mouseover",e=>geoCap(ch(e)));gx.addEventListener("mouseout",()=>geoCap(""));
     gx.addEventListener("focusin",e=>geoCap(ch(e)));gx.addEventListener("focusout",()=>geoCap(""));
     gx.addEventListener("click",e=>{const k=ch(e);if(k)setReg(GEO.sel===k?"":k)})}
-  const pk=$("#gpick");if(pk)pk.addEventListener("click",e=>{const b=e.target.closest(".gcl");if(!b)return;if(b.dataset.act==="close"){GEO.sel="";GEO.open=false;geoPanel()}else setReg("")});
-  /* «Показать все события» под ближайшими: открывается полный список, страница подъезжает к его началу (строка поиска) */
-  const up=$("#upc");if(up)up.addEventListener("click",e=>{const rg=e.target.closest(".rgl span");if(rg)rg.classList.toggle("x");
-    if(!e.target.closest(".upa"))return;setReg("");const f=$("#events .flt");if(f)f.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
+}}
+/* панель событий: «Алдағы / Өткен», сортировка (меню), карта */
+{const sb=$("#sortb"),sm=$("#sortm"),items=()=>[...sm.querySelectorAll("button")];
+  const menu=open=>{sm.hidden=!open;sb.setAttribute("aria-expanded",open);if(open){const c=sm.querySelector('[aria-checked="true"]')||items()[0];if(c)c.focus()}};
+  sb.addEventListener("click",()=>menu(sm.hidden));
+  sm.addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;EV.sort=b.dataset.s;EV.lim=0;menu(false);sb.focus();renderEvents("anim")});
+  sm.addEventListener("keydown",e=>{const l=items(),i=l.indexOf(document.activeElement);
+    if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();l[(i+(e.key==="ArrowDown"?1:l.length-1))%l.length].focus()}
+    else if(e.key==="Escape"||e.key==="Tab"){if(e.key==="Escape"){e.preventDefault();sb.focus()}menu(false)}});
+  document.addEventListener("click",e=>{if(!sm.hidden&&!e.target.closest(".sortw"))menu(false)});
+  $("#evseg").addEventListener("click",e=>{const b=e.target.closest("[data-m]");if(!b||b.dataset.m===EV.mode)return;EV.mode=b.dataset.m;EV.lim=0;
+    const base=modeBase();if(EV.grp&&!base.some(x=>x.grp===EV.grp))EV.grp="";if(EV.prog&&!base.some(x=>x.prog.includes(EV.prog)))EV.prog="";if(EV.mode==="past")EV.open=false;
+    renderGeo();renderEvents("anim")});
+  const mb=$("#mapb"),geo=$("#geo");mb.addEventListener("click",()=>{const o=geo.hidden;geo.hidden=!o;mb.setAttribute("aria-expanded",o)});
+}
+/* фильтры-чипсы: «Барлығы» сбрасывает всё, программа и этап – по одному, «Тіркеу ашық» – отдельный переключатель, чипса региона снимает выбор на карте */
+$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+  if(a==="all"){EV.prog=EV.grp="";EV.open=false;GEO.sel="";geoPanel()}
+  else if(a==="open")EV.open=!EV.open;else if(a==="prog")EV.prog=EV.prog===v?"":v;else if(a==="grp")EV.grp=EV.grp===v?"":v;else if(a==="reg"){GEO.sel="";geoPanel()}
+  EV.lim=0;renderEvents("anim")});
+$("#evs").addEventListener("click",e=>{const c=e.target.closest(".evc");if(c){EV.cur=+c.dataset.k;openEv(EV.cur,c);return}
+  if(e.target.closest(".evreset")){EV.prog=EV.grp="";EV.open=false;GEO.sel="";$("#fs").value="";geoPanel();EV.lim=0;renderEvents("anim")}});
+$("#evmore").addEventListener("click",()=>{EV.lim+=STEP();renderEvents("more")});
+$("#fs").addEventListener("input",()=>{EV.lim=0;renderEvents()});
+/* окно события: крестик, нажатие на затемнение вокруг, Escape; фокус возвращается на карточку */
+{const d=$("#evd");if(d){
+  d.addEventListener("click",e=>{if(e.target===d||e.target.closest(".evd-x"))d.close()});
+  d.addEventListener("close",()=>{document.documentElement.classList.remove("dlg");EV.cur=null;if(evFrom&&document.contains(evFrom))evFrom.focus({preventScroll:true})});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
-$("#fs").addEventListener("input",renderEvents);
 $("#pmore").addEventListener("click",function(){$("#progs").classList.remove("cut");this.hidden=true});
-$("#evs").addEventListener("click",e=>{const rg=e.target.closest(".rgl span");if(rg)rg.classList.toggle("x");if(e.target.closest(".more")){const eg=$("#evs .eg");if(eg)eg.scrollBy({top:Math.round(eg.clientHeight*.85),behavior:RM?"auto":"smooth"})}});
 document.querySelectorAll("[data-sc]").forEach(b=>b.addEventListener("click",()=>{const r=$(b.dataset.sc),f=r.firstElementChild;if(f)r.scrollBy({left:(+b.dataset.d)*(f.offsetWidth+22),behavior:"smooth"})}));
 /* карусель новостей: стрелка «назад» появляется после прокрутки вправо */
 {const r=$("#nws");if(r){const u=()=>r.parentElement.classList.toggle("sc",r.scrollLeft>8);r.addEventListener("scroll",u,{passive:true});u()}}
