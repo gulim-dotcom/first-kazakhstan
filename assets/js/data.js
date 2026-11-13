@@ -747,7 +747,7 @@ const SMC={
  end:"25.01.2027",
  url:"https://drive.google.com/drive/folders/1Sk4qLMkO3AX-cTWk9B3sXjKQB-fm5bfm",
  connect:"",
- img:"assets/img/x-2024.webp"
+ img:"assets/img/x-smc.webp"
 };
 const F4A={
  name:"FIRST4ALL",
@@ -943,20 +943,16 @@ const evim=(t,ck,codes)=>{if(ck==="online")return codes&&codes.length===1&&codes
 /* этап события по названию (когда вкладка таблицы его не определяет) */
 const stg=t=>/Kick-/i.test(t)?"kick":/Scrimmage/.test(t)?"scrim":/Qualifier/.test(t)?"qual":/Regional|Digital Bridge/.test(t)?"reg":/Kazakhstan.*Championship/.test(t)?"rep":/Off-Season|Tech Cup/i.test(t)?"off":"big";
 /* ---- фото городов для карточек событий (assets/img/city/<имя>-640.webp и -1200.webp, 4:3) ----
- * ключ – город из CITY; несколько фото – чередуются по событиям одного города. CITY_CRED – автор и лицензия (Wikimedia Commons), показываются в окне события */
+ * ключ – город из CITY; несколько фото – чередуются по событиям одного города. CITY_CRED – автор и лицензия (Wikimedia Commons), показываются в окне события;
+ * фото Астаны, Алматы и Актау прислала команда – у них подписи нет */
 const CITY_IMG={
- "Астана":["astana","astana-2"],"Алматы":["almaty","almaty-2"],"Шымкент":["shymkent"],"Ақтау":["aktau"],"Ақтөбе":["aktobe"],"Атырау":["atyrau"],
+ "Астана":["astana"],"Алматы":["almaty"],"Шымкент":["shymkent"],"Ақтау":["aktau"],"Ақтөбе":["aktobe"],"Атырау":["atyrau"],
  "Орал":["oral"],"Қостанай":["kostanay"],"Петропавл":["petropavl"],"Павлодар":["pavlodar"],"Семей":["semey"],"Өскемен":["oskemen"],
  "Қарағанды":["karaganda"],"Жезқазған":["zhezkazgan"],"Тараз":["taraz"],"Қызылорда":["kyzylorda"],"Талдықорған":["taldykorgan"],"Қонаев":["konaev"],
  "Бурабай":["burabay"],"Түркістан":["turkistan"],"Көкшетау":["kokshetau"],"Бішкек":["bishkek"],"Ташкент":["tashkent"],"Ош":["osh"],"Жыланды":["zhylandy"]
 };
 const CITY_CRED={
- "astana":{a:"Ken and Nyetta",l:"CC BY 2.0",u:"https://commons.wikimedia.org/wiki/File:Another_view_of_Downtown_Astana_(6245921591).jpg"},
- "astana-2":{a:"Matti Blume",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:Night_at_Esil_District,_Astana_(P1190721).jpg"},
- "almaty":{a:"Michael Grau",l:"CC BY-SA 3.0",u:"https://commons.wikimedia.org/wiki/File:TV-Turm_Almaty_-_3.jpg"},
- "almaty-2":{a:"Bgag",l:"CC0",u:"https://commons.wikimedia.org/wiki/File:Zenkov_Cathedral,_Almaty.jpg"},
  "shymkent":{a:"Eurovaran",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:Kazakhstan_Shymkent_Park_Nezavisimosti_1.jpg"},
- "aktau":{a:"Rassim",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:Aktau_Sunset_over_the_Caspian_Sea.jpg"},
  "aktobe":{a:"Esetok",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:Aktobe_Central_mosque_(exterior).jpg"},
  "atyrau":{a:"Dor Shabashewitz",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:Ja%C3%BD%C4%B1q_River_in_Atyrau.jpg"},
  "oral":{a:"Alxphoto",l:"CC BY-SA 4.0",u:"https://commons.wikimedia.org/wiki/File:%D0%A6%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C_%D0%A3%D1%80%D0%B0%D0%BB%D1%8C%D1%81%D0%BA.jpg"},

@@ -384,7 +384,7 @@ function evCard(e,n){const d=(e.ses[0]||{}).d,loc=evLoc(e),t=ttl(e),wd=wdTxt(d),
   return `<li class="evi${n!=null?" in":""}"${n!=null?` style="--n:${n}"`:""}><button type="button" class="evc${e.past?" past":""}" data-k="${e.k}" aria-haspopup="dialog">
 <img class="evc-im" src="${esc(e.ph.s)}"${two?` srcset="${esc(e.ph.s)} 640w, ${esc(e.ph.l)} 1200w" sizes="(max-width:760px) 92vw, (max-width:1060px) 46vw, 400px"`:""} alt="" loading="lazy" decoding="async">
 <span class="evc-top">${loc?`<span class="evc-loc">${ICO.dot}<span>${esc(loc)}</span></span>`:"<span></span>"}<span class="evc-when"><span class="evc-date">${esc(dayTxt(d))}</span>${wd?`<span class="evc-wd">${esc(wd)}</span>`:""}</span></span>
-<span class="evc-bot">${e.open?`<span class="evc-open"><i></i>${esc(tt("evOpen"))}</span>`:e.past?`<span class="evc-open done">${esc(tt("md_done"))}</span>`:""}<span class="evc-eb">${esc(eyebrow(e))}</span><span class="evc-t${tsz(t)}">${esc(t)}</span></span>
+<span class="evc-bot">${e.open?`<span class="evc-open">${esc(tt("evOpen"))}</span>`:e.past?`<span class="evc-open done">${esc(tt("md_done"))}</span>`:""}<span class="evc-eb">${esc(eyebrow(e))}</span><span class="evc-t${tsz(t)}">${esc(t)}</span></span>
 </button></li>`}
 
 /* --- окно события --- */
@@ -454,7 +454,7 @@ const chip=(a,v,label,on,pre)=>`<button type="button" class="chip${on?" on":""}"
 function renderChips(){const base=modeBase(),none=!EV.prog&&!EV.grp&&!EV.open&&!GEO.sel,i=I[L];
   const ps=PROGS.filter(p=>base.some(e=>e.prog.includes(p))),gs=GRPS.filter(g=>base.some(e=>e.grp===g));
   let h=chip("all","",tt("evAll"),none);
-  if(base.some(e=>e.open))h+=chip("open","",tt("evOpen"),EV.open,'<i class="dot"></i>');
+  if(base.some(e=>e.open))h+=chip("open","",tt("evOpen"),EV.open);
   if(ps.length>1)h+='<span class="csep"></span>'+ps.map(p=>chip("prog",p,p,EV.prog===p)).join("");
   if(gs.length>1)h+='<span class="csep"></span>'+gs.map(g=>chip("grp",g,tt("g_"+g),EV.grp===g)).join("");
   if(GEO.sel)h+=`<span class="csep"></span><button type="button" class="chip on rgc" data-a="reg" aria-label="${esc(tt("evRegX"))}: ${esc(unitName(GEO.sel,i))}">${ICO.map}${esc(unitName(GEO.sel,i))}${ICO.x}</button>`;
