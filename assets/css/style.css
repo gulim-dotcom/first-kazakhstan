@@ -193,13 +193,15 @@ h2.t.ul:after,h1.t.ul:after{content:"";display:block;width:96px;height:2px;backg
 .cw{position:relative;min-width:0}
 .rail{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 0 16px;margin:0 52px}
 .rail::-webkit-scrollbar{display:none}
-.wc{position:relative;flex:0 0 calc((100% - 48px)/3);height:350px;scroll-snap-align:start;overflow:hidden;border-radius:12px;box-shadow:none}
-.wim{position:absolute;inset:0;background-size:cover;background-position:center 25%}
-.wim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 20%,rgba(0,0,0,.55) 50%,rgba(0,0,0,.88) 100%)} /* затемнение снизу сильнее: белый текст читается на любом фото */
-.wt{position:absolute;left:0;right:0;bottom:0;padding:26px 28px;color:#fff}
-.wc .yr{position:absolute;right:20px;top:20px;z-index:2;padding:8px 18px;border-radius:999px;background:#fff;color:var(--blue);font-weight:700;font-size:20px;line-height:1.2}
-.wt b{display:block;font-size:24px;line-height:1.2;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.3)}
-.wt small{display:block;margin-top:8px;font-size:18px;font-weight:400;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+/* карточки побед и новостей в лентах – те же .evc, что у событий; .xc – только размер в ленте и заголовок */
+.rail>.xc{flex:0 0 calc((100% - 48px)/3);width:auto;aspect-ratio:380/400;scroll-snap-align:start}
+.nws>.xc{flex:0 0 360px;aspect-ratio:360/420}
+.xc-im{display:block;background:#1c2431 center 30%/cover no-repeat}
+.xc-t{display:block;max-width:100%;margin-top:4px;font-size:26px;font-size:clamp(19px,7.4cqi,30px);font-weight:800;line-height:1.08;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.xc.nw .xc-t{font-size:21px;font-size:clamp(17px,6.2cqi,24px);line-height:1.22;letter-spacing:-.01em;text-transform:none;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.xc .evc-eb{font-size:14px;font-size:clamp(12px,4cqi,15px);letter-spacing:.02em}
+.xc .evc-loc svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.xc.win .evc-loc svg{fill:var(--hot);stroke:none}
 .ar{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid #e5e7eb;cursor:pointer;z-index:3;display:grid;place-items:center;color:#000;transition:background-color .18s,border-color .18s,transform .18s}
 .ar svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ar.l{left:4px}.ar.r{right:4px}
@@ -380,6 +382,12 @@ html.dlg{overflow:hidden}
 @supports (corner-shape:squircle){.evd{border-radius:44px;corner-shape:squircle}}
 .evd[open]{display:flex;flex-direction:column;animation:evdIn .34s cubic-bezier(.2,.8,.2,1)}
 .evd::backdrop{background:rgba(10,14,22,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* старый браузер без <dialog>: окно фиксируется по центру сверху, затемнение – .evd-bd; закрытое – скрыто (у неизвестного тега нет своих стилей) */
+dialog:not([open]){display:none}
+.evd.fb{position:fixed;z-index:1001;top:24px;left:0;right:0;width:calc(100% - 32px);max-width:600px;margin:0 auto;max-height:calc(100vh - 48px)}
+.evd-bd{position:fixed;z-index:1000;top:0;right:0;bottom:0;left:0;background:rgba(10,14,22,.55)}
+.evd-bd[hidden]{display:none}
+@supports not (aspect-ratio:1/1){.evd-hero{height:0;padding-top:62.5%}}
 @keyframes evdIn{from{opacity:0;transform:translateY(18px) scale(.98)}}
 .evd-sc{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .evd-hero{position:relative;aspect-ratio:16/10;background:#1c2431;color:#fff}
@@ -412,6 +420,8 @@ html.dlg{overflow:hidden}
 .evd-c span{flex:1;min-width:160px;font-size:14px;line-height:1.4;color:var(--mu)}
 .evd-c em{flex-basis:100%;font-style:normal;font-size:12.5px;color:#a2501f}
 .evd-n{margin-top:12px;padding:10px 14px;border-radius:12px;background:#fdeee6;color:#8a3a1c;font-size:14px;line-height:1.45}
+.evd-p{margin-top:18px;font-size:16px;line-height:1.6;color:var(--mu);white-space:pre-line}
+.evd-end{height:20px}
 .evd-done{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:20px;padding:14px 16px;border-radius:14px;background:#f4f6f9;font-size:14.5px;color:var(--mu)}
 .evd-done b{color:var(--tx);font-weight:600}
 .evd-done a{color:var(--blue);font-weight:600}
@@ -449,6 +459,7 @@ html.dlg{overflow:hidden}
   .evsrc{text-align:left}
   .evd{width:100%;max-height:calc(100dvh - 20px);margin:auto 0 0;border-radius:26px 26px 0 0}
   @supports (corner-shape:squircle){.evd{border-radius:40px 40px 0 0}}
+  .evd.fb{top:auto;bottom:0;width:100%;max-width:none;max-height:calc(100vh - 20px)}
   .evd[open]{animation:sheetIn .4s cubic-bezier(.2,.8,.2,1)}
   .evd-ht{padding:0 20px 20px}
   .evd-b{padding:20px 20px 4px}
@@ -580,7 +591,7 @@ footer .team+.cp{margin-top:32px}
   .st b{font-size:30px;letter-spacing:-.01em;min-width:96px}
   .st .lb{margin-top:0;font-size:15px;line-height:1.35;min-width:0;overflow-wrap:anywhere}
   .grid{grid-template-columns:repeat(2,1fr)}
-  .wc{flex-basis:calc((100% - 28px)/2)}
+  .rail>.xc{flex-basis:calc((100% - 28px)/2)}
   .mg{grid-template-columns:1fr}
   .ngrid{grid-template-columns:repeat(2,1fr)}
   .two{gap:48px}
@@ -645,10 +656,7 @@ footer .team+.cp{margin-top:32px}
   .wh{margin-bottom:28px;gap:12px}
   .wh h3{font-size:20px}
   .rail{gap:16px;padding:4px 2px 12px;margin:0}
-  .wc{flex-basis:86%;height:300px}
-  .wt{padding:20px}
-  .wc .yr{top:14px;right:14px;font-size:17px;padding:6px 14px}
-  .wt small{font-size:16px}
+  .rail>.xc{flex-basis:86%;aspect-ratio:4/4.3}
   .ar{display:none}
   .val{gap:18px 12px;margin-top:28px}
   .vl h4{font-size:14px}
@@ -670,7 +678,7 @@ footer .team+.cp{margin-top:32px}
   .q .qi{height:150px;margin-bottom:14px}
   .q p{font-size:16px}
   .q b{font-size:15px}
-  .nws .card{flex-basis:84%}
+  .nws .card,.nws>.xc{flex-basis:84%}
   .ngrid{grid-template-columns:1fr;gap:16px;margin-top:24px}
   .np{padding-top:36px;padding-bottom:56px}
   .nws .im{height:170px}

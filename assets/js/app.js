@@ -249,8 +249,11 @@ function geoPanel(){const k=GEO.sel;
 }
 /* этап события словами (Скримидж, Региональный этап…) – по ключам s_* в data.js */
 const stageTxt=e=>{const k="s_"+e.stage;return T[L]&&T[L][k]?tt(k):""};
+/* победы: карточка как у событий – фото, сверху город и год, снизу программа и достижение; подробности – в окне (winModal) */
+const winImg=w=>w[13]||WI[w[3]]||GEN_IMG;
+const winProg=w=>w[10]?w[10+I[L]].split(" · ").pop():"FIRST® Global Challenge";
 function renderWinners(){const i=I[L];
-  $("#wins").innerHTML=W.map(w=>`<div class="wc"><div class="wim" data-bg="${esc(cu(w[13]||WI[w[3]]))}"></div><span class="yr">${w[3]}</span><div class="wt"><b>${esc(w[i])}</b><small>${esc(w[10]?w[10+i]:"FIRST® Global Challenge")}, ${esc(w[4+i])}</small></div></div>`).join("");
+  $("#wins").innerHTML=W.map((w,k)=>xCard("win",k,{img:winImg(w),loc:w[4+i],date:w[3],eb:winProg(w),t:w[i]})).join("");
 }
 /* FIRST түлектері: карточкалар — assets/js/alumni.js; бос мәтін басқа тілден алынады (қаз → рус → eng) */
 function renderAlumni(){const box=$("#alums");if(!box)return;
@@ -316,11 +319,11 @@ function newsList(){
     .sort((a,b)=>nd(b).localeCompare(nd(a))).slice(0,6);
   return[...sh,...tg,...N].sort((a,b)=>nd(b).localeCompare(nd(a))).slice(0,8);
 }
-function renderNews(){const i=I[L];
-  $("#nws").innerHTML=newsList().map(x=>{const body=`<div class="im" data-bg="${esc(cu(x.img))}" style="background-position:${esc(x.pos||"50% 50%")}"></div><div class="cb"><small>${esc(x.src)}${x.date?" · "+ndate(x.date):""}</small><b>${esc(x.t[i])}</b><p>${esc(x.p[i])}</p>${x.url?`<span class="rd">${esc(tt("read"))}</span>`:""}</div>`;
-    return x.url?`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`:`<div class="card">${body}</div>`}).join("");
+/* новости на главной: карточка как у событий – фото, сверху источник и дата, снизу заголовок; текст и ссылка – в окне (nwModal) */
+let NWL=[];
+function renderNews(){const i=I[L];NWL=newsList();
+  $("#nws").innerHTML=NWL.map((x,k)=>xCard("nw",k,{img:x.img,pos:x.pos,loc:x.src,date:x.date?dWords(x.date):"",t:x.t[i]})).join("");
 }
-
 /* --- события ---
  * Карточка (evCard) – фото города, на нём площадка, дата с днём недели, этап и город; подробности (категории, площадка, регионы, регистрация) –
  * в окне события (evModal) по нажатию на карточку. Над сеткой: «Алдағы / Өткен», поиск, сортировка, карта и фильтры-чипсы. */
@@ -330,6 +333,8 @@ const ICO={clk:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d=
   chk:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
   map:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 21 3l-7 18-2.5-8.5z"/></svg>',
   dot:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.3 6.4 11.6 6.7 11.9a1.1 1.1 0 0 0 1.6 0c.3-.3 6.7-6.6 6.7-11.9A7.5 7.5 0 0 0 12 2zm0 10.3a2.8 2.8 0 1 1 0-5.6 2.8 2.8 0 0 1 0 5.6z"/></svg>',
+  cup:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg>',
+  news:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2V5a1 1 0 0 1 1-1zM18 9h2v9a2 2 0 0 1-2 2M8 8h6M8 12h6M8 16h4"/></svg>',
   none:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6M8.5 11h5"/></svg>'};
 const vname=n=>{const v=typeof VENUE!="undefined"&&VENUE[lo(n)];return v?v[I[L]]:n};
 const venueHtml=v=>v?(v.u?`<a href="${esc(v.u)}" target="_blank" rel="noopener noreferrer">${esc(vname(v.n))}</a>`:esc(vname(v.n))):esc(tt("vtba"));
@@ -387,6 +392,30 @@ function evCard(e,n){const d=(e.ses[0]||{}).d,loc=evLoc(e),t=ttl(e),wd=wdTxt(d),
 <span class="evc-bot">${e.open?`<span class="evc-open">${esc(tt("evOpen"))}</span>`:e.past?`<span class="evc-open done">${esc(tt("md_done"))}</span>`:""}<span class="evc-eb">${esc(eyebrow(e))}</span><span class="evc-t${tsz(t)}">${esc(t)}</span></span>
 </button></li>`}
 
+/* карточка победы или новости – та же, что у событий (.evc): kind – "win" или "nw", k – номер в W или NWL.
+ * Фото – фоном через data-bg: грузится, когда до ленты остаётся ~1 экран (lazyBg) */
+function xCard(kind,k,o){
+  return `<button type="button" class="evc xc ${kind}" data-x="${kind}" data-k="${k}" aria-haspopup="dialog">
+<span class="evc-im xc-im" data-bg="${esc(cu(o.img||GEN_IMG))}"${o.pos?` style="background-position:${esc(o.pos)}"`:""}></span>
+<span class="evc-top">${o.loc?`<span class="evc-loc">${kind==="nw"?ICO.news:ICO.dot}<span>${esc(o.loc)}</span></span>`:"<span></span>"}${o.date?`<span class="evc-when"><span class="evc-date">${esc(o.date)}</span></span>`:""}</span>
+<span class="evc-bot">${o.eb?`<span class="evc-eb">${esc(o.eb)}</span>`:""}<span class="xc-t">${esc(o.t)}</span></span>
+</button>`}
+/* «2026-10-12» → «12 қазан 2026», «2026-10» → «қазан 2026» */
+function dWords(iso){const m=String(iso||"").match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);if(!m)return"";const mo=MG[L][+m[2]-1];return (m[3]?+m[3]+" ":"")+mo+" "+m[1]}
+/* окно победы или новости – в том же стиле, что окно события: фото сверху, строки с иконками, текст, кнопка-ссылка */
+function xModal(o){const row=(ic,lb,v)=>v?`<li><span class="ic">${ic}</span><div><span class="lb">${esc(lb)}</span><span class="v">${esc(v)}</span></div></li>`:"";
+  const rows=o.rows.map(r=>row(...r)).join("");
+  return `<div class="evd-sc"><div class="evd-hero"><img src="${esc(o.img||GEN_IMG)}" alt="" decoding="async"${o.pos?` style="object-position:${esc(o.pos)}"`:""}><button type="button" class="evd-x" aria-label="${esc(tt("md_close"))}">${ICO.x}</button>
+    <div class="evd-ht">${o.stg?`<span class="evd-stg">${esc(o.stg)}</span>`:""}<h3 id="evdT">${esc(o.title)}</h3></div></div>
+    <div class="evd-b">${rows?`<ul class="evd-f">${rows}</ul>`:""}${o.text?`<p class="evd-p">${esc(o.text)}</p>`:""}</div>
+    ${o.url?`<div class="evd-reg"><div class="rb"><a class="fb pri" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(o.btn)}${ICO.ext}</a></div></div>`:'<div class="evd-end"></div>'}</div>`}
+function winModal(w){const i=I[L];
+  return xModal({img:winImg(w),pos:"50% 30%",stg:`${w[3]} · ${winProg(w)}`,title:w[i],text:w[7+i],
+    rows:[[ICO.cal,tt("md_date"),w[14]?dWords(w[14]):w[3]],[ICO.pin,tt("md_city"),w[4+i]],[ICO.cup,tt("md_comp"),w[10]?w[10+i]:"FIRST® Global Challenge"]]})}
+function nwModal(x){const i=I[L];
+  return xModal({img:x.img,pos:x.pos,stg:x.src,title:x.t[i],text:x.p[i],url:x.url,btn:tt("read"),
+    rows:[[ICO.cal,tt("md_date"),x.date?dWords(x.date):""],[ICO.news,tt("md_src"),x.src]]})}
+
 /* --- окно события --- */
 const CATP={"FLL-D":0,"FLL-E":1,"FLL-C":2,FE:3,FTC:4,FRC:5};   /* код категории → программа в PROG (data.js): название, возраст, цвет */
 function catRow(c){if(c.code==="SMC"||c.code==="F4A")return"";
@@ -426,9 +455,15 @@ function evModal(e){const i=I[L],multi=e.ses.length>1,online=e.city.key==="onlin
     ${reg?`<div class="evd-reg">${reg}</div>`:""}
     ${c&&/^https:\/\/commons\.wikimedia\.org\//.test(c.u)?`<p class="evd-cr">${esc(tt("md_photo"))}: <a href="${esc(c.u)}" target="_blank" rel="noopener noreferrer">${esc(c.a)}</a> · ${esc(c.l)}</p>`:""}</div>`}
 let evFrom=null;
-function openEv(k,from){const e=ALL[k],d=$("#evd");if(!e||!d)return;
-  d.innerHTML=evModal(e);evFrom=from||null;
-  if(typeof d.showModal==="function"){if(!d.open)d.showModal()}else d.setAttribute("open","");
+/* что сейчас в окне: {x:"ev"|"win"|"nw",k} – чтобы при смене языка перерисовать его на новом языке */
+let DLG=null;
+const dlgHtml=o=>o.x==="win"?(W[o.k]?winModal(W[o.k]):""):o.x==="nw"?(NWL[o.k]?nwModal(NWL[o.k]):""):(ALL[o.k]?evModal(ALL[o.k]):"");
+function openEv(k,from){openDlg({x:"ev",k},from)}
+function openDlg(o,from){const d=$("#evd"),h=dlgHtml(o);if(!h||!d)return;
+  DLG=o;d.innerHTML=h;evFrom=from||null;
+  if(typeof d.showModal==="function"){if(!d.open)d.showModal()}
+  else{d.setAttribute("open","");d.classList.add("fb");let b=$("#evdBd");   /* браузер без <dialog> (iOS ≤ 15.3, Firefox < 98): окно поверх страницы своими стилями, затемнение – отдельный слой */
+    if(!b){b=document.createElement("div");b.id="evdBd";b.className="evd-bd";b.addEventListener("click",()=>closeEv());d.parentNode.insertBefore(b,d)}b.hidden=false}
   document.documentElement.classList.add("dlg");
   const x=d.querySelector(".evd-x");if(x)x.focus({preventScroll:true})}
 
@@ -500,7 +535,7 @@ function render(){
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
   $("#fs").placeholder=tt("fs");renderEvents();
-  const d=$("#evd");if(d&&d.open&&EV.cur!=null)d.innerHTML=evModal(ALL[EV.cur]);
+  const d=$("#evd");if(d&&d.hasAttribute("open")&&DLG){const h=dlgHtml(DLG);if(h)d.innerHTML=h}
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
 function setLang(l){if(!T[l])return;L=l;try{sessionStorage.setItem("fk-lang",l)}catch(e){}render()}
@@ -574,14 +609,21 @@ $("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b
   if(a==="all"){EV.prog=EV.grp="";EV.open=false;GEO.sel="";geoPanel()}
   else if(a==="open")EV.open=!EV.open;else if(a==="prog")EV.prog=EV.prog===v?"":v;else if(a==="grp")EV.grp=EV.grp===v?"":v;else if(a==="reg"){GEO.sel="";geoPanel()}
   EV.lim=0;renderEvents("anim")});
-$("#evs").addEventListener("click",e=>{const c=e.target.closest(".evc");if(c){EV.cur=+c.dataset.k;openEv(EV.cur,c);return}
+$("#evs").addEventListener("click",e=>{const c=e.target.closest(".evc");if(c){openEv(+c.dataset.k,c);return}
   if(e.target.closest(".evreset")){EV.prog=EV.grp="";EV.open=false;GEO.sel="";$("#fs").value="";geoPanel();EV.lim=0;renderEvents("anim")}});
+/* победы и новости: нажатие на карточку открывает то же окно */
+["#wins","#nws"].forEach(id=>{const r=$(id);if(r)r.addEventListener("click",e=>{const c=e.target.closest(".xc");if(c)openDlg({x:c.dataset.x,k:+c.dataset.k},c)})});
 $("#evmore").addEventListener("click",()=>{EV.lim+=STEP();renderEvents("more")});
 $("#fs").addEventListener("input",()=>{EV.lim=0;renderEvents()});
 /* окно события: крестик, нажатие на затемнение вокруг, Escape; фокус возвращается на карточку */
+function evClosed(){document.documentElement.classList.remove("dlg");DLG=null;if(evFrom&&document.contains(evFrom))evFrom.focus({preventScroll:true})}
+/* закрыть окно: у <dialog> – close() (дальше событие close), в старом браузере – снять open, спрятать затемнение и убрать блокировку прокрутки вручную */
+function closeEv(){const d=$("#evd");if(!d)return;if(typeof d.close==="function"){if(d.open)d.close();return}
+  if(!d.hasAttribute("open"))return;d.removeAttribute("open");d.classList.remove("fb");const b=$("#evdBd");if(b)b.hidden=true;evClosed()}
 {const d=$("#evd");if(d){
-  d.addEventListener("click",e=>{if(e.target===d||e.target.closest(".evd-x"))d.close()});
-  d.addEventListener("close",()=>{document.documentElement.classList.remove("dlg");EV.cur=null;if(evFrom&&document.contains(evFrom))evFrom.focus({preventScroll:true})});
+  d.addEventListener("click",e=>{if(e.target===d||e.target.closest(".evd-x"))closeEv()});
+  d.addEventListener("close",evClosed);
+  if(typeof d.showModal!=="function")addEventListener("keydown",e=>{if(e.key==="Escape"||e.key==="Esc")closeEv()});
 }}
 document.querySelectorAll(".lm button").forEach(b=>b.addEventListener("click",()=>{setLang(b.dataset.l);document.body.classList.remove("open");burger.setAttribute("aria-expanded",false)}));
 $("#pmore").addEventListener("click",function(){$("#progs").classList.remove("cut");this.hidden=true});
