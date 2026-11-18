@@ -60,7 +60,11 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 /* картинка-«пилюля» в строке заголовка (вставляет app.js → pills по атрибуту data-pill; сам файл – по классу ниже) */
 .pill{display:inline-block;width:1.52em;height:.76em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/cover no-repeat;vertical-align:-.03em}
 .p-team{background-image:url(../img/x-nw-hero.webp)}
-.p-proof{background-image:url(../img/w-hou26-fllc.webp)}
+/* «Доказанная польза»: «пилюля» с рукой (pill-ball-bg.webp), а шарик-вырезка (pill-ball.webp) выступает над ней. Вырезка лежит поверх фона в тех же
+   пропорциях, что исходные кадры (фон 1001×512, вырезка 648×739 со сдвигом 294 и −225), поэтому рука совпадает точь-в-точь.
+   Отступ сверху оставляет место под шарик, когда заголовок переносится и «пилюля» оказывается на второй строке */
+.p-proof{position:relative;width:1.76em;height:.9em;margin-top:.4em;background-image:url(../img/pill-ball-bg.webp);background-size:100% 100%;vertical-align:-.1em}
+.p-proof:after{content:"";position:absolute;left:29.37%;top:-43.95%;width:64.74%;height:144.34%;background:url(../img/pill-ball.webp) center/100% 100% no-repeat;pointer-events:none}
 .p-win{background-image:url(../img/w-hou26-ftc-gold.webp);background-position:50% 30%}
 .p-alum{background-image:url(../img/alumni/stanford.webp);background-position:50% 30%}
 .p-val{background-image:url(../img/ph3.webp);background-position:50% 35%}
