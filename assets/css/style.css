@@ -60,12 +60,19 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 /* картинка-«пилюля» в строке заголовка (вставляет app.js → pills по атрибуту data-pill; сам файл – по классу ниже) */
 .pill{display:inline-block;width:1.52em;height:.76em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/cover no-repeat;vertical-align:-.03em}
 .p-team{background-image:url(../img/x-nw-hero.webp)}
-/* «Доказанная польза»: «пилюля» с рукой (pill-ball-bg.webp), а шарик-вырезка (pill-ball.webp) выступает над ней. Вырезка лежит поверх фона в тех же
-   пропорциях, что исходные кадры (фон 1001×512, вырезка 648×739 со сдвигом 294 и −225), поэтому рука совпадает точь-в-точь.
-   Отступ сверху оставляет место под шарик, когда заголовок переносится и «пилюля» оказывается на второй строке */
-.p-proof{position:relative;width:1.76em;height:.9em;margin-top:.4em;background-image:url(../img/pill-ball-bg.webp);background-size:100% 100%;vertical-align:-.1em}
-.p-proof:after{content:"";position:absolute;left:29.37%;top:-43.95%;width:64.74%;height:144.34%;background:url(../img/pill-ball.webp) center/100% 100% no-repeat;pointer-events:none}
-.p-win{background-image:url(../img/w-hou26-ftc-gold.webp);background-position:50% 30%}
+/* «Пилюли» с выступающим предметом: фон-«пилюля», поверх него вырезка, которая выше середины «пилюли» выходит за её край, а ниже обрезана по её форме.
+   Обе картинки собраны из исходных кадров заранее (совмещение и обрезка – не в стилях), здесь только положение вырезки в долях «пилюли».
+   «Доказанная польза»: фото руки (pill-ball-bg.webp) и шарик FIRST Global (pill-ball.webp). Отступ сверху оставляет место под шарик,
+   когда заголовок переносится и «пилюля» оказывается на второй строке */
+.p-proof,.p-win{position:relative;height:.9em;vertical-align:-.1em}
+.p-proof:after,.p-win:after{content:"";position:absolute;background:center/100% 100% no-repeat;pointer-events:none}
+#winners .sh{margin-top:104px} /* кубок выступает над заголовком почти на полторы строки – над разделом больше воздуха, метки над заголовком нет */
+@media(max-width:760px){#winners .sh{margin-top:84px}}
+.p-proof{width:1.93em;margin-top:.62em;background-image:url(../img/pill-ball-bg.webp);background-size:100% 100%}
+.p-proof:after{left:12.5%;top:-65.51%;width:86.73%;height:165.84%;background-image:url(../img/pill-ball.webp)}
+/* «Наши достижения»: кубок (pill-cup.webp) в золотистой «стеклянной» «пилюле» – светлый блик сверху, тень снизу */
+.p-win{width:1.76em;background:linear-gradient(160deg,#fbeab8 0%,#f1cf83 46%,#e5b860 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.65),inset 0 -.1em .16em rgba(176,120,28,.26)}
+.p-win:after{left:8.16%;top:-157.95%;width:83.68%;height:258.27%;background-image:url(../img/pill-cup.webp)}
 .p-alum{background-image:url(../img/alumni/stanford.webp);background-position:50% 30%}
 .p-val{background-image:url(../img/ph3.webp);background-position:50% 35%}
 .p-prog{background-image:url(../img/p-ftc-2026.webp)}
