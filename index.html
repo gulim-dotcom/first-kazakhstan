@@ -21,7 +21,7 @@
 <script src="assets/js/fresh.js" defer></script>
 <link rel="preload" as="image" href="assets/img/hero-team-1500.webp" media="(min-width: 761px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/img/hero-team-800.webp" media="(max-width: 760px)" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=20261024-1710">
+<link rel="stylesheet" href="assets/css/style.css?v=20261118-2200">
 </head>
 <body>
 
@@ -66,20 +66,21 @@
     <h1 data-t="h1"></h1>
     <p data-t="h1p"></p>
     <div class="hb">
-      <a class="btn" href="#start"><span data-t="regb"></span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn go" href="#start"><span data-t="regb"></span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <a class="btn gh" href="#programs"><span data-t="n2"></span></a>
     </div>
   </div>
+  <svg class="hmark" viewBox="0 0 1000 132" aria-hidden="true" focusable="false"><text x="0" y="146" textLength="1000" lengthAdjust="spacing">Kazakhstan</text></svg>
   <a class="g-load" href="#season"><i aria-hidden="true"></i><span data-t="hLoad"></span></a>
 </header>
 
 <section id="start">
-  <div class="w">
-    <div class="dv"><span data-t="sth"></span></div>
+  <div class="w panel stp">
+    <span class="lbl" data-t="sth"></span>
     <div class="steps">
-      <div class="step"><b>1</b><div><h3 data-t="st1"></h3><a href="#programs" data-t="st1a"></a></div></div>
-      <div class="step"><b>2</b><div><h3 data-t="st2"></h3><a href="#docs" data-t="st2a"></a></div></div>
-      <div class="step"><b>3</b><div><h3 data-t="st3"></h3><a href="#events" data-t="st3a"></a></div></div>
+      <div class="step"><b>01</b><div><h3 data-t="st1"></h3><a href="#programs" data-t="st1a"></a></div></div>
+      <div class="step"><b>02</b><div><h3 data-t="st2"></h3><a href="#docs" data-t="st2a"></a></div></div>
+      <div class="step"><b>03</b><div><h3 data-t="st3"></h3><a href="#events" data-t="st3a"></a></div></div>
     </div>
   </div>
 </section>
@@ -103,22 +104,22 @@
     <div class="col">
       <figure class="p1"><img src="assets/img/team-kz-fgc25-podium.webp" alt="Сборная Казахстана" data-talt="cap1" width="800" height="533" loading="lazy"><figcaption data-t="cap1"></figcaption></figure>
       <figure class="p2"><img src="assets/img/ph3.webp" alt="FIRST Tech Challenge" width="440" height="471" loading="lazy"><figcaption>FIRST Tech Challenge</figcaption></figure>
-      <i class="fr" aria-hidden="true"></i>
     </div>
     <div class="ax">
-      <h2 class="t"><span class="fi">FIRST</span>® Kazakhstan</h2>
+      <span class="lbl" data-t="n1"></span>
+      <h2 class="t"><span class="fi">FIRST</span>® <i class="pill p-team" aria-hidden="true"></i> Kazakhstan</h2>
       <p data-t="about"></p>
-      <a class="btn o" href="https://ustem.kz" target="_blank" rel="noopener">USTEM Foundation <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn go" href="https://ustem.kz" target="_blank" rel="noopener">USTEM Foundation <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>
 
 <section id="results">
   <div class="w">
-    <div class="dv"><span data-t="res"></span></div>
     <div class="two res">
       <div class="proof">
-        <h3 data-t="proof"></h3>
+        <span class="lbl" data-t="res"></span>
+        <h3 class="t" data-t="proof" data-pill="p-proof"></h3>
         <p data-t="proofp"></p>
         <a class="rep" href="https://www.firstinspires.org/about/impact" target="_blank" rel="noopener noreferrer" data-t="rep"></a>
         <div class="wl" id="gstats"></div>
@@ -130,31 +131,31 @@
 
 <section id="winners">
   <div class="w">
-    <div class="wh"><h3 data-t="win"></h3></div>
+    <div class="sh nav"><div><span class="lbl" data-t="n7"></span><h3 class="t" data-t="win" data-pill="p-win"></h3></div></div>
     <div class="cw"><button type="button" class="ar l" data-sc="#wins" data-d="-1" aria-label="Назад" data-ta="a_prev"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><div class="rail" id="wins"></div><button type="button" class="ar r" data-sc="#wins" data-d="1" aria-label="Вперёд" data-ta="a_next"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
   </div>
 </section>
 
 <section id="alumni">
   <div class="w">
-    <div class="wh"><h3 id="alh"></h3></div>
-    <p class="sub alsub" data-t="alp"></p>
+    <div class="sh nav"><div><h3 class="t" id="alh" data-pill="p-alum"></h3><p class="sub" data-t="alp"></p></div></div>
     <div class="cw"><button type="button" class="ar l" data-sc="#alums" data-d="-1" aria-label="Назад" data-ta="a_prev"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button><div class="rail alr" id="alums"></div><button type="button" class="ar r" data-sc="#alums" data-d="1" aria-label="Вперёд" data-ta="a_next"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
   </div>
 </section>
 
 <section id="values">
-  <div class="w">
-    <h2 class="t ul" id="valh"></h2>
-    <p class="sub" data-t="valp"></p>
+  <div class="w panel vp">
+    <div>
+      <h2 class="t" id="valh" data-pill="p-val"></h2>
+      <p class="sub" data-t="valp"></p>
+    </div>
     <div class="val" id="vals"></div>
   </div>
 </section>
 
 <section id="programs">
   <div class="w">
-    <h2 class="t ul" id="progh"></h2>
-    <p class="sub" data-t="progp"></p>
+    <div class="sh"><div><h2 class="t" id="progh" data-pill="p-prog"></h2></div><p class="sub" data-t="progp"></p></div>
     <div class="grid" id="progs"></div>
     <div class="pmorew"><button class="pmore" id="pmore" type="button" hidden></button></div>
 
@@ -178,7 +179,7 @@
 <section id="events">
   <div class="w">
     <div class="evh">
-      <h2 class="t ul" data-t="n3"></h2>
+      <h2 class="t" data-t="n3" data-pill="p-ev"></h2>
       <p class="evlead" data-t="evLead"></p>
     </div>
     <div class="evbar" id="evbar">
@@ -207,7 +208,7 @@
 <section id="media">
   <div class="w mg">
     <div class="mp">
-      <h2 class="mh" data-t="n4"></h2>
+      <h2 class="mh" data-t="n4" data-pill="p-media"></h2>
       <div class="msub" data-t="msub"></div>
       <div class="q"><div class="qi" role="img" aria-label="Касым-Жомарт Токаев" data-ta="qname"></div><p id="quote"></p><b data-t="qauthor"></b></div>
     </div>
@@ -217,7 +218,7 @@
 
 <section class="pt" id="partners">
   <div class="w">
-    <div class="dh"><h2 data-t="reg"></h2></div>
+    <div class="sh"><div><h2 class="t" data-t="reg"></h2></div></div>
     <div class="mq" id="mr"></div>
     <div class="sup" id="support">
       <img class="supqr" src="assets/img/kaspi-qr.webp" alt="Kaspi QR – ОФ «USTEM Foundation»" width="1294" height="1252" loading="lazy" decoding="async">
@@ -232,9 +233,10 @@
 
 <footer id="contacts">
   <div class="w">
+    <div class="panel">
     <div class="fw">
-      <div>
-        <img class="flogo" src="assets/img/logo-reverse.webp" alt="FIRST® Kazakhstan" width="176" height="52">
+      <div class="fq">
+        <span class="lbl" data-t="n8"></span>
         <p>We don't use children to build robots. We use robots to build children.</p>
       </div>
       <div class="fc">
@@ -247,14 +249,16 @@
       </div>
     </div>
     <div class="team">
-      <h4 class="tmh" data-t="tmH"></h4>
+      <h4 class="tmh lbl" data-t="tmH"></h4>
       <div class="tmg">
         <a class="tm" href="mailto:dan.yermatov@ustemfoundation.org"><span class="tmr" data-t="tm1"></span><span class="tme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>dan.yermatov@ustemfoundation.org</span></a>
         <a class="tm" href="mailto:ayaulym@ustemfoundation.org"><span class="tmr" data-t="tm2"></span><span class="tme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>ayaulym@ustemfoundation.org</span></a>
         <a class="tm" href="mailto:jibekzarlyq@ustemfoundation.org"><span class="tmr" data-t="tm3"></span><span class="tme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>jibekzarlyq@ustemfoundation.org</span></a>
       </div>
     </div>
-    <div class="cp">© 2026 FIRST® Kazakhstan · USTEM Foundation</div>
+    </div>
+    <div class="cp"><img class="flogo" src="assets/img/x-logo.webp" alt="FIRST® Kazakhstan" width="155" height="46" loading="lazy"><span>© 2026 FIRST® Kazakhstan · USTEM Foundation</span></div>
+    <svg class="fmark" viewBox="0 0 1000 104" aria-hidden="true" focusable="false"><text x="0" y="100" textLength="1000" lengthAdjust="spacing">Kazakhstan</text></svg>
   </div>
 </footer>
 
@@ -280,7 +284,7 @@
 <script src="assets/data/news.js"></script>
 <script src="assets/data/status.js"></script>
 <script src="assets/data/site.js"></script>
-<script src="assets/js/app.js?v=20261024-1710"></script>
+<script src="assets/js/app.js?v=20261118-2200"></script>
 <script src="assets/js/wa.js"></script>
 </body>
 </html>

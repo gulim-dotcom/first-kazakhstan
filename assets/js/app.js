@@ -179,7 +179,7 @@ const rulesUrl=()=>(L=="kk"?RULES.kk:RULES.ru)||RULES.kk;
 
 /* статистика: цифры Казахстана растут с нуля, когда блок появляется на экране; цифры FIRST в мире стоят сразу */
 function renderStats(){const i=I[L];
-  const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf}`;
+  const st=(pre,n,suf,lab,url)=>{const v=`${pre?esc(pre)+fmt(n):`<span class="num" data-n="${n}">${fmt(n)}</span>`}${suf?`<i>${suf}</i>`:""}`;
     return `<div class="st"><b>${url?`<a class="law" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${v}</a>`:v}</b><span class="lb">${esc(lab)}</span></div>`};
   const law=KS.filter(k=>k[4]),nums=KS.filter(k=>!k[4]); /* документ (приказ № 514) – строкой с галочкой, а не цифрой: это не достижение */
   $("#stats").innerHTML=nums.map(k=>st(k[2],k[0],Array.isArray(k[1])?k[1][i]:k[1],k[3][i])).join("")+law.map(k=>`<p class="lawn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>${esc(k[3][i])} <a href="${esc(k[4][i])}" target="_blank" rel="noopener noreferrer">${esc(k[2])}${k[0]}</a></span></p>`).join(""); /* k[1] – суффикс (строка или по языкам), k[4] – ссылка на официальный документ (приказ № 514) */
@@ -524,6 +524,15 @@ function applySite(){const S=(window.FK_SITE||{}).season;if(!S)return;
   const ev=((window.FK_SITE||{}).stats||{}).events;if(ev>=10&&KS[3]&&Math.floor(ev/10)*10>KS[3][0])KS[3][0]=Math.floor(ev/10)*10; /* число мероприятий из расписания: если в таблице больше, цифра «80+» растёт сама (с округлением до десятков) */
 }
 applySite();
+/* --- картинка-«пилюля» внутри заголовка ---
+ * У заголовка в index.html стоит data-pill="класс" (сама картинка – в style.css → .pill, .p-…). Картинка вставляется после первого слова;
+ * если заголовок из одного слова – в конец. Текст заголовка при смене языка пишется заново, поэтому вызывается в конце каждой отрисовки. */
+function pills(){document.querySelectorAll("[data-pill]").forEach(h=>{
+  if(h.querySelector(".pill"))return;
+  const p=document.createElement("i");p.className="pill "+h.dataset.pill;p.setAttribute("aria-hidden","true");
+  const w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT);
+  for(let n;(n=w.nextNode());){const k=n.nodeValue.search(/\S\s/);if(k>=0){const rest=n.splitText(k+1);rest.parentNode.insertBefore(p,rest);return}}
+  h.appendChild(p)})}
 /* --- язык --- */
 function render(){
   document.documentElement.lang=L=="kk"?"kk":L;
@@ -534,7 +543,7 @@ function render(){
   $("#lang").value=L;
   document.querySelectorAll(".lm button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
   renderStats();renderGeo();renderWinners();renderAlumni();renderValues();renderQuote();renderPrograms();renderNews();renderPartners();
-  $("#fs").placeholder=tt("fs");renderEvents();
+  $("#fs").placeholder=tt("fs");renderEvents();pills();
   const d=$("#evd");if(d&&d.hasAttribute("open")&&DLG){const h=dlgHtml(DLG);if(h)d.innerHTML=h}
 }
 /* выбранный язык держится только в пределах визита (главная ↔ новости); каждый новый заход — на казахском */
