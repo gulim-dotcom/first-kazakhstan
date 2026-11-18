@@ -28,6 +28,7 @@
   --sh:0 1px 2px rgba(13,14,18,.05),0 18px 34px -22px rgba(13,14,18,.32);
   --rx:32px;--rl:24px;--rm:16px;--rc:10px; /* скругления: панель, вложенная плитка или фото, мелкий блок, поле */
   --gut:40px; /* поле страницы слева и справа */
+  --ht:88px; /* на этой высоте от верха окна первый экран «прилипает» под шапкой (assets/js/scroll.js) */
   --ease:cubic-bezier(.2,.8,.2,1);
   --i-ne-k:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0e12' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M7 17 17 7M8 7h9v9'/></svg>");
   --i-ne-w:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M7 17 17 7M8 7h9v9'/></svg>");
@@ -166,6 +167,24 @@ section{padding:8px 0}
   .g-load i{animation:gSpin .9s linear infinite}
 }
 @media(prefers-reduced-motion:reduce){.g-s1{opacity:1}.g-s2{display:none}}
+/* первый экран по прокрутке (assets/js/scroll.js ставит класс scrub у <html> и пишет в .hero доли --a и --b от 0 до 1).
+   Экран стоит на месте, пока прокручивается запас .hpin (90% высоты окна). Фаза A (--a): текст уходит вверх и гаснет, фото темнеет и чуть приближается,
+   слово Kazakhstan поднимается в центр. Фаза B (--b): из темноты проявляется вторая сцена, её герои «отъезжают» на место.
+   Смена сцен по времени в этом режиме выключена – сцены меняет прокрутка. Сдвиги – свойствами translate и scale, чтобы не спорить с анимациями transform. */
+.scrub .hpin:after{content:"";display:block;height:90vh} /* запас прокрутки – блоком, а не отступом: «прилипший» экран не выходит за область содержимого .hpin */
+.scrub .hero{position:sticky;top:var(--ht);--a:0;--b:0}
+.scrub .g-sc{animation:none}
+.scrub .g-s1{opacity:1}
+.scrub .g-s2{opacity:var(--b)}
+.scrub .g-vis:after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;background:#0b0c11;opacity:calc(var(--a) * .84 - var(--b) * .56)}
+.scrub .g-pan{scale:calc(1 + var(--a) * .06)}
+.scrub .g-man{transform-origin:50% 100%}
+.scrub .g-s1 .g-man{scale:calc(1 + var(--a) * .06)}
+.scrub .g-s2 .g-man{scale:calc(1.1 - var(--b) * .1)}
+.scrub .hero .in{opacity:calc(1 - var(--a) * 2.2);translate:0 calc(var(--a) * -56px)}
+.scrub .hero.h-out .in{visibility:hidden}
+.scrub .hmark{overflow:visible;translate:0 calc(var(--a) * (6.6cqi - var(--hy,0px)))} /* overflow: низ букв при подъёме виден целиком, на месте его срезает край панели */
+.scrub .g-load{opacity:calc(1 - var(--a) * 1.6)}
 
 /* ---------- как начать: три шага с крупными номерами ---------- */
 #start{padding-top:16px}
@@ -652,8 +671,10 @@ footer .flogo{height:36px;width:auto}
 /* Только там, где браузер умеет привязывать анимацию к прокрутке (animation-timeline): без скрипта, и блок не останется невидимым в старом браузере.
    Сдвиг – свойством translate, чтобы не спорить с transform при наведении. */
 @keyframes rise{from{opacity:0;translate:0 30px}}
+@keyframes drift{from{translate:0 -4.5%}to{translate:0 4.5%}} /* фото внутри рамки едет медленнее страницы */
 @media(prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
   .panel,.sh,.sp,.ab .col,.ab .ax,.proof,.st,.lawn,.grid>.pc,.docs,.mp,.mq,.sup,.fmark{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 26%}
+  .ab .p1 img{scale:1.12;animation:drift linear both;animation-timeline:view()}
 }}
 
 /* ---------- адаптив ---------- */
@@ -667,6 +688,7 @@ footer .flogo{height:36px;width:auto}
 @media(min-width:1061px) and (max-width:1160px){.nl{font-size:13.5px}.nl>a{padding:9px 8px}}
 @media(max-width:1060px){
   :root{--gut:28px}
+  :root{--ht:84px}
   html{scroll-padding-top:84px}
   .panel,.ab .ax,.proof{padding:36px 32px}
   .top{height:60px;padding:0 8px 0 18px}
@@ -716,6 +738,7 @@ footer .flogo{height:36px;width:auto}
   h2.t,h1.t,h3.t{font-size:clamp(30px,8.6vw,38px)}
   .sub{font-size:15.5px}
   .btn{min-height:50px;font-size:15.5px}
+  :root{--ht:76px}
   .top{top:8px;margin-top:8px}
   #start{padding-top:8px}
   .stp{padding:26px 22px 10px}
