@@ -57,27 +57,37 @@ button,select,input{font:inherit;color:inherit}
 .lbl:before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--acc)}
 /* заголовок раздела: крупный, средней жирности, плотный */
 h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04;letter-spacing:-.035em;color:var(--ink);text-wrap:balance}
-/* картинка-«пилюля» в строке заголовка (вставляет app.js → pills по атрибуту data-pill; сам файл – по классу ниже) */
-.pill{display:inline-block;width:1.52em;height:.76em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/cover no-repeat;vertical-align:-.03em}
-.p-team{background-image:url(../img/x-nw-hero.webp)}
-/* «Пилюли» с выступающим предметом: фон-«пилюля», поверх него вырезка, которая выше середины «пилюли» выходит за её край, а ниже обрезана по её форме.
-   Обе картинки собраны из исходных кадров заранее (совмещение и обрезка – не в стилях), здесь только положение вырезки в долях «пилюли».
-   «Доказанная польза»: фото руки (pill-ball-bg.webp) и шарик FIRST Global (pill-ball.webp). Отступ сверху оставляет место под шарик,
-   когда заголовок переносится и «пилюля» оказывается на второй строке */
-.p-proof,.p-win{position:relative;height:.9em;vertical-align:-.1em}
-.p-proof:after,.p-win:after{content:"";position:absolute;background:center/100% 100% no-repeat;pointer-events:none}
-#winners .sh{margin-top:104px} /* кубок выступает над заголовком почти на полторы строки – над разделом больше воздуха, метки над заголовком нет */
-@media(max-width:760px){#winners .sh{margin-top:84px}}
-.p-proof{width:1.93em;margin-top:.62em;background-image:url(../img/pill-ball-bg.webp);background-size:100% 100%}
+/* картинка-«пилюля» в строке заголовка (вставляет app.js → pills по атрибуту data-pill; что в ней – по классу ниже).
+   У каждой «пилюли» фон (фото или градиент) и поверх него вырезка-предмет (:after), которая выше середины «пилюли» выходит за её край, а ниже обрезана
+   по её форме. Картинки собраны заранее из фото сайта (совмещение и обрезка – не в стилях), здесь только положение вырезки в долях «пилюли».
+   margin-top оставляет место под выступающий предмет, когда заголовок переносится и «пилюля» оказывается на второй строке */
+.pill{display:inline-block;position:relative;width:1.8em;height:.9em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/100% 100% no-repeat;vertical-align:-.1em}
+.pill:after{content:"";position:absolute;background:center/100% 100% no-repeat;pointer-events:none}
+/* «О нас»: сборная на фоне сцены FIRST Global */
+.p-team{width:2.25em;margin-top:.3em;background-image:url(../img/pill-team-bg.webp)}
+.p-team:after{left:-0.07%;top:-33.05%;width:100.36%;height:133.48%;background-image:url(../img/pill-team.webp)}
+/* «Доказанная польза»: рука и шарик FIRST Global */
+.p-proof{width:1.93em;margin-top:.62em;background-image:url(../img/pill-ball-bg.webp)}
 .p-proof:after{left:12.5%;top:-65.51%;width:86.73%;height:165.84%;background-image:url(../img/pill-ball.webp)}
-/* «Наши достижения»: кубок (pill-cup.webp) в золотистой «стеклянной» «пилюле» – светлый блик сверху, тень снизу */
+/* «Наши достижения»: кубок в золотистой «стеклянной» «пилюле» – светлый блик сверху, тень снизу */
 .p-win{width:1.76em;background:linear-gradient(160deg,#fbeab8 0%,#f1cf83 46%,#e5b860 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.65),inset 0 -.1em .16em rgba(176,120,28,.26)}
 .p-win:after{left:8.16%;top:-157.95%;width:83.68%;height:258.27%;background-image:url(../img/pill-cup.webp)}
-.p-alum{background-image:url(../img/alumni/stanford.webp);background-position:50% 30%}
-.p-val{background-image:url(../img/ph3.webp);background-position:50% 35%}
-.p-prog{background-image:url(../img/p-ftc-2026.webp)}
-.p-ev{background-image:url(../img/city/astana-640.webp)}
-.p-media{background-image:url(../img/n-fgc26.webp)}
+#winners .sh{margin-top:104px} /* кубок выступает над заголовком почти на полторы строки – над разделом больше воздуха, метки над заголовком нет */
+@media(max-width:760px){#winners .sh{margin-top:84px}}
+/* «Выпускники»: выпускница с флажком Stanford на оранжевом */
+.p-alum{width:1.80em;margin-top:.22em;background:linear-gradient(150deg,#f4965c,#d6541e)}
+.p-alum:after{left:8.1%;top:-25.15%;width:79.05%;height:125.24%;background-image:url(../img/pill-alum.webp)}
+/* «Ценности»: три плитки с иконками ценностей; «СМИ о нас»: микрофон. Обе – один SVG-файл: «пилюля» и предмет над ней (верхние 60% картинки – над «пилюлей») */
+.p-val,.p-media{margin-top:.5em;background:none}
+.p-val:after,.p-media:after{left:0;top:-60%;width:100%;height:160%}
+.p-val:after{background-image:url(../img/pill-val.svg)}
+.p-media:after{background-image:url(../img/pill-media.svg)}
+/* «Программы»: ребята с роботом FTC на фоне пит-зоны */
+.p-prog{width:1.98em;margin-top:.1em;background-image:url(../img/pill-prog-bg.webp)}
+.p-prog:after{left:-3.14%;top:-12.05%;width:100.77%;height:112.12%;background-image:url(../img/pill-prog.webp)}
+/* «События»: Байтерек над ночной Астаной (фон и вырезка – из одного фото, совпадают точь-в-точь) */
+.p-ev{width:1.89em;margin-top:.62em;background-image:url(../img/pill-ev-bg.webp)}
+.p-ev:after{left:36.2%;top:-69.95%;width:27.83%;height:165.81%;background-image:url(../img/pill-ev.webp)}
 .sub{color:var(--mu);font-size:16px;line-height:1.6;max-width:440px}
 /* шапка раздела: слева метка и заголовок, справа короткое пояснение; .nav – справа место под стрелки ленты */
 .sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 48px;margin:72px 0 28px}
@@ -591,7 +601,7 @@ dialog:not([open]){display:none}
 .mp{display:flex;flex-direction:column;align-items:flex-start;padding:32px 12px 12px;border-radius:var(--rx);background:var(--card)}
 .mh{padding:0 20px;font-size:clamp(28px,3vw,42px);font-weight:500;color:var(--ink);line-height:1.06;letter-spacing:-.03em}
 /* подзаголовок – меткой над заголовком */
-.msub{order:-1;display:flex;align-items:center;gap:8px;margin:0 20px 14px;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.07em;text-transform:uppercase;color:var(--bd)}
+.msub{order:-1;display:flex;align-items:center;gap:8px;margin:0 20px 26px;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.07em;text-transform:uppercase;color:var(--bd)}
 .msub:before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--acc)}
 .q{align-self:stretch;margin-top:26px;padding:10px 10px 18px;border-radius:var(--rl);background:var(--soft)}
 .q .qi{height:170px;border-radius:var(--rm);background:url(../img/x-q.webp) 40% 30%/cover;margin-bottom:18px}
@@ -679,12 +689,14 @@ footer .flogo{height:36px;width:auto}
 .wa-join:focus-visible,.wa-x:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
 /* ---------- появление блоков при прокрутке ---------- */
-/* Только там, где браузер умеет привязывать анимацию к прокрутке (animation-timeline): без скрипта, и блок не останется невидимым в старом браузере.
-   Сдвиг – свойством translate, чтобы не спорить с transform при наведении. */
-@keyframes rise{from{opacity:0;translate:0 30px}}
-@keyframes drift{from{translate:0 -4.5%}to{translate:0 4.5%}} /* фото внутри рамки едет медленнее страницы */
+/* assets/js/reveal.js: блок ниже экрана получает класс rv (скрыт), у экрана – in (плавно появляется один раз), затем оба класса снимаются.
+   Прячет блоки только скрипт, поэтому без него всё видно. Сдвиг – свойством translate, чтобы не спорить с transform при наведении; --d – задержка для соседних блоков. */
+.rv{opacity:0;translate:0 26px}
+.rv.in{opacity:1;translate:none;transition:opacity .7s ease var(--d,0ms),translate .8s var(--ease) var(--d,0ms)}
+@media print{.rv{opacity:1;translate:none}}
+/* фото «О нас» внутри рамки едет чуть медленнее страницы – там, где браузер умеет привязывать анимацию к прокрутке */
+@keyframes drift{from{translate:0 -4.5%}to{translate:0 4.5%}}
 @media(prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
-  .panel,.sh,.sp,.ab .col,.ab .ax,.proof,.st,.lawn,.grid>.pc,.docs,.mp,.mq,.sup,.fmark{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 26%}
   .ab .p1 img{scale:1.12;animation:drift linear both;animation-timeline:view()}
 }}
 
@@ -797,7 +809,7 @@ footer .flogo{height:36px;width:auto}
   .pmore{display:inline-flex;align-items:center;justify-content:center;min-height:52px;width:100%;padding:0 20px;border:0;border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-weight:600;font-size:15.5px;cursor:pointer}
   .docs{margin-top:12px;padding:32px 22px 22px}
   .dl a{min-height:68px;font-size:15.5px;margin:0 -10px;padding:12px 10px;gap:12px}
-  .mh{padding:0 12px}.msub{margin:0 12px 12px}
+  .mh{padding:0 12px}.msub{margin:0 12px 22px}
   .mp{padding:26px 10px 10px}
   .q .qi{height:170px}
   .nws>.xc{flex-basis:84%}

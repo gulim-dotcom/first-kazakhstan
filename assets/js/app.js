@@ -561,13 +561,13 @@ function italicFirst(root){
     t.nodeValue.split(FW).forEach((s,i)=>{if(!s)return;if(i%2){const e=document.createElement("span");e.className="fir";e.textContent=s;if(fx)e.style.display="contents";f.appendChild(e)}else f.appendChild(document.createTextNode(s))});
     t.parentNode.replaceChild(f,t)});
 }
-/* --- фото в каруселях и карточках грузятся, когда до блока остаётся ~1 экран: первый экран открывается быстрее,
+/* --- фото в каруселях и карточках грузятся, когда до блока остаётся ~2 экрана: первый экран открывается быстрее,
  * телефон не тянет сразу 2 МБ картинок. Блок, который уже был на экране, после смены языка показывает фото сразу. --- */
 const LZ=new Set();let lzio=null;
 function bgNow(box){box.querySelectorAll("[data-bg]").forEach(e=>{e.style.backgroundImage=e.dataset.bg;e.removeAttribute("data-bg")})}
 function lazyBg(){document.querySelectorAll("#wins,#alums,#progs,#nws").forEach(box=>{
   if(LZ.has(box)||!("IntersectionObserver" in window)){bgNow(box);return}
-  if(!lzio)lzio=new IntersectionObserver(ens=>ens.forEach(en=>{if(en.isIntersecting){LZ.add(en.target);lzio.unobserve(en.target);bgNow(en.target)}}),{rootMargin:"900px 0px"});
+  if(!lzio)lzio=new IntersectionObserver(ens=>ens.forEach(en=>{if(en.isIntersecting){LZ.add(en.target);lzio.unobserve(en.target);bgNow(en.target)}}),{rootMargin:"1600px 0px"});
   lzio.observe(box)})}
 const fwo=new MutationObserver(()=>{italicFirst(document.body);lazyBg();fwo.takeRecords()});
 fwo.observe(document.body,{childList:true,subtree:true,characterData:true});
