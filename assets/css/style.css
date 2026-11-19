@@ -69,8 +69,11 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 /* «Доказанная польза»: рука и шарик FIRST Global */
 .p-proof{width:1.93em;margin-top:.62em;background-image:url(../img/pill-ball-bg.webp)}
 .p-proof:after{left:12.5%;top:-65.51%;width:86.73%;height:165.84%;background-image:url(../img/pill-ball.webp)}
-/* «Наши достижения»: кубок в золотистой «стеклянной» «пилюле» – светлый блик сверху, тень снизу */
-.p-win{width:1.76em;background:linear-gradient(160deg,#fbeab8 0%,#f1cf83 46%,#e5b860 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.65),inset 0 -.1em .16em rgba(176,120,28,.26)}
+/* «Стеклянные» «пилюли» (кубок, камера, бейдж): цветное стекло – градиент --g1…--g3, светлая кромка и блик сверху (:before), тень снизу и под «пилюлей» (--gs) */
+.p-win,.p-media,.p-ev{background:linear-gradient(165deg,var(--g1) 0%,var(--g2) 48%,var(--g3) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 .1em .16em rgba(255,255,255,.8),inset 0 -.13em .2em var(--gs),0 .16em .34em -.12em var(--gs)}
+.p-win:before,.p-media:before,.p-ev:before{content:"";position:absolute;left:5%;right:5%;top:5%;height:42%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.06))}
+/* «Наши достижения»: кубок в золотистом стекле */
+.p-win{width:1.76em;--g1:#fdf0c8;--g2:#f1cf83;--g3:#dfae52;--gs:rgba(176,120,28,.42)}
 .p-win:after{left:8.16%;top:-157.95%;width:83.68%;height:258.27%;background-image:url(../img/pill-cup.webp)}
 #winners .sh{margin-top:104px} /* кубок выступает над заголовком почти на полторы строки – над разделом больше воздуха, метки над заголовком нет */
 @media(max-width:760px){#winners .sh{margin-top:84px}}
@@ -80,15 +83,15 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 /* «Ценности»: три плитки с иконками ценностей – один SVG-файл: «пилюля» и предмет над ней (верхние 60% картинки – над «пилюлей») */
 .p-val{margin-top:.5em;background:none}
 .p-val:after{left:0;top:-60%;width:100%;height:160%;background-image:url(../img/pill-val.svg)}
-/* «СМИ о нас»: видеокамера в голубоватой «стеклянной» «пилюле» */
-.p-media{margin-top:.2em;background:linear-gradient(160deg,#deebff 0%,#a8c9fa 46%,#74a6ee 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.7),inset 0 -.1em .16em rgba(28,84,176,.26)}
-.p-media:after{left:6.3%;top:-12.34%;width:87.39%;height:112.61%;background-image:url(../img/pill-cam.webp)}
+/* «СМИ о нас»: видеокамера (объектив поднят на 35°) в голубом стекле */
+.p-media{margin-top:.38em;--g1:#e6f0ff;--g2:#a9cbfb;--g3:#6c9fec;--gs:rgba(28,84,176,.42)}
+.p-media:after{left:3.26%;top:-39.27%;width:93.26%;height:139.57%;background-image:url(../img/pill-cam.webp)}
 /* «Программы»: ребята с роботом FTC на фоне пит-зоны */
 .p-prog{width:1.98em;margin-top:.1em;background-image:url(../img/pill-prog-bg.webp)}
 .p-prog:after{left:-3.14%;top:-12.05%;width:100.77%;height:112.12%;background-image:url(../img/pill-prog.webp)}
-/* «События»: бейдж участника в светло-фиолетовой «стеклянной» «пилюле» */
-.p-ev{margin-top:.3em;background:linear-gradient(160deg,#f3eaff 0%,#d6c1f8 46%,#b99aee 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.7),inset 0 -.1em .16em rgba(92,44,170,.26)}
-.p-ev:after{left:9.57%;top:-32.4%;width:81.09%;height:132.61%;background-image:url(../img/pill-badge.webp)}
+/* «События»: бейдж участника в светло-фиолетовом стекле. Лента шире «пилюли», поэтому поля по бокам больше обычных */
+.p-ev{margin:.95em 0.33em 0 0.47em;--g1:#f5edff;--g2:#d3bcf8;--g3:#ad8ae8;--gs:rgba(92,44,170,.42)}
+.p-ev:after{left:-15.22%;top:-104.92%;width:130.5%;height:205%;background-image:url(../img/pill-badge.webp)}
 .sub{color:var(--mu);font-size:16px;line-height:1.6;max-width:440px}
 /* шапка раздела: слева метка и заголовок, справа короткое пояснение; .nav – справа место под стрелки ленты */
 .sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 48px;margin:72px 0 28px}
