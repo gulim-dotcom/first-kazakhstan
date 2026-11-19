@@ -647,20 +647,33 @@ dialog:not([open]){display:none}
 
 /* ---------- подвал: белая панель с контактами, под ней – слово Kazakhstan во всю ширину ---------- */
 footer{margin-top:80px;padding-bottom:20px}
-footer .fw{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start}
-.fq p{margin-top:18px;max-width:14em;font-size:clamp(28px,3.3vw,46px);font-weight:500;line-height:1.06;letter-spacing:-.035em;color:var(--ink);text-wrap:balance}
+footer .fw{display:grid;grid-template-columns:minmax(220px,312px) 1fr;gap:84px;align-items:start}
+.fmain{min-width:0}
+.fmain>.lbl{display:flex;margin-bottom:18px}
+/* флаг со слоганом (assets/js/flag.js): такие флаги с цитатами висят на соревнованиях FIRST. Картинка-полотно 1:2 висит на рейке (:before) и двух шнурах
+   до верхнего края панели (:after). Если скрипт запустил «ткань», картинка прячется (класс gl), а поверх рисуется холст – он шире полотна,
+   чтобы флагу было куда качаться; класс go – флаг показан в первый раз. Без скрипта остаётся обычная картинка */
+.fq{display:flex;justify-content:center}
+.flag{position:relative;width:100%;max-width:312px;margin-top:8px;--cord:52px}
+.fq.sm .flag{max-width:250px}
+.flag img{display:block;width:100%;height:auto;aspect-ratio:1/2;box-shadow:0 26px 36px -20px rgba(13,14,18,.45)}
+.flag canvas{position:absolute;left:-20%;top:-2.5%;width:140%;height:111.5%;pointer-events:none;opacity:0;transition:opacity .45s ease;filter:drop-shadow(0 20px 22px rgba(13,14,18,.2))}
+.flag.gl img{visibility:hidden}
+.flag.go canvas{opacity:1}
+.flag:before{content:"";position:absolute;z-index:2;left:-4%;right:-4%;top:-5px;height:10px;border-radius:5px;background:linear-gradient(#6b707c,#2b2d35 55%,#15161a)}
+.flag:after{content:"";position:absolute;left:12%;right:12%;bottom:100%;height:var(--cord);border:solid #c5c8d1;border-width:0 1.5px}
 footer .fc{border-top:1px solid var(--line)}
 footer .fc a{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 4px;border-bottom:1px solid var(--line);font-size:15px;font-weight:500;color:var(--bd);transition:color .2s,padding .35s var(--ease)}
 footer .fc a:after{margin-left:auto}
 footer .fc a:hover{color:var(--ink);padding-left:10px}
 footer .fc svg{width:20px;height:20px;flex:none;color:var(--lt)}
 /* контакты команды: плитки «должность + почта» внутри панели контактов */
-footer .team{margin-top:44px}
-footer .tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-footer .tm{display:flex;flex-direction:column;gap:22px;padding:18px 20px;border-radius:var(--rl);background:var(--soft);transition:background-color .25s var(--ease)}
+footer .team{margin-top:36px}
+footer .tmg{display:grid;gap:10px;margin-top:16px}
+footer .tm{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 28px;padding:16px 20px;border-radius:var(--rl);background:var(--soft);transition:background-color .25s var(--ease)}
 footer .tm:hover{background:var(--soft2)}
 footer .tmr{font-size:13px;color:var(--mu);line-height:1.35}
-footer .tme{margin-top:auto;display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+footer .tme{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
 footer .tme svg{width:18px;height:18px;flex:none;color:var(--lt)}
 footer .cp{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:24px 8px 4px;font-size:13px;color:var(--lt)}
 footer .flogo{height:36px;width:auto}
@@ -714,6 +727,7 @@ footer .flogo{height:36px;width:auto}
   :root{--ht:84px}
   html{scroll-padding-top:84px}
   .panel,.ab .ax,.proof{padding:36px 32px}
+  .flag{--cord:44px}
   .top{height:60px;padding:0 8px 0 18px}
   .burger{display:block;order:2;margin-left:auto}
   .top .logo{order:1}
@@ -747,15 +761,16 @@ footer .flogo{height:36px;width:auto}
 }
 @media(max-width:900px){
   .two,footer .fw{grid-template-columns:1fr}
-  footer .fw{gap:32px}
+  footer .fw{gap:44px}
+  .flag,.fq.sm .flag{max-width:250px}
   .ab .col{min-height:0;aspect-ratio:4/3}
-  footer .tmg{grid-template-columns:1fr}
   .sp:after{width:64px;height:160px;right:12px;opacity:.4}
 }
 @media(max-width:760px){
   :root{--gut:14px;--rx:26px;--rl:20px}
   body{font-size:16px}
   .panel,.ab .ax,.proof{padding:28px 22px}
+  .flag{--cord:36px}
   .sh{margin:56px 6px 22px}
   .sh.nav{padding-right:0}
   h2.t,h1.t,h3.t{font-size:clamp(30px,8.6vw,38px)}

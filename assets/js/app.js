@@ -193,12 +193,12 @@ function countUp(){
   if(countUp.io)countUp.io.disconnect();
   /* уже показали один раз, reduced-motion или старый браузер — сразу итоговые цифры */
   if(box.dataset.done||RM||!("IntersectionObserver" in window))return;
-  /* ширина числа фиксируется заранее, чтобы подпись рядом не сдвигалась во время счёта */
-  els.forEach(e=>{const b=e.parentElement;b.style.minWidth=b.getBoundingClientRect().width+"px";e.textContent=fmt(0)});
+  /* ширина числа заранее не фиксируется: подпись стоит под числом, а зафиксированная ширина распирала плитки за край блока, пока счёт не закончится */
+  els.forEach(e=>{e.textContent=fmt(0)});
   const run=()=>{box.dataset.done="1";const t0=performance.now(),D=1600;
     const step=now=>{const p=Math.min(1,(now-t0)/D),k=1-Math.pow(1-p,3);
       els.forEach(x=>{x.textContent=fmt(+x.dataset.n*k)});
-      if(p<1)requestAnimationFrame(step);else els.forEach(x=>{x.parentElement.style.minWidth=""})};
+      if(p<1)requestAnimationFrame(step)};
     requestAnimationFrame(step)};
   const io=countUp.io=new IntersectionObserver(ens=>{if(ens.some(en=>en.isIntersecting)){io.disconnect();run()}},{threshold:.3});
   io.observe(box);
