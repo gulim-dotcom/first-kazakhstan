@@ -63,9 +63,9 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
    margin-top оставляет место под выступающий предмет, когда заголовок переносится и «пилюля» оказывается на второй строке */
 .pill{display:inline-block;position:relative;width:1.8em;height:.9em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/100% 100% no-repeat;vertical-align:-.1em}
 .pill:after{content:"";position:absolute;background:center/100% 100% no-repeat;pointer-events:none}
-/* «О нас»: сборная на фоне сцены FIRST Global */
-.p-team{width:2.25em;margin-top:.3em;background-image:url(../img/pill-team-bg.webp)}
-.p-team:after{left:-0.07%;top:-33.05%;width:100.36%;height:133.48%;background-image:url(../img/pill-team.webp)}
+/* «О нас»: флаг Казахстана на фоне неба (фон и вырезка – из одного фото, совпадают точь-в-точь) */
+.p-team{width:1.89em;margin-top:.66em;background-image:url(../img/pill-flag-bg.webp)}
+.p-team:after{left:0.66%;top:-71.36%;width:96.79%;height:163.88%;background-image:url(../img/pill-flag.webp)}
 /* «Доказанная польза»: рука и шарик FIRST Global */
 .p-proof{width:1.93em;margin-top:.62em;background-image:url(../img/pill-ball-bg.webp)}
 .p-proof:after{left:12.5%;top:-65.51%;width:86.73%;height:165.84%;background-image:url(../img/pill-ball.webp)}
@@ -74,9 +74,9 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 .p-win:after{left:8.16%;top:-157.95%;width:83.68%;height:258.27%;background-image:url(../img/pill-cup.webp)}
 #winners .sh{margin-top:104px} /* кубок выступает над заголовком почти на полторы строки – над разделом больше воздуха, метки над заголовком нет */
 @media(max-width:760px){#winners .sh{margin-top:84px}}
-/* «Выпускники»: выпускница с флажком Stanford на оранжевом */
-.p-alum{width:1.80em;margin-top:.22em;background:linear-gradient(150deg,#f4965c,#d6541e)}
-.p-alum:after{left:8.1%;top:-25.15%;width:79.05%;height:125.24%;background-image:url(../img/pill-alum.webp)}
+/* «Выпускники»: значок FIRST Alumni на камне (фон и вырезка – из одного фото) */
+.p-alum{width:1.89em;margin-top:.56em;background-image:url(../img/pill-pin-bg.webp)}
+.p-alum:after{left:8.33%;top:-61.05%;width:83.33%;height:138.06%;background-image:url(../img/pill-pin.webp)}
 /* «Ценности»: три плитки с иконками ценностей; «СМИ о нас»: микрофон. Обе – один SVG-файл: «пилюля» и предмет над ней (верхние 60% картинки – над «пилюлей») */
 .p-val,.p-media{margin-top:.5em;background:none}
 .p-val:after,.p-media:after{left:0;top:-60%;width:100%;height:160%}
