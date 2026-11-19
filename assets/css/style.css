@@ -63,7 +63,7 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
    margin-top оставляет место под выступающий предмет, когда заголовок переносится и «пилюля» оказывается на второй строке */
 .pill{display:inline-block;position:relative;width:1.8em;height:.9em;margin-left:.2em;border-radius:999px;background:var(--soft2) center/100% 100% no-repeat;vertical-align:-.1em}
 .pill:after{content:"";position:absolute;background:center/100% 100% no-repeat;pointer-events:none}
-/* «О нас»: флаг Казахстана на фоне неба (фон и вырезка – из одного фото, совпадают точь-в-точь) */
+/* «О нас»: флаг Казахстана на фоне размытого неба из того же фото */
 .p-team{width:1.89em;margin-top:.66em;background-image:url(../img/pill-flag-bg.webp)}
 .p-team:after{left:0.66%;top:-71.36%;width:96.79%;height:163.88%;background-image:url(../img/pill-flag.webp)}
 /* «Доказанная польза»: рука и шарик FIRST Global */
@@ -77,17 +77,18 @@ h2.t,h1.t,h3.t{font-size:clamp(32px,3.9vw,56px);font-weight:500;line-height:1.04
 /* «Выпускники»: значок FIRST Alumni на камне (фон и вырезка – из одного фото) */
 .p-alum{width:1.89em;margin-top:.56em;background-image:url(../img/pill-pin-bg.webp)}
 .p-alum:after{left:8.33%;top:-61.05%;width:83.33%;height:138.06%;background-image:url(../img/pill-pin.webp)}
-/* «Ценности»: три плитки с иконками ценностей; «СМИ о нас»: микрофон. Обе – один SVG-файл: «пилюля» и предмет над ней (верхние 60% картинки – над «пилюлей») */
-.p-val,.p-media{margin-top:.5em;background:none}
-.p-val:after,.p-media:after{left:0;top:-60%;width:100%;height:160%}
-.p-val:after{background-image:url(../img/pill-val.svg)}
-.p-media:after{background-image:url(../img/pill-media.svg)}
+/* «Ценности»: три плитки с иконками ценностей – один SVG-файл: «пилюля» и предмет над ней (верхние 60% картинки – над «пилюлей») */
+.p-val{margin-top:.5em;background:none}
+.p-val:after{left:0;top:-60%;width:100%;height:160%;background-image:url(../img/pill-val.svg)}
+/* «СМИ о нас»: видеокамера в голубоватой «стеклянной» «пилюле» */
+.p-media{margin-top:.2em;background:linear-gradient(160deg,#deebff 0%,#a8c9fa 46%,#74a6ee 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.7),inset 0 -.1em .16em rgba(28,84,176,.26)}
+.p-media:after{left:6.3%;top:-12.34%;width:87.39%;height:112.61%;background-image:url(../img/pill-cam.webp)}
 /* «Программы»: ребята с роботом FTC на фоне пит-зоны */
 .p-prog{width:1.98em;margin-top:.1em;background-image:url(../img/pill-prog-bg.webp)}
 .p-prog:after{left:-3.14%;top:-12.05%;width:100.77%;height:112.12%;background-image:url(../img/pill-prog.webp)}
-/* «События»: Байтерек над ночной Астаной (фон и вырезка – из одного фото, совпадают точь-в-точь) */
-.p-ev{width:1.89em;margin-top:.62em;background-image:url(../img/pill-ev-bg.webp)}
-.p-ev:after{left:36.2%;top:-69.95%;width:27.83%;height:165.81%;background-image:url(../img/pill-ev.webp)}
+/* «События»: бейдж участника в светло-фиолетовой «стеклянной» «пилюле» */
+.p-ev{margin-top:.3em;background:linear-gradient(160deg,#f3eaff 0%,#d6c1f8 46%,#b99aee 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 .09em .14em rgba(255,255,255,.7),inset 0 -.1em .16em rgba(92,44,170,.26)}
+.p-ev:after{left:9.57%;top:-32.4%;width:81.09%;height:132.61%;background-image:url(../img/pill-badge.webp)}
 .sub{color:var(--mu);font-size:16px;line-height:1.6;max-width:440px}
 /* шапка раздела: слева метка и заголовок, справа короткое пояснение; .nav – справа место под стрелки ленты */
 .sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 48px;margin:72px 0 28px}
